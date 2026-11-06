@@ -1,0 +1,24 @@
+# Dependencies and build output
+node_modules/
+dist/
+.astro/
+.vercel/
+coverage/
+playwright-report/
+test-results/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Private working notes (this repository is public)
+meetings/
+tasks/
+project-state.md
+
+# OS
+.DS_Store
+
+# Separate repository, listed by link
+/tailor-my-cv/
