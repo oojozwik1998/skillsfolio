@@ -38,6 +38,24 @@ Detail: `.ai/specs/2026-11-06-engineering-standards.md`.
 - **Types:** no `any` and no `@ts-ignore`. Derive types from Zod schemas.
 - **Dependencies:** TypeScript stays on 6.0 until `@astrojs/check` and `typescript-eslint` support 7.
 
+## Validation
+
+Run `pnpm check` before calling work done. It runs, in order:
+
+| Command | Check |
+|---|---|
+| `pnpm build` | The site builds and skill metadata is valid |
+| `pnpm typecheck` | Types in TypeScript and `.astro` files |
+| `pnpm lint` | Code and accessibility rules |
+| `pnpm test` | Unit tests with coverage |
+| `pnpm test:e2e` | Browser tests against the built site |
+
+First run on a new machine: `pnpm exec playwright install chromium`.
+
+- **Every new feature must have 100% unit-test coverage.** Logic goes in `src/lib/`, where the threshold is enforced. `.astro` files need browser tests.
+- **Do not merge a pull request unless all required checks are green,** except in extreme, justified cases that the owner approves.
+- After changing `keystatic.config.ts`, open `/keystatic` in a browser as well, because browser tests do not cover the panel.
+
 ## Working rules
 
 - **Plan first:** plan any task with more than a few steps before coding, and put detail into the spec. If work goes off track, stop and re-plan instead of pushing on.

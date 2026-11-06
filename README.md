@@ -3,7 +3,7 @@
 A public catalog of agent skills by Oskar Jóźwik. Browse the skills, open one and install it with a single command:
 
 ```sh
-npx skills add oojozwik1998/skills-folio --skill <name>
+npx skills add oojozwik1998/skillsfolio --skill <name>
 ```
 
 ## Architecture
@@ -58,3 +58,5 @@ Instructions for the agent.
 ```
 
 `name` must be lowercase with hyphens and equal the folder name. Otherwise the build stops.
+
+Saving in the panel keeps only `name`, `description` and the body, and normalizes Markdown formatting. For example, numbered lists become `1.` on every line, which renders the same.

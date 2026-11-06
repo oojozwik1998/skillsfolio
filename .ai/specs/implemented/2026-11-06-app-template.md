@@ -1,6 +1,6 @@
 # App template
 
-Status: in progress
+Status: implemented on 2026-11-06
 
 ## Goal
 
@@ -42,7 +42,7 @@ src/styles/global.css      Tokens from design.md and text styles
 
 - Skill files follow the `skills` CLI format: `skills/<name>/SKILL.md` with `name` and `description` in the frontmatter.
 - `name` is lowercase with hyphens and must equal the folder name. A mismatch stops the build.
-- The panel keeps only `name`, `description` and the body. Other frontmatter fields are dropped when a skill is saved there.
+- The panel keeps only `name`, `description` and the body. Other frontmatter fields are dropped when a skill is saved there, and Markdown formatting is normalized.
 
 ## Out of scope
 

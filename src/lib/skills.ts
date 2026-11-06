@@ -9,7 +9,7 @@ export const skillSchema = z.object({
 
 /** Uses the folder as the skill id and stops the build when `name` differs from it. */
 export function skillIdFromPath(entryPath: string, name: unknown): string {
-  const folder = entryPath.split('/')[0] ?? '';
+  const folder = entryPath.slice(0, entryPath.lastIndexOf('/'));
   if (name !== folder) {
     throw new Error(`Skill "${entryPath}": name "${String(name)}" must equal the folder name "${folder}".`);
   }
