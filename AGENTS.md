@@ -27,6 +27,17 @@ Astro 7 with strict TypeScript, Tailwind CSS 4, Keystatic and Zod. Single app wi
 - The panel runs in local development only, at `/keystatic`.
 - See `README.md` for the architecture and `.ai/specs/` for detail.
 
+## Engineering standards
+
+Detail: `.ai/specs/2026-11-06-engineering-standards.md`.
+
+- **Logic:** keep it in `src/lib/` as plain TypeScript. `.astro` files only fetch and render. Copy `src/lib/skills.ts` and `src/pages/skills/[name].astro` as patterns.
+- **Skills:** the name is lowercase with hyphens and equals its folder. Invalid metadata must stop the build.
+- **Design:** `design.md` is the source of truth. Use semantic utilities and `type-*` text styles only, and define light and dark values together.
+- **UI states:** every interactive element has hover and focus states, every list has an empty state, and layouts work at phone width.
+- **Types:** no `any` and no `@ts-ignore`. Derive types from Zod schemas.
+- **Dependencies:** TypeScript stays on 6.0 until `@astrojs/check` and `typescript-eslint` support 7.
+
 ## Working rules
 
 - **Plan first:** plan any task with more than a few steps before coding, and put detail into the spec. If work goes off track, stop and re-plan instead of pushing on.

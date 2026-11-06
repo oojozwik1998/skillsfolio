@@ -1,4 +1,5 @@
 import { collection, config, fields } from '@keystatic/core';
+import { SKILL_NAME_PATTERN } from './src/lib/skills';
 
 export default config({
   storage: { kind: 'local' },
@@ -8,11 +9,19 @@ export default config({
       path: 'skills/*/SKILL',
       slugField: 'name',
       format: { contentField: 'body' },
-      fields: {
+      entryLayout: 'content',
+      schema: {
         name: fields.slug({
           name: {
             label: 'Name',
-            description: 'Lowercase with hyphens, e.g. my-skill. Must match the slug below.',
+            description: 'Lowercase with hyphens, e.g. my-skill.',
+            validation: {
+              isRequired: true,
+              pattern: {
+                regex: SKILL_NAME_PATTERN,
+                message: 'Use lowercase letters, digits and hyphens.',
+              },
+            },
           },
         }),
         description: fields.text({

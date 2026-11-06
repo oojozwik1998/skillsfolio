@@ -1,4 +1,5 @@
 // @ts-check
+import process from 'node:process';
 import keystatic from '@keystatic/astro';
 import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
