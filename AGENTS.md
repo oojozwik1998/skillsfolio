@@ -18,6 +18,16 @@ Owner: Oskar (senior product designer, not a developer). Explain developer terms
 
 Private working notes stay local and are ignored by git: `meetings/`, `tasks/`, `project-state.md`.
 
+## Working rules
+
+- **Plan first:** plan any task with more than a few steps before coding, and put detail into the spec. If work goes off track, stop and re-plan instead of pushing on.
+- **Verify every change:** run the validation commands and show the output before calling work done. A change is not done until it has passed a real check.
+- **Replace weak fixes:** if a fix turns out mediocre, discard it and implement the clean solution rather than patching on top.
+- **Record lessons:** after every correction or fixed bug, add a rule to `.ai/lessons.md` so the mistake is not repeated. If a lesson applies to every task, add it to this file as well.
+- **Fix bugs from evidence:** start from the bug report, the failing check or the logs, and find the cause before changing code.
+- **Keep context clean:** hand separate research or side tasks to subagents when the tool supports them.
+- **Reuse repeated work:** turn anything done repeatedly into a script or a skill.
+
 ## Public repository and confidentiality
 
 This repository is public, so everything committed here is published on push.
