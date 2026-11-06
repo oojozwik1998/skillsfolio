@@ -20,6 +20,14 @@ export function installCommand(repository: string, skillName: string): string {
   return `npx skills add ${repository} --skill ${skillName}`;
 }
 
+export function repositoryUrl(repository: string): string {
+  return `https://github.com/${repository}`;
+}
+
+export function cloneCommand(repository: string, folder: string): string {
+  return `git clone ${repositoryUrl(repository)}.git ${folder}`;
+}
+
 export function sourceUrl(repository: string, skillName: string): string {
   return `https://github.com/${repository}/tree/main/skills/${skillName}`;
 }

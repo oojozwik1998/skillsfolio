@@ -2,10 +2,11 @@
 import { getCollection } from 'astro:content';
 import SkillCard from '../components/SkillCard.astro';
 import { site } from '../config';
+import { externalSkills } from '../data/external-skills';
 import Base from '../layouts/Base.astro';
 import { sortByName } from '../lib/skills';
 
-const skills = sortByName(await getCollection('skills'));
+const skills = sortByName([...(await getCollection('skills')), ...externalSkills]);
 ---
 
 <Base>
