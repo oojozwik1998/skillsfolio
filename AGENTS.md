@@ -18,6 +18,15 @@ Owner: Oskar (senior product designer, not a developer). Explain developer terms
 
 Private working notes stay local and are ignored by git: `meetings/`, `tasks/`, `project-state.md`.
 
+## Stack and layout
+
+Astro 7 with strict TypeScript, Tailwind CSS 4, Keystatic and Zod. Single app with static output and no database. Do not add a database, a server adapter or a UI framework without a spec the owner approved.
+
+- `skills/<name>/SKILL.md` is the only source of skill content. The site, the panel and the `skills` CLI all read it.
+- `/tailor-my-cv/` is a separate repository with personal data. Never add it to this repository or copy from it.
+- The panel runs in local development only, at `/keystatic`.
+- See `README.md` for the architecture and `.ai/specs/` for detail.
+
 ## Working rules
 
 - **Plan first:** plan any task with more than a few steps before coding, and put detail into the spec. If work goes off track, stop and re-plan instead of pushing on.

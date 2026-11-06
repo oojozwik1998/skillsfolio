@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+import SkillCard from '../components/SkillCard.astro';
+import { site } from '../config';
+import Base from '../layouts/Base.astro';
+import { sortByName } from '../lib/skills';
+
+const skills = sortByName(await getCollection('skills'));
+---
+
+<Base>
+  <div class="max-w-2xl">
+    <h1 class="type-display-small sm:type-display-large">{site.name}</h1>
+    <p class="type-text-large text-text-subtle mt-6">{site.description}</p>
+  </div>
+
+  {
+    skills.length > 0 ? (
+      <ul class="mt-16 grid gap-4 md:grid-cols-2">
+        {skills.map((skill) => (
+          <SkillCard name={skill.data.name} description={skill.data.description} />
+        ))}
+      </ul>
+    ) : (
+      <p class="type-text-medium text-text-subtle mt-16">No skills published yet.</p>
+    )
+  }
+</Base>
