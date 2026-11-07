@@ -4,7 +4,7 @@
   "objective": "Code design system for the Skills Folio catalog: tokens from design.md, Astro components with documented states",
   "language": "pl",
   "createdAt": "2026-11-07T19:12:12.741Z",
-  "updatedAt": "2026-11-07T19:23:34.395Z",
+  "updatedAt": "2026-11-07T19:23:42.591Z",
   "modes": {
     "input": "existing",
     "target": "code",
@@ -164,19 +164,34 @@
       "notes": [],
       "updatedAt": "2026-11-07T19:23:34.308Z",
       "title": "Patterns and migration of the three screens"
+    },
+    {
+      "id": "B1",
+      "target": "code",
+      "items": [
+        "foundation:color",
+        "foundation:typography",
+        "foundation:spacing"
+      ],
+      "status": "pending",
+      "versionId": null,
+      "evidence": [],
+      "notes": [],
+      "updatedAt": "2026-11-07T19:23:42.588Z",
+      "title": "Foundations: token export and Storybook with @storybook-astro/framework"
     }
   ],
   "next": "Run batch B1 with ds-code: export tokens, add Storybook with @storybook-astro/framework, wire tokens; if Storybook fails on Astro 7, propose the /design-system page fallback (D-002)",
   "blockers": [],
   "knownIssues": [],
-  "lastOperation": "Stage 4 → 5",
+  "lastOperation": "Batch B1 (code: foundation:color, foundation:typography, foundation:spacing) → pending",
   "renderedHashes": {
-    "PROGRESS.md": "ae4bd20a1ce20c31",
+    "PROGRESS.md": "63f0bc4a8a6053ef",
     "DECISIONS.md": "c085ef9b24c78526",
     "DS-BLUEPRINT.md": "6379400d312aad83"
   },
   "lastValidation": {
-    "at": "2026-11-07T19:23:34.395Z",
+    "at": "2026-11-07T19:23:42.591Z",
     "errors": 0,
     "warnings": 0
   }

@@ -32,6 +32,7 @@
 | B2 | code | icon, inline-code, link, badge, button | pending |  |
 | B3 | code | card, link-card, copy-command, callout | pending |  |
 | B4 | code | disclosure, page-header, section-header | pending |  |
+| B1 | code | foundation:color, foundation:typography, foundation:spacing | pending |  |
 
 ## Komponenty
 
@@ -60,11 +61,11 @@ _brak_
 
 ## Ostatnia zakończona operacja
 
-Stage 4 → 5
+Batch B1 (code: foundation:color, foundation:typography, foundation:spacing) → pending
 
 ## Ostatnia walidacja
 
-2026-11-07T19:23:34.395Z: 0 error(s), 0 warning(s)
+2026-11-07T19:23:42.591Z: 0 error(s), 0 warning(s)
 
 ## Jak wznowić
 

@@ -33,3 +33,4 @@
 - 2026-11-07T19:23:34.262Z - Batch B3 (code: card, link-card, copy-command, callout) → pending
 - 2026-11-07T19:23:34.318Z - Batch B4 (code: disclosure, page-header, section-header) → pending
 - 2026-11-07T19:23:34.353Z - Stage 4 → 5
+- 2026-11-07T19:23:42.593Z - Batch B1 (code: foundation:color, foundation:typography, foundation:spacing) → pending
