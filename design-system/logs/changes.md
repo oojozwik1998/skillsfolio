@@ -1,0 +1,35 @@
+# Change log
+
+- 2026-11-07T19:12:12.745Z - Project "Skills Folio" initialized (existing/code/prototype)
+- 2026-11-07T19:12:12.797Z - set project:capabilities.code = {"repoPath":".","packagePath":null,"stack":{"repo":".","hasPackageJson":true,"notes":["React + TypeScript without Storybook: Storybook must be added (ask first) for the guaranteed path."],"packageManager":"pnpm","monorepo":false,"frameworks":[{"name":"react","version":"^19.3.1"}],"metaFramework":["astro"],"typescript":true,"styling":["tailwind"],"headlessLibraries":[],"storybook":null,"testing":["vitest","@playwright/test"],"lint":["eslint"],"suggestedCommands":{"typecheck":"pnpm typecheck","lint":"pnpm lint","test":"pnpm test","storybookBuild":null,"build":"pnpm build"},"supportTier":"full"},"supportTier":"full","commands":{"typecheck":"pnpm typecheck","lint":"pnpm lint","test":"pnpm test","storybookBuild":null,"build":"pnpm build"},"checkedAt":"2026-11-07T19:12:12.768Z","notes":["React + TypeScript without Storybook: Storybook must be added (ask first) for the guaranteed path."]}
+- 2026-11-07T19:12:34.716Z - set project:capabilities.code.supportTier = "review"
+- 2026-11-07T19:12:34.739Z - Stack detection reported supportTier full because React is installed for the Keystatic panel; site components are Astro, so the tier is set to review.
+- 2026-11-07T19:14:07.489Z - set project:capabilities.code.packagePath = "src/components/ui"
+- 2026-11-07T19:14:07.516Z - set project:capabilities.code.commands = {"typecheck":"pnpm typecheck","lint":"pnpm lint","test":"pnpm test","a11y":"pnpm test:e2e","build":"pnpm build","storybookBuild":null}
+- 2026-11-07T19:14:07.543Z - Decision D-001: Code target, prototype depth, design.md as the source of truth (approved)
+- 2026-11-07T19:14:07.569Z - Decision D-002: Storybook with @storybook-astro/framework (approved)
+- 2026-11-07T19:14:07.595Z - Decision D-003: Components in src/components/ui, state files public in the repo (approved)
+- 2026-11-07T19:14:07.621Z - Stage 0 → 1
+- 2026-11-07T19:14:44.587Z - Merged into screens: items: +3 new, 0 updated
+- 2026-11-07T19:14:44.613Z - Merged into inventory: items: +14 new, 0 updated
+- 2026-11-07T19:17:40.102Z - Decision D-004: Shortlist: 12 components plus Prose (approved)
+- 2026-11-07T19:17:40.129Z - Decision D-005: Card and LinkCard as separate components (alternative)
+- 2026-11-07T19:17:40.155Z - Decision D-006: Visual direction review skipped (skipped)
+- 2026-11-07T19:17:40.182Z - Stage 1 → 3
+- 2026-11-07T19:18:07.649Z - Merged into inventory: items: +0 new, 14 updated
+- 2026-11-07T19:18:34.414Z - set blueprint:themes = ["light","dark"]
+- 2026-11-07T19:18:44.633Z - Merged into blueprint: tokens: +81 new, 0 updated; textStyles: +10 new, 0 updated
+- 2026-11-07T19:21:01.130Z - Merged into blueprint: tokens: +2 new, 81 updated; textStyles: +0 new, 10 updated
+- 2026-11-07T19:21:01.160Z - set blueprint:naming = {"tokens":"dot.separated.lowercase","cssVariables":"--color-surface-default style, exposed as Tailwind utilities (bg-surface-default)","textStyles":"type-<style> utilities","components":"PascalCase in code","variantProps":"lowercase keys and values"}
+- 2026-11-07T19:21:01.189Z - set blueprint:principles = ["WCAG 2.2 AA as the target; automated checks are evidence, not certification","Controls at least 44px high; focus ring 2px border.focus with 2px offset","Never use color alone to show state","Respect prefers-reduced-motion","Light and dark mode follow the system setting","Only tokens in components: no raw colors, sizes or off-scale spacing","Emphasis through color (text.default over text.subtle), not font weight; only Poppins 400 is loaded","Primary button is out of the prototype: white on action-primary is 4.0:1, below 4.5:1 for 14px text"]
+- 2026-11-07T19:21:01.217Z - Decision D-007: Actor tokens color.actor.skill and color.actor.you (approved)
+- 2026-11-07T19:21:01.247Z - Decision D-008: Cards exactly as design.md: padding 2rem, 2rem between children, no border (alternative)
+- 2026-11-07T19:21:01.276Z - Decision D-009: heading-small line height 1.3 (approved)
+- 2026-11-07T19:21:01.303Z - Decision D-010: Foundations approved (approved)
+- 2026-11-07T19:21:01.333Z - Stage 3 → 4
+- 2026-11-07T19:22:08.348Z - Merged into blueprint: components: +12 new, 0 updated
+- 2026-11-07T19:23:34.139Z - Decision D-011: Blueprint and four code batches (approved)
+- 2026-11-07T19:23:34.224Z - Batch B2 (code: icon, inline-code, link, badge, button) → pending
+- 2026-11-07T19:23:34.262Z - Batch B3 (code: card, link-card, copy-command, callout) → pending
+- 2026-11-07T19:23:34.318Z - Batch B4 (code: disclosure, page-header, section-header) → pending
+- 2026-11-07T19:23:34.353Z - Stage 4 → 5

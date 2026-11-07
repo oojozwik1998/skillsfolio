@@ -194,6 +194,18 @@ colors:
   brand-3-text-dark: "oklch(0.31 0.072 258)"
   brand-3-accent: "oklch(0.69 0.155 247)"
   brand-3-accent-dark: "oklch(0.69 0.155 247)"
+  actor-skill-background: "oklch(0.882 0.059 254.128)"
+  actor-skill-background-dark: "oklch(0.282 0.091 267.935)"
+  actor-skill-border: "oklch(0.707 0.165 254.624)"
+  actor-skill-border-dark: "oklch(0.488 0.243 264.376)"
+  actor-skill-text: "oklch(0.282 0.091 267.935)"
+  actor-skill-text-dark: "oklch(0.882 0.059 254.128)"
+  actor-you-background: "oklch(0.901 0.076 70.697)"
+  actor-you-background-dark: "oklch(0.266 0.079 36.259)"
+  actor-you-border: "oklch(0.75 0.183 55.934)"
+  actor-you-border-dark: "oklch(0.553 0.195 38.402)"
+  actor-you-text: "oklch(0.266 0.079 36.259)"
+  actor-you-text-dark: "oklch(0.901 0.076 70.697)"
 typography:
   display-large:
     fontFamily: "'Mona Sans', sans-serif"
@@ -235,7 +247,7 @@ typography:
     fontSize: "1.125rem"
     fontWeight: 400
     fontStyle: "normal"
-    lineHeight: 1.1
+    lineHeight: 1.3
     letterSpacing: "0em"
   text-large:
     fontFamily: "'Poppins', sans-serif"
@@ -261,6 +273,13 @@ typography:
   label:
     fontFamily: "'Poppins', sans-serif"
     fontSize: "0.875rem"
+    fontWeight: 400
+    fontStyle: "normal"
+    lineHeight: 1.5
+    letterSpacing: "0em"
+  code:
+    fontFamily: "ui-monospace, 'SF Mono', Menlo, monospace"
+    fontSize: "0.8125rem"
     fontWeight: 400
     fontStyle: "normal"
     lineHeight: 1.5
@@ -369,15 +388,21 @@ This is a token-driven interface with coordinated light and dark color modes. Th
 
 ## Colors
 
-The primitive palettes are Mist, Azure Radiance, Orange, Green, Red, Blue, Orchid. Semantic roles cover Surface, Text, Border, Primary, Secondary, Success, Warning, Danger, Info, Chart, Brand 1, Brand 2, Brand 3.
+The primitive palettes are Mist, Azure Radiance, Orange, Green, Red, Blue, Orchid. Semantic roles cover Surface, Text, Border, Primary, Secondary, Success, Warning, Danger, Info, Chart, Brand 1, Brand 2, Brand 3 and Actor.
+
+Actor colors mark who performs a step in a process: `actor-skill-*` for the skill and `actor-you-*` for the user. They share values with Info and Warning but carry no status meaning, so never use Warning or Info to mean an actor.
+
+The primary action fails contrast for 14px text: white on `action-primary-background` is about 4.0:1, below the 4.5:1 AA minimum. Fix this token before using a primary button.
 
 Use unsuffixed semantic color tokens for light mode and the matching `-dark` token for dark mode. Components should consume semantic colors instead of primitive palette values so that intent and theming remain intact.
 
 ## Typography
 
-Use 'Poppins', sans-serif for default interface text and 'Mona Sans', sans-serif for display styles. Available complete text styles are `display-large`, `display-medium`, `display-small`, `heading-large`, `heading-medium`, `heading-small`, `text-large`, `text-medium`, `text-small`, `label`. Apply each style as a unit so family, size, weight, line height, and letter spacing stay synchronized.
+Use 'Poppins', sans-serif for default interface text and 'Mona Sans', sans-serif for display styles. Available complete text styles are `display-large`, `display-medium`, `display-small`, `heading-large`, `heading-medium`, `heading-small`, `text-large`, `text-medium`, `text-small`, `label`, `code`. Use `code` for inline code and commands, set in the system monospace font. Apply each style as a unit so family, size, weight, line height, and letter spacing stay synchronized.
 
 Preserve the authored casing of text; the current styles do not apply a text transform.
+
+Only Poppins 400 is loaded. Show emphasis with color (`text-default` against `text-subtle`), not with a heavier weight.
 
 ## Layout
 
@@ -411,6 +436,7 @@ Use the `radius-*` tokens from the frontmatter. Component-specific radius choice
 - **Cards:** Use 2rem internal spacing, 2rem between child elements, a 1rem radius, and `none` for elevation.
 - **Popovers:** Use 0.75rem internal spacing, a 1rem radius, the `border.subtle` border color, and `none` for elevation. Use the default surface background for dropdown menus and popovers.
 - **Badges:** Use a 0.375rem radius.
+- **Borders:** Use 1px for outlines and dividers and 2px for focus rings and accent edges. Focus rings use `border-focus` with a 2px offset.
 
 Border colors and shadow assignments remain documented here rather than in component frontmatter because those property names are not part of the current DESIGN.md alpha component schema.
 
@@ -421,3 +447,5 @@ Border colors and shadow assignments remain documented here rather than in compo
 - Do apply typography tokens as complete styles.
 - Don't replace semantic colors with primitive palette values inside components.
 - Don't invent brand, layout, motion, or accessibility rules that are not yet documented.
+- Do keep interactive controls at least 2.75rem high and meet WCAG 2.2 AA contrast.
+- Do respect reduced motion settings.
