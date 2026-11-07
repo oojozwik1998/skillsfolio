@@ -247,6 +247,16 @@ Themes: light, dark
 - Evidence: screen:skill-detail, screen:tailor-my-cv
 - QA: figma n/a · code pass · parity n/a
 
+### ASCII field (`ascii-field`)
+
+- Status: needs_review · tier: pattern · priority: P2
+- Purpose: Decorative animated field of random characters behind the home page hero
+- Variants: layout = page / contained
+- States: default, hover (mouse glow), reduced motion (static frame), paused (off screen or tab hidden)
+- Accessibility: aria-hidden and pointer-events none; never carries information; prefers-reduced-motion: one static frame, no animation and no hover reaction (WCAG 2.3.3); The mask keeps the title and lead readable; characters stay at low opacity
+- Evidence: screen:catalog
+- QA: figma n/a · code pass · parity n/a
+
 ## Wyjątki
 
 _brak_

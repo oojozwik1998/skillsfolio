@@ -1885,6 +1885,73 @@
         "path": "src/components/ui/section-header",
         "story": "src/components/ui/section-header/SectionHeader.stories.ts"
       }
+    },
+    {
+      "id": "ascii-field",
+      "label": "ASCII field",
+      "status": "needs_review",
+      "tier": "pattern",
+      "priority": "P2",
+      "purpose": "Decorative animated field of random characters behind the home page hero",
+      "usage": "Home page hero only, once per page. Decoration, never content: do not put meaning in it, do not use it behind body text or cards, do not stack two fields. Use layout contained only for previews",
+      "variants": {
+        "layout": [
+          "page",
+          "contained"
+        ]
+      },
+      "states": [
+        "default",
+        "hover (mouse glow)",
+        "reduced motion (static frame)",
+        "paused (off screen or tab hidden)"
+      ],
+      "properties": [
+        {
+          "name": "layout",
+          "type": "enum"
+        }
+      ],
+      "slots": [],
+      "behavior": [
+        "Random A-Z a-z 0-9 characters, 9px code font on a 6 x 12 px grid; about 2% swap every frame",
+        "Large abstract wave shapes drift through the field with soft edges; kept faint (extra opacity 0.24) so they read as texture",
+        "Mouse hover adds a soft glow (radius 240px, extra opacity 0.35) that also swaps characters faster; both fade to zero at the edge, no visible rim; touch does not trigger it",
+        "About 20 frames per second; pauses when off screen or when the tab is hidden",
+        "Redraws on system color scheme change and on data-theme change",
+        "layout page: absolute at the top of the page, full viewport width, 36rem high, behind content; a mask fades it toward the bottom and dims it behind the title",
+        "layout contained: in the flow, full parent width, 28rem high, no mask"
+      ],
+      "accessibility": [
+        "aria-hidden and pointer-events none; never carries information",
+        "prefers-reduced-motion: one static frame, no animation and no hover reaction (WCAG 2.3.3)",
+        "The mask keeps the title and lead readable; characters stay at low opacity"
+      ],
+      "tokens": [
+        "color.text.subtle",
+        "font.family.code"
+      ],
+      "textStyles": [],
+      "dependencies": [],
+      "evidence": [
+        "screen:catalog"
+      ],
+      "qa": {
+        "figma": "n/a",
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B5.json"
+      },
+      "responsive": [
+        "Below 640px the title mask is wider and centred",
+        "Grid is rebuilt on resize and scaled for the device pixel ratio"
+      ],
+      "code": {
+        "package": "src/components/ui",
+        "export": "AsciiField",
+        "path": "src/components/ui/ascii-field",
+        "story": "src/components/ui/ascii-field/AsciiField.stories.ts"
+      }
     }
   ],
   "exceptions": []

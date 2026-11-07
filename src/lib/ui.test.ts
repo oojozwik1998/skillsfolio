@@ -1,5 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
+  asciiFieldClasses,
+  asciiFieldLayouts,
   badgeClasses,
   badgeLabels,
   badgeTones,
@@ -137,5 +139,22 @@ describe('pageTitleClasses', () => {
 describe('disclosureId', () => {
   it('joins the prefix and the number', () => {
     expect(disclosureId('step', 5)).toBe('step-5');
+  });
+});
+
+describe('asciiFieldClasses', () => {
+  it('defaults to the page layout, behind the content and masked', () => {
+    expect(asciiFieldClasses()).toBe(asciiFieldClasses('page'));
+    expect(asciiFieldClasses()).toContain('-z-10');
+    expect(asciiFieldClasses()).toContain('ascii-field-mask');
+  });
+
+  it('keeps the contained layout in the flow, without the page mask', () => {
+    expect(asciiFieldClasses('contained')).not.toContain('absolute');
+    expect(asciiFieldClasses('contained')).not.toContain('ascii-field-mask');
+  });
+
+  it.each(asciiFieldLayouts)('never catches the pointer in the %s layout', (layout) => {
+    expect(asciiFieldClasses(layout)).toContain('pointer-events-none');
   });
 });

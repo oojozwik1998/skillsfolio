@@ -27,8 +27,9 @@ Status as of 2026-11-07. Target: code only (no Figma library), prototype depth.
 | Disclosure | `Disclosure` | composite | Step by step; opens from any link to its id |
 | Page header | `PageHeader` | pattern | All pages (the only h1) |
 | Section header | `SectionHeader` | pattern | Sections on tailor-my-cv |
+| ASCII field | `AsciiField` | pattern | Home page hero background (added in B5, D-020) |
 
-All 12 pass typecheck, lint, unit tests (100% coverage of `src/lib`), browser tests with axe and the Storybook build. All are `needs_review`: Astro is not the skill's fully supported stack, so a developer should review them.
+All 13 pass typecheck, lint, unit tests (100% coverage of `src/lib`), browser tests with axe and the Storybook build. All are `needs_review`: Astro is not the skill's fully supported stack, so a developer should review them.
 
 ### Exception register
 
@@ -62,7 +63,7 @@ No approved exceptions. Component code uses tokens only.
 
 | Item | Why it matters | Effort |
 |---|---|---|
-| Developer review of the 12 components | Required for the `review` support tier: prop APIs, attribute forwarding in `TextLink` and `Button`, the Disclosure script | ~1-2 h for a developer |
+| Developer review of the 13 components | Required for the `review` support tier: prop APIs, attribute forwarding in `TextLink` and `Button`, the Disclosure and ASCII field scripts | ~1-2 h for a developer |
 | Poppins 500 is not loaded | `font-medium` ("From testing:" label) renders at 400; load the weight or drop the bold | ~5 min |
 | Token `size-56` equals 4rem (64px) in `design.md` | The name does not match the value | ~2 min |
 | Disabled button state is subtle in light mode | Not required by WCAG; needs a `disabled` token if it should be clearer | decision |

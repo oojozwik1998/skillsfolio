@@ -1,0 +1,86 @@
+---
+/**
+ * Decorative field of changing random characters behind the home page hero.
+ * The page layout is positioned against the page, so render it outside any
+ * positioned parent. Logic lives in src/lib/ascii-field.ts.
+ */
+import { type AsciiFieldLayout, asciiFieldClasses } from '../../../lib/ui';
+
+export interface Props {
+  layout?: AsciiFieldLayout;
+}
+
+const { layout = 'page' } = Astro.props;
+---
+
+<canvas
+  data-ascii-field
+  aria-hidden="true"
+  class={asciiFieldClasses(layout)}></canvas>
+
+<style>
+  .ascii-field-mask {
+    mask-image:
+      radial-gradient(ellipse 55% 40% at 32% 52%, rgb(0 0 0 / 0.12), #000 100%),
+      linear-gradient(to bottom, #000 45%, transparent);
+    mask-composite: intersect;
+  }
+
+  @media (width < 40rem) {
+    .ascii-field-mask {
+      mask-image:
+        radial-gradient(ellipse 95% 30% at 50% 40%, rgb(0 0 0 / 0.08), #000 100%),
+        linear-gradient(to bottom, #000 40%, transparent);
+    }
+  }
+</style>
+
+<script>
+  import { createFieldAnimation } from '../../../lib/ascii-field';
+
+  document.querySelectorAll<HTMLCanvasElement>('[data-ascii-field]').forEach((canvas) => {
+    const context = canvas.getContext('2d');
+    if (!context) return;
+
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const scheme = window.matchMedia('(prefers-color-scheme: dark)');
+    const style = getComputedStyle(canvas);
+
+    const animation = createFieldAnimation({
+      context,
+      measure: () => ({ width: canvas.clientWidth, height: canvas.clientHeight, pixelRatio: window.devicePixelRatio }),
+      setBitmapSize: (width, height) => {
+        canvas.width = width;
+        canvas.height = height;
+      },
+      color: () => style.color,
+      fontFamily: () => style.fontFamily,
+      requestFrame: (callback) => window.requestAnimationFrame(callback),
+      cancelFrame: (id) => window.cancelAnimationFrame(id),
+      random: Math.random,
+      reducedMotion: motion.matches,
+    });
+
+    let onScreen = true;
+    const update = () => animation.setActive(onScreen && document.visibilityState === 'visible');
+
+    new ResizeObserver(() => animation.resize()).observe(canvas);
+    new IntersectionObserver(([entry]) => {
+      onScreen = entry?.isIntersecting ?? false;
+      update();
+    }).observe(canvas);
+    document.addEventListener('visibilitychange', update);
+    scheme.addEventListener('change', () => animation.redraw());
+    // Storybook and any theme switch set data-theme on <html> instead of the system setting.
+    new MutationObserver(() => animation.redraw()).observe(document.documentElement, {
+      attributeFilter: ['data-theme'],
+    });
+
+    window.addEventListener('pointermove', (event) => {
+      if (event.pointerType !== 'mouse') return;
+      const rect = canvas.getBoundingClientRect();
+      animation.setPointer({ x: event.clientX - rect.left, y: event.clientY - rect.top });
+    });
+    document.documentElement.addEventListener('pointerleave', () => animation.setPointer(null));
+  });
+</script>

@@ -82,3 +82,12 @@
 - 2026-11-07T21:36:57.448Z - PR #4 merged to main (2026-11-07)
 - 2026-11-07T21:41:12.066Z - set blueprint:components[disclosure].tokens = ["color.surface.default","color.surface.hovered","radius.16","space.16","space.24"]
 - 2026-11-07T21:41:12.099Z - Decision D-019: Disclosure without a border (approved)
+- 2026-11-07T21:55:25.382Z - Merged into blueprint: components: +1 new, 0 updated
+- 2026-11-07T21:55:25.411Z - Merged into inventory: items: +1 new, 0 updated
+- 2026-11-07T21:55:25.439Z - Batch B5 (code: ascii-field) → in_progress
+- 2026-11-07T21:55:27.980Z - Merged into blueprint: components: +0 new, 1 updated
+- 2026-11-07T21:55:52.077Z - Merged into blueprint: components: +0 new, 1 updated
+- 2026-11-07T21:56:20.593Z - Merged into blueprint: components: +0 new, 1 updated
+- 2026-11-07T21:56:33.730Z - Decision D-020: ASCII field added as a pattern after delivery (approved)
+- 2026-11-07T21:56:33.766Z - Batch B5 (code: ascii-field) → completed
+- 2026-11-07T21:56:33.793Z - B5: ascii-field added (pattern, hero background). QA 5/5 pass in qa/code-report-B5.json. Spec .ai/specs/2026-11-07-animated-hero.md

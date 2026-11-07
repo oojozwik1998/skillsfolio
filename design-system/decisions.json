@@ -327,6 +327,22 @@
         "component:disclosure"
       ],
       "supersedes": null
+    },
+    {
+      "id": "D-020",
+      "at": "2026-11-07T21:56:33.724Z",
+      "stage": "5",
+      "gate": null,
+      "title": "ASCII field added as a pattern after delivery",
+      "choice": "approved",
+      "proposedBy": "user",
+      "approvedBy": "user",
+      "rationale": "Owner asked for an animated hero like a reference site, chose random characters, tuned font size, waves and hover glow, reviewed the page and the Storybook story; scope extension after G6, built as batch B5",
+      "alternatives": [],
+      "affects": [
+        "component:ascii-field"
+      ],
+      "supersedes": null
     }
   ]
 }
