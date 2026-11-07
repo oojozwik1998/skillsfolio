@@ -21,3 +21,4 @@
 | D-015 | 5 | B2 primitives accepted | approved | All five checks pass; owner reviewed the Primitives stories in Storybook; components stay needs_review for a developer | icon, inline-code, link, badge, button | 2026-11-07 |
 | D-016 | 5 | B3 composites accepted | approved | All five checks pass; owner reviewed Composites stories and the migrated cards; table and file list borders stay as they are for now | card, link-card, copy-command, callout | 2026-11-07 |
 | D-017 | 5 | B4 patterns accepted | approved | All five checks pass with 18 browser tests; owner reviewed Patterns stories, page headers and steps | disclosure, page-header, section-header | 2026-11-07 |
+| D-018 | G6 | Delivered with open items | approved | Owner accepted delivery; open items listed in design-system/HANDOFF.md |  | 2026-11-07 |

@@ -4,7 +4,7 @@
   "objective": "Code design system for the Skills Folio catalog: tokens from design.md, Astro components with documented states",
   "language": "pl",
   "createdAt": "2026-11-07T19:12:12.741Z",
-  "updatedAt": "2026-11-07T20:50:40.509Z",
+  "updatedAt": "2026-11-07T21:03:48.607Z",
   "modes": {
     "input": "existing",
     "target": "code",
@@ -13,7 +13,7 @@
   "platforms": [
     "web"
   ],
-  "stage": "5",
+  "stage": "6",
   "gates": {
     "G0": {
       "status": "approved",
@@ -41,9 +41,9 @@
       "at": "2026-11-07T19:23:34.133Z"
     },
     "G6": {
-      "status": "pending",
-      "decisionId": null,
-      "at": null
+      "status": "approved",
+      "decisionId": "D-018",
+      "at": "2026-11-07T21:03:48.568Z"
     }
   },
   "capabilities": {
@@ -191,17 +191,17 @@
       "title": "Foundations: token export and Storybook with @storybook-astro/framework"
     }
   ],
-  "next": "Owner reviews B4 at gate G5C (Storybook section Patterns, page headers and steps); after approval commit B4 and move to Stage 6 handoff",
+  "next": "Push ds/B4 after owner approval; then pick open items from HANDOFF.md",
   "blockers": [],
   "knownIssues": [],
-  "lastOperation": "Batch B4 (code: disclosure, page-header, section-header) → completed",
+  "lastOperation": "Decision D-018: Delivered with open items (approved)",
   "renderedHashes": {
-    "PROGRESS.md": "a07f8e83ed819641",
-    "DECISIONS.md": "fb188cfbdaada2c3",
+    "PROGRESS.md": "f0f4376126082c89",
+    "DECISIONS.md": "747ccc0cf6aedfde",
     "DS-BLUEPRINT.md": "dbaf6456e42fd177"
   },
   "lastValidation": {
-    "at": "2026-11-07T20:50:40.509Z",
+    "at": "2026-11-07T21:03:48.607Z",
     "errors": 0,
     "warnings": 0
   }

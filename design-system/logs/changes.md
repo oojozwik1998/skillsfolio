@@ -76,3 +76,6 @@
 - 2026-11-07T20:46:54.394Z - B4 code: Disclosure, PageHeader, SectionHeader with stories; all three pages use PageHeader, tailor-my-cv uses SectionHeader for 7 sections and Disclosure for 9 steps; disclosure opens from any link to its id (page script removed); new e2e test for anchor opening; all five checks pass (18 browser tests)
 - 2026-11-07T20:50:40.481Z - Decision D-017: B4 patterns accepted (approved)
 - 2026-11-07T20:50:40.511Z - Batch B4 (code: disclosure, page-header, section-header) → completed
+- 2026-11-07T20:50:50.276Z - set project:stage = "6"
+- 2026-11-07T20:51:13.923Z - Stage 6: HANDOFF.md written (inventory, usage rules, token workflow, setup, open items); no parity (code target)
+- 2026-11-07T21:03:48.577Z - Decision D-018: Delivered with open items (approved)

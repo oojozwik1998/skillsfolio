@@ -297,6 +297,20 @@
         "section-header"
       ],
       "supersedes": null
+    },
+    {
+      "id": "D-018",
+      "at": "2026-11-07T21:03:48.568Z",
+      "stage": "6",
+      "gate": "G6",
+      "title": "Delivered with open items",
+      "choice": "approved",
+      "proposedBy": "agent",
+      "approvedBy": "user",
+      "rationale": "Owner accepted delivery; open items listed in design-system/HANDOFF.md",
+      "alternatives": [],
+      "affects": [],
+      "supersedes": null
     }
   ]
 }

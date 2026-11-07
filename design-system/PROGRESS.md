@@ -6,12 +6,12 @@
 
 ## Następny krok
 
-**Owner reviews B4 at gate G5C (Storybook section Patterns, page headers and steps); after approval commit B4 and move to Stage 6 handoff**
+**Push ds/B4 after owner approval; then pick open items from HANDOFF.md**
 
 ## Ustawienia
 
 - Wejście: `existing` · Cel wdrożenia: `code` · Głębokość: `prototype`
-- Aktualny etap: **5**
+- Aktualny etap: **6**
 - Możliwości narzędzi: Figma = - (read ?, write ?, version ?); Kod = review, src/components/ui
 
 ## Bramki akceptu
@@ -23,7 +23,7 @@
 | G2 | skipped | D-006 |
 | G3 | approved | D-010 |
 | G4 | approved | D-011 |
-| G6 | pending |  |
+| G6 | approved | D-018 |
 
 ## Paczki wdrożenia
 
@@ -61,11 +61,11 @@ _brak_
 
 ## Ostatnia zakończona operacja
 
-Batch B4 (code: disclosure, page-header, section-header) → completed
+Decision D-018: Delivered with open items (approved)
 
 ## Ostatnia walidacja
 
-2026-11-07T20:50:40.509Z: 0 error(s), 0 warning(s)
+2026-11-07T21:03:48.607Z: 0 error(s), 0 warning(s)
 
 ## Jak wznowić
 
