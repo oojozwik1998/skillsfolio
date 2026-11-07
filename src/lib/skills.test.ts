@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { installCommand, skillIdFromPath, skillSchema, sortByName, sourceUrl } from './skills';
+import {
+  cloneCommand,
+  installCommand,
+  repositoryUrl,
+  skillIdFromPath,
+  skillSchema,
+  sortByName,
+  sourceUrl,
+} from './skills';
 
 describe('skillSchema', () => {
   const valid = { name: 'my-skill-2', description: 'Does something useful.' };
@@ -45,6 +53,18 @@ describe('skillIdFromPath', () => {
 describe('installCommand', () => {
   it('builds the skills CLI command', () => {
     expect(installCommand('owner/repo', 'my-skill')).toBe('npx skills add owner/repo --skill my-skill');
+  });
+});
+
+describe('repositoryUrl', () => {
+  it('points to the repository on GitHub', () => {
+    expect(repositoryUrl('owner/repo')).toBe('https://github.com/owner/repo');
+  });
+});
+
+describe('cloneCommand', () => {
+  it('clones the repository into the given folder', () => {
+    expect(cloneCommand('owner/repo', 'my-folder')).toBe('git clone https://github.com/owner/repo.git my-folder');
   });
 });
 

@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 import { site } from '../../src/config';
 import { installCommand } from '../../src/lib/skills';
 
-const routes = ['/', '/skills/example-skill/'];
+const routes = ['/', '/skills/example-skill/', '/skills/tailor-my-cv/'];
 const skillCommand = installCommand(site.repository, 'example-skill');
 
 test('the catalog links to a skill', async ({ page }) => {
@@ -45,6 +45,10 @@ for (const route of routes) {
       () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
     );
     expect(overflow).toBeLessThanOrEqual(0);
+
+    const { violations } = await new AxeBuilder({ page }).analyze();
+    const blocking = violations.filter(({ impact }) => impact === 'serious' || impact === 'critical');
+    expect(blocking.map(({ id, help }) => `${id}: ${help}`)).toEqual([]);
   });
 
   for (const colorScheme of ['light', 'dark'] as const) {

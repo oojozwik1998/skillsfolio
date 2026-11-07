@@ -1,0 +1,339 @@
+---
+import InstallCommand from '../../components/InstallCommand.astro';
+import { externalSkills } from '../../data/external-skills';
+import {
+  factMarks,
+  files,
+  installFolder,
+  lanes,
+  memoryCards,
+  repository,
+  requirements,
+  steps,
+  truthCards,
+  type Actor,
+} from '../../data/tailor-my-cv';
+import Base from '../../layouts/Base.astro';
+import { cloneCommand, repositoryUrl } from '../../lib/skills';
+
+const description = externalSkills.find(({ data }) => data.name === 'tailor-my-cv')?.data.description;
+
+const actorLabel: Record<Actor, string> = { you: 'You', skill: 'Skill' };
+const actorBadge: Record<Actor, string> = {
+  you: 'bg-warning-background text-warning-text',
+  skill: 'bg-info-background text-info-text',
+};
+const actorStage: Record<Actor, string> = {
+  you: 'bg-warning-background border-warning-border text-warning-text',
+  skill: 'bg-info-background border-info-border text-info-text',
+};
+const toneBorder = {
+  success: 'border-t-success-border',
+  warning: 'border-t-warning-border',
+  danger: 'border-t-danger-border',
+};
+---
+
+<Base title="How tailor-my-cv works" description={description}>
+  <article>
+    <a href="/" class="type-label text-text-subtle hover:underline">All skills</a>
+
+    <header class="mt-6 max-w-3xl">
+      <h1 class="type-display-small sm:type-display-large">How tailor-my-cv works</h1>
+      <p class="type-text-large text-text-subtle mt-6">
+        Paste a job offer. The skill assesses your fit and makes a CV for that offer, in your layout and using only
+        true facts. With each application, it knows more about you.
+      </p>
+    </header>
+
+    <section class="mt-12 max-w-3xl" aria-labelledby="install-heading">
+      <h2 id="install-heading" class="type-heading-large mb-6">Install</h2>
+      <p class="type-text-medium text-text-subtle mb-4">
+        This skill is a complete workspace, so you download its repository instead of using <code
+          class="rich-code">npx skills add</code
+        >.
+      </p>
+      <InstallCommand command={cloneCommand(repository, installFolder)} />
+      <ol class="type-text-medium rich-text mt-6 list-decimal space-y-1 pl-5">
+        <li>Go to the folder: <code>cd {installFolder}</code></li>
+        <li>Check your setup: <code>scripts/doctor.sh</code></li>
+        <li>Start Claude Code with <code>claude</code>, then paste a job offer or a link to one.</li>
+      </ol>
+      <h3 class="type-heading-small mt-8">Requirements</h3>
+      <ul class="type-text-medium rich-text mt-3 list-disc space-y-1 pl-5">
+        {requirements.map((item) => <li set:html={item} />)}
+      </ul>
+      <a href={repositoryUrl(repository)} class="type-label text-text-subtle mt-6 inline-block hover:underline">
+        View repository on GitHub
+      </a>
+    </section>
+
+    <section class="mt-20" aria-labelledby="process-heading">
+      <h2 id="process-heading" class="type-heading-large">The whole process on one picture</h2>
+      <p class="type-text-medium text-text-subtle mt-2">Click a stage to see its details below.</p>
+      <div class="type-text-small text-text-subtle mt-4 flex gap-4">
+        <span class="flex items-center gap-2">
+          <i class="bg-info-border rounded-2 size-3" aria-hidden="true"></i> The skill works
+        </span>
+        <span class="flex items-center gap-2">
+          <i class="bg-warning-border rounded-2 size-3" aria-hidden="true"></i> You decide
+        </span>
+      </div>
+
+      {
+        lanes.map((lane) => (
+          <div class="mt-8">
+            <h3 class="type-label text-text-subtle mb-3">{lane.label}</h3>
+            <ol class="flex flex-col gap-6 lg:flex-row">
+              {lane.stages.map((stage, index) => (
+                <li class="relative min-w-0 flex-1">
+                  <a
+                    href={`#step-${stage.step}`}
+                    class:list={[
+                      'rounded-12 block h-full border p-3 hover:underline',
+                      actorStage[stage.actor],
+                    ]}
+                    data-step-link
+                  >
+                    <span class="type-text-small block">{actorLabel[stage.actor]}</span>
+                    <span class="type-text-medium block">{stage.label}</span>
+                  </a>
+                  {index < lane.stages.length - 1 && (
+                    <svg
+                      class="text-text-subtle absolute -bottom-5.5 left-6 size-4 rotate-90 lg:top-1/2 lg:-right-5 lg:bottom-auto lg:left-auto lg:-translate-y-1/2 lg:rotate-0"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      aria-hidden="true"
+                    >
+                      <path d="M2 8h12M10 4l4 4-4 4" />
+                    </svg>
+                  )}
+                </li>
+              ))}
+            </ol>
+          </div>
+        ))
+      }
+
+      <p
+        class="bg-surface-subtle border-border-default rounded-12 type-text-medium mt-6 flex items-start gap-3 border border-dashed p-3"
+      >
+        <svg
+          class="mt-0.5 size-4 shrink-0"
+          viewBox="0 0 16 16"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <path d="M2.5 8a5.5 5.5 0 1 0 1.6-3.9L2.5 5.7M2.5 2.5v3.2h3.2" />
+        </svg>
+        Your answers and rejected suggestions go into the fact base, so the next offer starts with more knowledge.
+      </p>
+    </section>
+
+    <section class="mt-20" aria-labelledby="steps-heading">
+      <h2 id="steps-heading" class="type-heading-large">Step by step</h2>
+      <p class="type-text-medium text-text-subtle mt-2">
+        The examples come from tests with a fictional person: Sam Example, a data analyst.
+      </p>
+      <div class="mt-6 flex flex-col gap-3">
+        {
+          steps.map((step, index) => (
+            <details
+              id={`step-${index + 1}`}
+              open={index === 0}
+              class="group bg-surface-default border-border-subtle open:border-border-default rounded-16 scroll-mt-6 border"
+            >
+              <summary class="hover:bg-surface-hovered rounded-16 flex cursor-pointer list-none items-center gap-3 p-4 sm:px-6 [&::-webkit-details-marker]:hidden">
+                <span class="type-text-small text-text-subtle w-4 shrink-0">{index + 1}</span>
+                <span class="type-heading-small min-w-0 flex-1 leading-[1.3]">{step.title}</span>
+                <span class:list={['type-text-small rounded-6 shrink-0 px-2 py-0.5', actorBadge[step.actor]]}>
+                  {actorLabel[step.actor]}
+                </span>
+                <svg
+                  class="text-text-subtle size-4 shrink-0 transition-transform group-open:rotate-180"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  aria-hidden="true"
+                >
+                  <path d="M4 6l4 4 4-4" />
+                </svg>
+              </summary>
+              <div class="px-4 pt-2 pb-6 sm:pr-6 sm:pl-13">
+                <div class="grid gap-6 md:grid-cols-2">
+                  {step.columns.map((column) => (
+                    <div>
+                      <h3 class="type-label text-text-subtle mb-2">{column.heading}</h3>
+                      <ul class="type-text-medium rich-text list-disc space-y-1 pl-5">
+                        {column.items.map((item) => (
+                          <li set:html={item} />
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+                {step.example && (
+                  <p class="bg-surface-subtle rounded-12 type-text-medium mt-6 p-3">
+                    <strong class="font-medium">From testing:</strong> {step.example}
+                  </p>
+                )}
+              </div>
+            </details>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mt-20" aria-labelledby="layout-heading">
+      <h2 id="layout-heading" class="type-heading-large">Does the layout really match?</h2>
+      <p class="type-text-medium text-text-subtle mt-2 max-w-2xl">
+        A test on Sam’s two-column CV. This is the screen you get to approve on the first run.
+      </p>
+      <div class="mt-6 grid gap-6 md:grid-cols-2">
+        <figure>
+          <img
+            src="/images/tailor-my-cv/cv-original.png"
+            alt="Sam’s original two-column CV with a green sidebar"
+            width="662"
+            height="936"
+            loading="lazy"
+            class="border-border-subtle rounded-12 h-auto w-full border"
+          />
+          <figcaption class="type-text-small text-text-subtle mt-2">The original, added as a PDF</figcaption>
+        </figure>
+        <figure>
+          <img
+            src="/images/tailor-my-cv/cv-recreated.png"
+            alt="Sam’s CV recreated by the skill, very close to the original"
+            width="662"
+            height="936"
+            loading="lazy"
+            class="border-border-subtle rounded-12 h-auto w-full border"
+          />
+          <figcaption class="type-text-small text-text-subtle mt-2">
+            The version recreated by the skill, with small differences in sizes and spacing
+          </figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="mt-20" aria-labelledby="truth-heading">
+      <h2 id="truth-heading" class="type-heading-large">Where the line of truth is</h2>
+      <div class="mt-6 grid gap-4 md:grid-cols-3">
+        {
+          truthCards.map((card) => (
+            <div
+              class:list={[
+                'bg-surface-default border-border-subtle rounded-16 border border-t-3 p-6',
+                toneBorder[card.tone],
+              ]}
+            >
+              <h3 class="type-heading-small leading-[1.3]">{card.title}</h3>
+              <ul class="type-text-medium rich-text mt-3 list-disc space-y-1 pl-5">
+                {card.items.map((item) => (
+                  <li set:html={item} />
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mt-20" aria-labelledby="memory-heading">
+      <h2 id="memory-heading" class="type-heading-large">What the skill remembers about you</h2>
+      <p class="type-text-medium text-text-subtle mt-2">
+        Every fact is marked with where it came from. That decides how it can be used.
+      </p>
+      <div class="bg-surface-default border-border-subtle rounded-16 mt-6 overflow-hidden border">
+        <table class="type-text-medium w-full text-left">
+          <thead class="text-text-subtle">
+            <tr>
+              <th scope="col" class="type-label p-3 sm:px-4">Mark</th>
+              <th scope="col" class="type-label p-3 sm:px-4">Meaning</th>
+              <th scope="col" class="type-label p-3 sm:px-4">In the CV</th>
+            </tr>
+          </thead>
+          <tbody class="rich-text">
+            {
+              factMarks.map((row) => (
+                <tr class="border-border-subtle border-t align-top">
+                  <th scope="row" class="py-3 pr-1 pl-3 font-normal sm:px-4">
+                    <code class="whitespace-nowrap">{row.mark}</code>
+                  </th>
+                  <td class="px-2 py-3 sm:px-4">{row.meaning}</td>
+                  <td class="px-2 py-3 sm:px-4">{row.inCv}</td>
+                </tr>
+              ))
+            }
+          </tbody>
+        </table>
+      </div>
+      <div class="mt-4 grid gap-4 md:grid-cols-3">
+        {
+          memoryCards.map((card) => (
+            <div class="bg-surface-default border-border-subtle rounded-16 border p-6">
+              <h3 class="type-heading-small leading-[1.3]">{card.title}</h3>
+              <ul class="type-text-medium rich-text mt-3 list-disc space-y-1 pl-5">
+                {card.items.map((item) => (
+                  <li set:html={item} />
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="mt-20" aria-labelledby="files-heading">
+      <h2 id="files-heading" class="type-heading-large">Where everything lives</h2>
+      <dl class="bg-surface-default border-border-subtle rounded-16 rich-text type-text-medium mt-6 border">
+        {
+          files.map((file, index) => (
+            <div
+              class:list={[
+                'grid gap-1 p-3 sm:grid-cols-[18rem_1fr] sm:gap-4 sm:px-4',
+                { 'border-border-subtle border-t': index > 0 },
+              ]}
+            >
+              <dt>
+                <code class:list={['break-all', { 'text-warning-text': file.isPrivate }]}>{file.path}</code>
+              </dt>
+              <dd>{file.description}</dd>
+            </div>
+          ))
+        }
+      </dl>
+      <p class="type-text-medium text-text-subtle mt-4 max-w-2xl">
+        Private files are excluded from git, and a check confirms this on every run. Your CV and offers are still
+        processed by an AI model as part of normal Claude Code use.
+      </p>
+    </section>
+
+    <p class="border-border-subtle type-text-small text-text-subtle mt-20 border-t pt-6">
+      Status as of 2026-11-06, tested on macOS. Sam Example and the companies in the examples are fictional. Linux and
+      a test with an outside user are still to come.
+    </p>
+  </article>
+</Base>
+
+<script>
+  // Clicking a stage in the process opens its step.
+  document.querySelectorAll<HTMLAnchorElement>('[data-step-link]').forEach((link) => {
+    link.addEventListener('click', () => {
+      const step = document.querySelector<HTMLDetailsElement>(link.hash);
+      if (step) step.open = true;
+    });
+  });
+</script>

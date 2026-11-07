@@ -21,7 +21,7 @@ Minimal rules agents follow from the first feature on. Add a rule only when a re
 ## 2. Repository layout and boundaries
 
 - Single app. No monorepo until a second app exists.
-- Allowed imports: `pages` → `layouts`, `components`, `lib`, `config`. `components` → `lib`. `lib` imports only external packages, never Astro components.
+- Allowed imports: `pages` → `layouts`, `components`, `lib`, `config`, `data`. `components` → `lib`. `lib` imports only external packages, never Astro components.
 - All logic lives in `src/lib/` as plain, testable TypeScript. `.astro` files only fetch data and render it.
 - Static output is the default. A server adapter or a database requires an approved spec.
 
@@ -29,7 +29,7 @@ Minimal rules agents follow from the first feature on. Add a rule only when a re
 
 - **Skill:** a capability an agent can install. Identified by `name`.
 - **Hosted skill:** stored in `skills/<name>/SKILL.md` in this repository and installed with `npx skills add`.
-- **External skill:** kept in its own repository, listed as a card with a link and installed by downloading that repository. Not implemented yet, needs its own spec.
+- **External skill:** kept in its own repository, listed as a card with a link and installed by downloading that repository. Listed in `src/data/external-skills.ts`, with its own page in `src/pages/skills/`.
 - **Catalog:** the public list of skills.
 - **Panel:** the owner's editing tool at `/keystatic`.
 

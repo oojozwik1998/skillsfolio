@@ -23,7 +23,7 @@ Private working notes stay local and are ignored by git: `meetings/`, `tasks/`, 
 Astro 7 with strict TypeScript, Tailwind CSS 4, Keystatic and Zod. Single app with static output and no database. Do not add a database, a server adapter or a UI framework without a spec the owner approved.
 
 - `skills/<name>/SKILL.md` is the only source of skill content. The site, the panel and the `skills` CLI all read it.
-- `/tailor-my-cv/` is a separate repository with personal data. Never add it to this repository or copy from it.
+- `/tailor-my-cv/` is a separate repository with personal data. Never add it to this repository. Its catalog entry is in `src/data/external-skills.ts` and its page is `src/pages/skills/tailor-my-cv.astro`.
 - The panel runs in local development only, at `/keystatic`.
 - See `README.md` for the architecture and `.ai/specs/` for detail.
 

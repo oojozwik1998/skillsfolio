@@ -24,9 +24,12 @@ skills/<name>/SKILL.md
 | `src/content.config.ts` | Loads skills into the site and validates them |
 | `src/lib/skills.ts` | Skill schema and logic |
 | `src/config.ts` | Site name and repository |
-| `src/pages/` | Routes: `/` and `/skills/<name>/` |
+| `src/data/` | External skills and the copy of their pages |
+| `src/pages/` | Routes: `/`, `/skills/<name>/` and dedicated external skill pages |
 | `src/styles/global.css` | Tokens from `design.md` |
 | `.ai/` | Specs, run logs and lessons for AI agents, see `AGENTS.md` |
+
+Skills kept in their own repository, such as `tailor-my-cv`, are listed in `src/data/external-skills.ts`, have their own page and are installed by downloading their repository.
 
 ## Run locally
 
