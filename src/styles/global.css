@@ -137,11 +137,14 @@
 }
 
 /* Inline code in page copy. */
-.rich-code,
+@utility inline-code {
+  @apply bg-surface-subtle rounded-6 type-code;
+  padding: var(--ds-space-2) var(--ds-space-4);
+  overflow-wrap: anywhere;
+}
+
 .rich-text code {
-  @apply bg-surface-subtle rounded-6;
-  @apply type-code;
-  padding: 0.125rem 0.25rem;
+  @apply inline-code;
 }
 
 /* Rendered skill instructions. */
@@ -187,10 +190,7 @@
   }
 
   & code {
-    @apply bg-surface-subtle rounded-6;
-    font-family: var(--font-mono);
-    font-size: 0.8125rem;
-    padding: 0.125rem 0.25rem;
+    @apply inline-code;
   }
 
   & pre {

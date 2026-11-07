@@ -1,5 +1,9 @@
 ---
 import InstallCommand from '../../components/InstallCommand.astro';
+import Badge from '../../components/ui/badge/Badge.astro';
+import Icon from '../../components/ui/icon/Icon.astro';
+import InlineCode from '../../components/ui/inline-code/InlineCode.astro';
+import TextLink from '../../components/ui/link/TextLink.astro';
 import { externalSkills } from '../../data/external-skills';
 import {
   factMarks,
@@ -19,10 +23,6 @@ import { cloneCommand, repositoryUrl } from '../../lib/skills';
 const description = externalSkills.find(({ data }) => data.name === 'tailor-my-cv')?.data.description;
 
 const actorLabel: Record<Actor, string> = { you: 'You', skill: 'Skill' };
-const actorBadge: Record<Actor, string> = {
-  you: 'bg-actor-you-background text-actor-you-text',
-  skill: 'bg-actor-skill-background text-actor-skill-text',
-};
 const actorStage: Record<Actor, string> = {
   you: 'bg-actor-you-background border-actor-you-border text-actor-you-text',
   skill: 'bg-actor-skill-background border-actor-skill-border text-actor-skill-text',
@@ -36,7 +36,7 @@ const toneBorder = {
 
 <Base title="How tailor-my-cv works" description={description}>
   <article>
-    <a href="/" class="type-label text-text-subtle hover:underline">All skills</a>
+    <TextLink href="/" tone="subtle">All skills</TextLink>
 
     <header class="mt-6 max-w-3xl">
       <h1 class="type-display-small sm:type-display-large">How tailor-my-cv works</h1>
@@ -49,9 +49,7 @@ const toneBorder = {
     <section class="mt-12 max-w-3xl" aria-labelledby="install-heading">
       <h2 id="install-heading" class="type-heading-large mb-6">Install</h2>
       <p class="type-text-medium text-text-subtle mb-4">
-        This skill is a complete workspace, so you download its repository instead of using <code
-          class="rich-code">npx skills add</code
-        >.
+        This skill is a complete workspace, so you download its repository instead of using <InlineCode>npx skills add</InlineCode>.
       </p>
       <InstallCommand command={cloneCommand(repository, installFolder)} />
       <ol class="type-text-medium rich-text mt-6 list-decimal space-y-1 pl-5">
@@ -63,9 +61,9 @@ const toneBorder = {
       <ul class="type-text-medium rich-text mt-3 list-disc space-y-1 pl-5">
         {requirements.map((item) => <li set:html={item} />)}
       </ul>
-      <a href={repositoryUrl(repository)} class="type-label text-text-subtle mt-6 inline-block hover:underline">
+      <TextLink href={repositoryUrl(repository)} tone="subtle" class="mt-6 inline-block">
         View repository on GitHub
-      </a>
+      </TextLink>
     </section>
 
     <section class="mt-20" aria-labelledby="process-heading">
@@ -99,18 +97,7 @@ const toneBorder = {
                     <span class="type-text-medium block">{stage.label}</span>
                   </a>
                   {index < lane.stages.length - 1 && (
-                    <svg
-                      class="text-text-subtle absolute -bottom-5.5 left-6 size-4 rotate-90 lg:top-1/2 lg:-right-5 lg:bottom-auto lg:left-auto lg:-translate-y-1/2 lg:rotate-0"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M2 8h12M10 4l4 4-4 4" />
-                    </svg>
+                    <Icon name="arrow-right" class="text-text-subtle absolute -bottom-5.5 left-6 rotate-90 lg:top-1/2 lg:-right-5 lg:bottom-auto lg:left-auto lg:-translate-y-1/2 lg:rotate-0" />
                   )}
                 </li>
               ))}
@@ -122,18 +109,7 @@ const toneBorder = {
       <p
         class="bg-surface-subtle border-border-default rounded-12 type-text-medium mt-6 flex items-start gap-3 border border-dashed p-3"
       >
-        <svg
-          class="mt-0.5 size-4 shrink-0"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M2.5 8a5.5 5.5 0 1 0 1.6-3.9L2.5 5.7M2.5 2.5v3.2h3.2" />
-        </svg>
+        <Icon name="loop" class="mt-0.5" />
         Your answers and rejected suggestions go into the fact base, so the next offer starts with more knowledge.
       </p>
     </section>
@@ -154,21 +130,8 @@ const toneBorder = {
               <summary class="hover:bg-surface-hovered rounded-16 flex cursor-pointer list-none items-center gap-3 p-4 sm:px-6 [&::-webkit-details-marker]:hidden">
                 <span class="type-text-small text-text-subtle w-4 shrink-0">{index + 1}</span>
                 <span class="type-heading-small min-w-0 flex-1">{step.title}</span>
-                <span class:list={['type-text-small rounded-6 shrink-0 px-2 py-0.5', actorBadge[step.actor]]}>
-                  {actorLabel[step.actor]}
-                </span>
-                <svg
-                  class="text-text-subtle size-4 shrink-0 transition-transform group-open:rotate-180"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M4 6l4 4 4-4" />
-                </svg>
+                <Badge tone={step.actor}>{actorLabel[step.actor]}</Badge>
+                <Icon name="chevron-down" class="text-text-subtle transition-transform group-open:rotate-180" />
               </summary>
               <div class="px-4 pt-2 pb-6 sm:pr-6 sm:pl-13">
                 <div class="grid gap-6 md:grid-cols-2">

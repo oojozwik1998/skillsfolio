@@ -1108,7 +1108,7 @@
     {
       "id": "icon",
       "label": "Icon",
-      "status": "proposed",
+      "status": "needs_review",
       "tier": "primitive",
       "priority": "P1",
       "purpose": "Decorative SVG icons drawn with currentColor",
@@ -1150,14 +1150,21 @@
       ],
       "qa": {
         "figma": "n/a",
-        "code": "pending",
-        "parity": "n/a"
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B2.json"
+      },
+      "code": {
+        "package": "src/components/ui",
+        "export": "Icon",
+        "path": "src/components/ui/icon",
+        "story": "src/components/ui/icon/Icon.stories.ts"
       }
     },
     {
       "id": "inline-code",
       "label": "Inline code",
-      "status": "proposed",
+      "status": "needs_review",
       "tier": "primitive",
       "priority": "P1",
       "purpose": "Short code, paths and commands inside text",
@@ -1192,17 +1199,24 @@
       ],
       "qa": {
         "figma": "n/a",
-        "code": "pending",
-        "parity": "n/a"
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B2.json"
       },
       "notes": [
         "Replaces the duplicated .rich-code and .skill-body code rules"
-      ]
+      ],
+      "code": {
+        "package": "src/components/ui",
+        "export": "InlineCode",
+        "path": "src/components/ui/inline-code",
+        "story": "src/components/ui/inline-code/InlineCode.stories.ts"
+      }
     },
     {
       "id": "link",
       "label": "Text link",
-      "status": "proposed",
+      "status": "needs_review",
       "tier": "primitive",
       "priority": "P1",
       "purpose": "Navigation to another page or site",
@@ -1255,14 +1269,21 @@
       ],
       "qa": {
         "figma": "n/a",
-        "code": "pending",
-        "parity": "n/a"
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B2.json"
+      },
+      "code": {
+        "package": "src/components/ui",
+        "export": "TextLink",
+        "path": "src/components/ui/link",
+        "story": "src/components/ui/link/TextLink.stories.ts"
       }
     },
     {
       "id": "badge",
       "label": "Badge",
-      "status": "proposed",
+      "status": "needs_review",
       "tier": "primitive",
       "priority": "P1",
       "purpose": "Short status or actor label",
@@ -1307,14 +1328,21 @@
       ],
       "qa": {
         "figma": "n/a",
-        "code": "pending",
-        "parity": "n/a"
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B2.json"
+      },
+      "code": {
+        "package": "src/components/ui",
+        "export": "Badge",
+        "path": "src/components/ui/badge",
+        "story": "src/components/ui/badge/Badge.stories.ts"
       }
     },
     {
       "id": "button",
       "label": "Button",
-      "status": "proposed",
+      "status": "needs_review",
       "tier": "primitive",
       "priority": "P0",
       "purpose": "Trigger an action on the page",
@@ -1373,12 +1401,19 @@
       ],
       "qa": {
         "figma": "n/a",
-        "code": "pending",
-        "parity": "n/a"
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B2.json"
       },
       "notes": [
         "Primary appearance deferred: white on action-primary is 4.0:1"
-      ]
+      ],
+      "code": {
+        "package": "src/components/ui",
+        "export": "Button",
+        "path": "src/components/ui/button",
+        "story": "src/components/ui/button/Button.stories.ts"
+      }
     },
     {
       "id": "card",

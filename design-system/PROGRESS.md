@@ -6,7 +6,7 @@
 
 ## Następny krok
 
-**Run batch B2 with ds-code: icon, inline-code, link, badge, button**
+**Owner reviews B2 at gate G5C (pnpm storybook, section Primitives); after approval commit B2 and start B3 (card, link-card, copy-command, callout)**
 
 ## Ustawienia
 
@@ -29,7 +29,7 @@
 
 | ID | Cel wdrożenia | Elementy | Status | Dowody |
 |---|---|---|---|---|
-| B2 | code | icon, inline-code, link, badge, button | pending |  |
+| B2 | code | icon, inline-code, link, badge, button | completed | qa/code-report-B2.json |
 | B3 | code | card, link-card, copy-command, callout | pending |  |
 | B4 | code | disclosure, page-header, section-header | pending |  |
 | B1 | code | foundation:color, foundation:typography, foundation:spacing | completed | qa/code-report-B1.json |
@@ -38,11 +38,11 @@
 
 | Komponent | Status | Figma QA | Code QA | Parity |
 |---|---|---|---|---|
-| Icon | proposed | n/a | pending | n/a |
-| Inline code | proposed | n/a | pending | n/a |
-| Text link | proposed | n/a | pending | n/a |
-| Badge | proposed | n/a | pending | n/a |
-| Button | proposed | n/a | pending | n/a |
+| Icon | needs_review | n/a | pass | n/a |
+| Inline code | needs_review | n/a | pass | n/a |
+| Text link | needs_review | n/a | pass | n/a |
+| Badge | needs_review | n/a | pass | n/a |
+| Button | needs_review | n/a | pass | n/a |
 | Card | proposed | n/a | pending | n/a |
 | Link card | proposed | n/a | pending | n/a |
 | Copy command | proposed | n/a | pending | n/a |
@@ -61,11 +61,11 @@ _brak_
 
 ## Ostatnia zakończona operacja
 
-Batch B1 (code: foundation:color, foundation:typography, foundation:spacing) → completed
+Batch B2 (code: icon, inline-code, link, badge, button) → completed
 
 ## Ostatnia walidacja
 
-2026-11-07T20:28:52.907Z: 0 error(s), 0 warning(s)
+2026-11-07T20:35:56.833Z: 0 error(s), 0 warning(s)
 
 ## Jak wznowić
 

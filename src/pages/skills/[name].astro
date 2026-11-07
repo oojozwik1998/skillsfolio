@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content';
 import InstallCommand from '../../components/InstallCommand.astro';
+import TextLink from '../../components/ui/link/TextLink.astro';
 import { site } from '../../config';
 import Base from '../../layouts/Base.astro';
 import { installCommand, sourceUrl } from '../../lib/skills';
@@ -17,16 +18,16 @@ const { Content } = await render(skill);
 
 <Base title={name} description={description}>
   <article class="max-w-3xl">
-    <a href="/" class="type-label text-text-subtle hover:underline">All skills</a>
+    <TextLink href="/" tone="subtle">All skills</TextLink>
     <h1 class="type-display-small mt-6 break-words">{name}</h1>
     <p class="type-text-large text-text-subtle mt-6">{description}</p>
 
     <section class="mt-12" aria-labelledby="install-heading">
       <h2 id="install-heading" class="type-heading-small mb-4">Install</h2>
       <InstallCommand command={installCommand(site.repository, name)} />
-      <a href={sourceUrl(site.repository, name)} class="type-label text-text-subtle mt-4 inline-block hover:underline">
+      <TextLink href={sourceUrl(site.repository, name)} tone="subtle" class="mt-4 inline-block">
         View source on GitHub
-      </a>
+      </TextLink>
     </section>
 
     <hr class="border-border-subtle my-12" />

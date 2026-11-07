@@ -2,6 +2,7 @@
 
 One line per lesson, newest first: `YYYY-MM-DD - what went wrong - the rule that prevents it`. Link to `.ai/lessons/<slug>.md` when more detail is needed.
 
+- 2026-11-07 - Browser tests silently reused a long-running `astro dev` server on port 4321, so `pnpm check` tested dev mode instead of the built site - run them with `E2E_PORT=<free port>` when a dev server is open.
 - 2026-11-07 - `storybook build` reported success while it dropped every story, because a preview decorator used `document` during server prerendering - guard browser globals in Storybook decorators, and open a built story before trusting the build message.
 - 2026-11-07 - `type-display-large` did not render in a story, because the class name was assembled at runtime and Tailwind never saw it - write full class names as literal strings.
 - 2026-11-07 - `astro check` ran out of memory after `storybook-static/` appeared - exclude generated build folders from `tsconfig.json` and ESLint.

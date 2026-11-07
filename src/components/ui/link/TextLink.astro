@@ -1,0 +1,17 @@
+---
+/**
+ * Navigation to another page or site. Opens in the same tab.
+ * The link text must name the destination.
+ */
+import type { HTMLAttributes } from 'astro/types';
+import { type LinkTone, linkClasses } from '../../../lib/ui';
+
+export interface Props extends Omit<HTMLAttributes<'a'>, 'target'> {
+  href: string;
+  tone?: LinkTone;
+}
+
+const { href, tone = 'default', class: className, ...rest } = Astro.props;
+---
+
+<a href={href} class:list={[linkClasses(tone), className]} {...rest}><slot /></a>

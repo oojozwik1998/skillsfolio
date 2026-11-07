@@ -240,6 +240,26 @@
         "foundation:spacing"
       ],
       "supersedes": null
+    },
+    {
+      "id": "D-015",
+      "at": "2026-11-07T20:35:56.800Z",
+      "stage": "5",
+      "gate": null,
+      "title": "B2 primitives accepted",
+      "choice": "approved",
+      "proposedBy": "agent",
+      "approvedBy": "user",
+      "rationale": "All five checks pass; owner reviewed the Primitives stories in Storybook; components stay needs_review for a developer",
+      "alternatives": [],
+      "affects": [
+        "icon",
+        "inline-code",
+        "link",
+        "badge",
+        "button"
+      ],
+      "supersedes": null
     }
   ]
 }

@@ -122,56 +122,56 @@ Themes: light, dark
 
 ### Icon (`icon`)
 
-- Status: proposed · tier: primitive · priority: P1
+- Status: needs_review · tier: primitive · priority: P1
 - Purpose: Decorative SVG icons drawn with currentColor
 - Variants: name = arrow-right / chevron-down / loop
 - States: default
 - Accessibility: aria-hidden by default; never the only carrier of meaning
 - Evidence: screen:tailor-my-cv
-- QA: figma n/a · code pending · parity n/a
+- QA: figma n/a · code pass · parity n/a
 
 ### Inline code (`inline-code`)
 
-- Status: proposed · tier: primitive · priority: P1
+- Status: needs_review · tier: primitive · priority: P1
 - Purpose: Short code, paths and commands inside text
 - States: default
 - Slots: default
 - Accessibility: Plain code element, no extra semantics
 - Evidence: screen:skill-detail, screen:tailor-my-cv
-- QA: figma n/a · code pending · parity n/a
+- QA: figma n/a · code pass · parity n/a
 
 ### Text link (`link`)
 
-- Status: proposed · tier: primitive · priority: P1
+- Status: needs_review · tier: primitive · priority: P1
 - Purpose: Navigation to another page or site
 - Variants: tone = default / subtle
 - States: default, hover, focus-visible
 - Slots: default
 - Accessibility: Visible focus ring; Link text names the destination
 - Evidence: screen:catalog, screen:skill-detail, screen:tailor-my-cv
-- QA: figma n/a · code pending · parity n/a
+- QA: figma n/a · code pass · parity n/a
 
 ### Badge (`badge`)
 
-- Status: proposed · tier: primitive · priority: P1
+- Status: needs_review · tier: primitive · priority: P1
 - Purpose: Short status or actor label
 - Variants: tone = skill / you
 - States: default
 - Slots: default
 - Accessibility: Text label always present; color is never the only signal
 - Evidence: screen:tailor-my-cv
-- QA: figma n/a · code pending · parity n/a
+- QA: figma n/a · code pass · parity n/a
 
 ### Button (`button`)
 
-- Status: proposed · tier: primitive · priority: P0
+- Status: needs_review · tier: primitive · priority: P0
 - Purpose: Trigger an action on the page
 - Variants: appearance = secondary
 - States: default, hover, pressed, focus-visible, disabled
 - Slots: default
 - Accessibility: Native button element; Height at least 44px; Result announced through aria-live
 - Evidence: screen:skill-detail, screen:tailor-my-cv
-- QA: figma n/a · code pending · parity n/a
+- QA: figma n/a · code pass · parity n/a
 
 ### Card (`card`)
 

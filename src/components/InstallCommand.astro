@@ -1,4 +1,6 @@
 ---
+import Button from './ui/button/Button.astro';
+
 interface Props {
   command: string;
 }
@@ -10,14 +12,10 @@ const { command } = Astro.props;
   class="bg-surface-default border-border-subtle rounded-16 flex flex-col gap-3 border p-3 sm:flex-row sm:items-center"
   data-install-command
 >
-  <code class="min-w-0 flex-1 px-2 py-1 font-mono text-[0.8125rem] break-all sm:break-normal">{command}</code>
-  <button
-    type="button"
-    class="bg-action-secondary-background hover:bg-action-secondary-hovered active:bg-action-secondary-pressed border-action-secondary-border text-action-secondary-text rounded-12 type-label h-11 shrink-0 cursor-pointer border px-5"
-    data-command={command}
-  >
+  <code class="type-code min-w-0 flex-1 px-2 py-1 break-all sm:break-normal">{command}</code>
+  <Button data-command={command}>
     <span aria-live="polite">Copy</span>
-  </button>
+  </Button>
 </div>
 
 <script>

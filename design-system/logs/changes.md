@@ -46,3 +46,16 @@
 - 2026-11-07T20:28:17.061Z - Batch B1 (code: foundation:color, foundation:typography, foundation:spacing) → completed
 - 2026-11-07T20:28:52.881Z - set project:capabilities.code.repoPath = "."
 - 2026-11-07T20:28:52.909Z - set project:capabilities.code.stack.repo = "."
+- 2026-11-07T20:29:08.718Z - Batch B2 (code: icon, inline-code, link, badge, button) → in_progress
+- 2026-11-07T20:31:56.425Z - set blueprint:components[icon].code = {"package":"src/components/ui","export":"Icon","path":"src/components/ui/icon","story":"src/components/ui/icon/Icon.stories.ts"}
+- 2026-11-07T20:31:56.453Z - set blueprint:components[inline-code].code = {"package":"src/components/ui","export":"InlineCode","path":"src/components/ui/inline-code","story":"src/components/ui/inline-code/InlineCode.stories.ts"}
+- 2026-11-07T20:31:56.482Z - set blueprint:components[link].code = {"package":"src/components/ui","export":"TextLink","path":"src/components/ui/link","story":"src/components/ui/link/TextLink.stories.ts"}
+- 2026-11-07T20:31:56.510Z - set blueprint:components[badge].code = {"package":"src/components/ui","export":"Badge","path":"src/components/ui/badge","story":"src/components/ui/badge/Badge.stories.ts"}
+- 2026-11-07T20:31:56.538Z - set blueprint:components[button].code = {"package":"src/components/ui","export":"Button","path":"src/components/ui/button","story":"src/components/ui/button/Button.stories.ts"}
+- 2026-11-07T20:31:59.200Z - Merged into blueprint: components: +0 new, 5 updated
+- 2026-11-07T20:32:17.297Z - Merged into blueprint: components: +0 new, 5 updated
+- 2026-11-07T20:32:37.688Z - set project:capabilities.code.commands.a11y = "E2E_PORT=4329 pnpm test:e2e"
+- 2026-11-07T20:32:47.798Z - Merged into blueprint: components: +0 new, 5 updated
+- 2026-11-07T20:33:07.359Z - B2 code: Icon, InlineCode, TextLink, Badge, Button in src/components/ui with stories; site migrated (header and back links, source links, actor badges, three icons, copy button, inline-code utility replaces .rich-code and duplicated code rules); E2E_PORT added to playwright config; all five checks pass
+- 2026-11-07T20:35:56.806Z - Decision D-015: B2 primitives accepted (approved)
+- 2026-11-07T20:35:56.835Z - Batch B2 (code: icon, inline-code, link, badge, button) → completed
