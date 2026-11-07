@@ -2,7 +2,8 @@
 /**
  * Expandable section with a summary line, built on native details/summary, so
  * Enter and Space toggle it. It opens when a link to its id is followed. The
- * chevron is decorative.
+ * chevron is decorative. Like cards in design.md it has no border; the
+ * chevron and the visible content show whether it is open.
  */
 import { type BadgeTone, badgeLabels } from '../../../lib/ui';
 import Badge from '../badge/Badge.astro';
@@ -22,7 +23,7 @@ const { id, title, number, badge, open = false } = Astro.props;
 <details
   id={id}
   open={open}
-  class="group bg-surface-default border-border-subtle open:border-border-default rounded-16 scroll-mt-(--ds-space-24) border-(length:--ds-border-width-default)"
+  class="group bg-surface-default rounded-16 scroll-mt-(--ds-space-24)"
   data-disclosure
 >
   <summary

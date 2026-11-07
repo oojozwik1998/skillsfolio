@@ -22,3 +22,4 @@
 | D-016 | 5 | B3 composites accepted | approved | All five checks pass; owner reviewed Composites stories and the migrated cards; table and file list borders stay as they are for now | card, link-card, copy-command, callout | 2026-11-07 |
 | D-017 | 5 | B4 patterns accepted | approved | All five checks pass with 18 browser tests; owner reviewed Patterns stories, page headers and steps | disclosure, page-header, section-header | 2026-11-07 |
 | D-018 | G6 | Delivered with open items | approved | Owner accepted delivery; open items listed in design-system/HANDOFF.md |  | 2026-11-07 |
+| D-019 | 5 | Disclosure without a border | approved | Owner: like cards in design.md (D-008), disclosures have no border; open state shown by the chevron and the content | component:disclosure | 2026-11-07 |

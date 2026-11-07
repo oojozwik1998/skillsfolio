@@ -1723,8 +1723,6 @@
       "tokens": [
         "color.surface.default",
         "color.surface.hovered",
-        "color.border.subtle",
-        "color.border.default",
         "radius.16",
         "space.16",
         "space.24"
