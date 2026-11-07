@@ -4,7 +4,7 @@
   "objective": "Code design system for the Skills Folio catalog: tokens from design.md, Astro components with documented states",
   "language": "pl",
   "createdAt": "2026-11-07T19:12:12.741Z",
-  "updatedAt": "2026-11-07T20:44:55.907Z",
+  "updatedAt": "2026-11-07T20:50:40.509Z",
   "modes": {
     "input": "existing",
     "target": "code",
@@ -164,11 +164,13 @@
         "page-header",
         "section-header"
       ],
-      "status": "pending",
+      "status": "completed",
       "versionId": null,
-      "evidence": [],
+      "evidence": [
+        "qa/code-report-B4.json"
+      ],
       "notes": [],
-      "updatedAt": "2026-11-07T19:23:34.308Z",
+      "updatedAt": "2026-11-07T20:50:40.506Z",
       "title": "Patterns and migration of the three screens"
     },
     {
@@ -189,17 +191,17 @@
       "title": "Foundations: token export and Storybook with @storybook-astro/framework"
     }
   ],
-  "next": "Owner reviews B3 at gate G5C (Storybook section Composites, catalog and tailor-my-cv cards); after approval commit B3 and start B4 (disclosure, page-header, section-header)",
+  "next": "Owner reviews B4 at gate G5C (Storybook section Patterns, page headers and steps); after approval commit B4 and move to Stage 6 handoff",
   "blockers": [],
   "knownIssues": [],
-  "lastOperation": "Batch B3 (code: card, link-card, copy-command, callout) → completed",
+  "lastOperation": "Batch B4 (code: disclosure, page-header, section-header) → completed",
   "renderedHashes": {
-    "PROGRESS.md": "647eff7208ac6e55",
-    "DECISIONS.md": "e102b561c06a7936",
-    "DS-BLUEPRINT.md": "464d87a92349fe04"
+    "PROGRESS.md": "a07f8e83ed819641",
+    "DECISIONS.md": "fb188cfbdaada2c3",
+    "DS-BLUEPRINT.md": "dbaf6456e42fd177"
   },
   "lastValidation": {
-    "at": "2026-11-07T20:44:55.907Z",
+    "at": "2026-11-07T20:50:40.509Z",
     "errors": 0,
     "warnings": 0
   }

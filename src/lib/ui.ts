@@ -103,3 +103,24 @@ export async function copyToClipboard(
     return copyLabels.failed;
   }
 }
+
+/** Visible labels for the actor badge tones. */
+export const badgeLabels: Record<BadgeTone, string> = { skill: 'Skill', you: 'You' };
+
+export const pageHeaderSizes = ['large', 'small'] as const;
+export type PageHeaderSize = (typeof pageHeaderSizes)[number];
+
+const pageTitleSizeClasses: Record<PageHeaderSize, string> = {
+  large: 'type-display-small sm:type-display-large',
+  small: 'type-display-small',
+};
+
+/** Large titles drop to display-small below 640px. */
+export function pageTitleClasses(size: PageHeaderSize = 'large'): string {
+  return `${pageTitleSizeClasses[size]} break-words`;
+}
+
+/** The id of a step disclosure, used by links that open it. */
+export function disclosureId(prefix: string, number: number): string {
+  return `${prefix}-${number}`;
+}

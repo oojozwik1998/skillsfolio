@@ -6,7 +6,7 @@
 
 ## Następny krok
 
-**Owner reviews B3 at gate G5C (Storybook section Composites, catalog and tailor-my-cv cards); after approval commit B3 and start B4 (disclosure, page-header, section-header)**
+**Owner reviews B4 at gate G5C (Storybook section Patterns, page headers and steps); after approval commit B4 and move to Stage 6 handoff**
 
 ## Ustawienia
 
@@ -31,7 +31,7 @@
 |---|---|---|---|---|
 | B2 | code | icon, inline-code, link, badge, button | completed | qa/code-report-B2.json |
 | B3 | code | card, link-card, copy-command, callout | completed | qa/code-report-B3.json |
-| B4 | code | disclosure, page-header, section-header | pending |  |
+| B4 | code | disclosure, page-header, section-header | completed | qa/code-report-B4.json |
 | B1 | code | foundation:color, foundation:typography, foundation:spacing | completed | qa/code-report-B1.json |
 
 ## Komponenty
@@ -47,9 +47,9 @@
 | Link card | needs_review | n/a | pass | n/a |
 | Copy command | needs_review | n/a | pass | n/a |
 | Callout | needs_review | n/a | pass | n/a |
-| Disclosure | proposed | n/a | pending | n/a |
-| Page header | proposed | n/a | pending | n/a |
-| Section header | proposed | n/a | pending | n/a |
+| Disclosure | needs_review | n/a | pass | n/a |
+| Page header | needs_review | n/a | pass | n/a |
+| Section header | needs_review | n/a | pass | n/a |
 
 ## Blokery
 
@@ -61,11 +61,11 @@ _brak_
 
 ## Ostatnia zakończona operacja
 
-Batch B3 (code: card, link-card, copy-command, callout) → completed
+Batch B4 (code: disclosure, page-header, section-header) → completed
 
 ## Ostatnia walidacja
 
-2026-11-07T20:44:55.907Z: 0 error(s), 0 warning(s)
+2026-11-07T20:50:40.509Z: 0 error(s), 0 warning(s)
 
 ## Jak wznowić
 

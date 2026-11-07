@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content';
 import CopyCommand from '../../components/ui/copy-command/CopyCommand.astro';
 import TextLink from '../../components/ui/link/TextLink.astro';
+import PageHeader from '../../components/ui/page-header/PageHeader.astro';
 import { site } from '../../config';
 import Base from '../../layouts/Base.astro';
 import { installCommand, sourceUrl } from '../../lib/skills';
@@ -18,9 +19,7 @@ const { Content } = await render(skill);
 
 <Base title={name} description={description}>
   <article class="max-w-3xl">
-    <TextLink href="/" tone="subtle">All skills</TextLink>
-    <h1 class="type-display-small mt-6 break-words">{name}</h1>
-    <p class="type-text-large text-text-subtle mt-6">{description}</p>
+    <PageHeader title={name} lead={description} backHref="/" size="small" />
 
     <section class="mt-12" aria-labelledby="install-heading">
       <h2 id="install-heading" class="type-heading-small mb-4">Install</h2>

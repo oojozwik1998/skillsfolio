@@ -68,3 +68,11 @@
 - 2026-11-07T20:38:00.528Z - B3 code: Card, LinkCard, CopyCommand, Callout with stories; SkillCard and InstallCommand removed; truth and memory cards, catalog list, install commands, loop note and From testing examples migrated; copy logic moved to src/lib/ui.ts; all five checks pass
 - 2026-11-07T20:44:55.876Z - Decision D-016: B3 composites accepted (approved)
 - 2026-11-07T20:44:55.909Z - Batch B3 (code: card, link-card, copy-command, callout) → completed
+- 2026-11-07T20:44:56.049Z - Batch B4 (code: disclosure, page-header, section-header) → in_progress
+- 2026-11-07T20:46:19.177Z - set blueprint:components[disclosure].code = {"package":"src/components/ui","export":"Disclosure","path":"src/components/ui/disclosure","story":"src/components/ui/disclosure/Disclosure.stories.ts"}
+- 2026-11-07T20:46:19.207Z - set blueprint:components[page-header].code = {"package":"src/components/ui","export":"PageHeader","path":"src/components/ui/page-header","story":"src/components/ui/page-header/PageHeader.stories.ts"}
+- 2026-11-07T20:46:19.235Z - set blueprint:components[section-header].code = {"package":"src/components/ui","export":"SectionHeader","path":"src/components/ui/section-header","story":"src/components/ui/section-header/SectionHeader.stories.ts"}
+- 2026-11-07T20:46:31.754Z - Merged into blueprint: components: +0 new, 3 updated
+- 2026-11-07T20:46:54.394Z - B4 code: Disclosure, PageHeader, SectionHeader with stories; all three pages use PageHeader, tailor-my-cv uses SectionHeader for 7 sections and Disclosure for 9 steps; disclosure opens from any link to its id (page script removed); new e2e test for anchor opening; all five checks pass (18 browser tests)
+- 2026-11-07T20:50:40.481Z - Decision D-017: B4 patterns accepted (approved)
+- 2026-11-07T20:50:40.511Z - Batch B4 (code: disclosure, page-header, section-header) → completed

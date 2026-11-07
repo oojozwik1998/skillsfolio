@@ -279,6 +279,24 @@
         "callout"
       ],
       "supersedes": null
+    },
+    {
+      "id": "D-017",
+      "at": "2026-11-07T20:50:40.476Z",
+      "stage": "5",
+      "gate": null,
+      "title": "B4 patterns accepted",
+      "choice": "approved",
+      "proposedBy": "agent",
+      "approvedBy": "user",
+      "rationale": "All five checks pass with 18 browser tests; owner reviewed Patterns stories, page headers and steps",
+      "alternatives": [],
+      "affects": [
+        "disclosure",
+        "page-header",
+        "section-header"
+      ],
+      "supersedes": null
     }
   ]
 }

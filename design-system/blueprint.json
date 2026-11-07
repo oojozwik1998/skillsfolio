@@ -1675,7 +1675,7 @@
     {
       "id": "disclosure",
       "label": "Disclosure",
-      "status": "proposed",
+      "status": "needs_review",
       "tier": "composite",
       "priority": "P1",
       "purpose": "Expandable section with a summary line",
@@ -1742,14 +1742,21 @@
       ],
       "qa": {
         "figma": "n/a",
-        "code": "pending",
-        "parity": "n/a"
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B4.json"
+      },
+      "code": {
+        "package": "src/components/ui",
+        "export": "Disclosure",
+        "path": "src/components/ui/disclosure",
+        "story": "src/components/ui/disclosure/Disclosure.stories.ts"
       }
     },
     {
       "id": "page-header",
       "label": "Page header",
-      "status": "proposed",
+      "status": "needs_review",
       "tier": "pattern",
       "priority": "P1",
       "purpose": "Title and lead at the top of a page",
@@ -1809,17 +1816,24 @@
       ],
       "qa": {
         "figma": "n/a",
-        "code": "pending",
-        "parity": "n/a"
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B4.json"
       },
       "responsive": [
         "large uses display-small below 640px"
-      ]
+      ],
+      "code": {
+        "package": "src/components/ui",
+        "export": "PageHeader",
+        "path": "src/components/ui/page-header",
+        "story": "src/components/ui/page-header/PageHeader.stories.ts"
+      }
     },
     {
       "id": "section-header",
       "label": "Section header",
-      "status": "proposed",
+      "status": "needs_review",
       "tier": "pattern",
       "priority": "P2",
       "purpose": "Heading and optional subtitle for a page section",
@@ -1863,8 +1877,15 @@
       ],
       "qa": {
         "figma": "n/a",
-        "code": "pending",
-        "parity": "n/a"
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B4.json"
+      },
+      "code": {
+        "package": "src/components/ui",
+        "export": "SectionHeader",
+        "path": "src/components/ui/section-header",
+        "story": "src/components/ui/section-header/SectionHeader.stories.ts"
       }
     }
   ],

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   badgeClasses,
+  badgeLabels,
   badgeTones,
   buttonClasses,
   calloutClasses,
@@ -8,11 +9,14 @@ import {
   cardClasses,
   copyLabels,
   copyToClipboard,
+  disclosureId,
   iconNames,
   iconPaths,
   linkCardClasses,
   linkClasses,
   linkTones,
+  pageHeaderSizes,
+  pageTitleClasses,
 } from './ui';
 
 describe('icons', () => {
@@ -107,5 +111,31 @@ describe('copyToClipboard', () => {
 
   it('reports a failure when there is no clipboard', async () => {
     await expect(copyToClipboard(undefined, 'x')).resolves.toBe(copyLabels.failed);
+  });
+});
+
+describe('badgeLabels', () => {
+  it('has a visible label for every tone', () => {
+    expect(Object.keys(badgeLabels)).toEqual([...badgeTones]);
+  });
+});
+
+describe('pageTitleClasses', () => {
+  it('drops large titles to display-small on phones by default', () => {
+    expect(pageTitleClasses()).toContain('type-display-small sm:type-display-large');
+  });
+
+  it.each(pageHeaderSizes)('lets long %s titles wrap', (size) => {
+    expect(pageTitleClasses(size)).toContain('break-words');
+  });
+
+  it('keeps small titles at display-small', () => {
+    expect(pageTitleClasses('small')).not.toContain('display-large');
+  });
+});
+
+describe('disclosureId', () => {
+  it('joins the prefix and the number', () => {
+    expect(disclosureId('step', 5)).toBe('step-5');
   });
 });

@@ -217,18 +217,18 @@ Themes: light, dark
 
 ### Disclosure (`disclosure`)
 
-- Status: proposed · tier: composite · priority: P1
+- Status: needs_review · tier: composite · priority: P1
 - Purpose: Expandable section with a summary line
 - States: closed, open, hover, focus-visible
 - Slots: default
 - Accessibility: Keyboard: Enter and Space toggle; Chevron is decorative
 - Depends on: badge, icon
 - Evidence: screen:tailor-my-cv
-- QA: figma n/a · code pending · parity n/a
+- QA: figma n/a · code pass · parity n/a
 
 ### Page header (`page-header`)
 
-- Status: proposed · tier: pattern · priority: P1
+- Status: needs_review · tier: pattern · priority: P1
 - Purpose: Title and lead at the top of a page
 - Variants: size = large / small
 - States: default
@@ -236,16 +236,16 @@ Themes: light, dark
 - Accessibility: Contains the page's only h1
 - Depends on: link
 - Evidence: screen:catalog, screen:skill-detail, screen:tailor-my-cv
-- QA: figma n/a · code pending · parity n/a
+- QA: figma n/a · code pass · parity n/a
 
 ### Section header (`section-header`)
 
-- Status: proposed · tier: pattern · priority: P2
+- Status: needs_review · tier: pattern · priority: P2
 - Purpose: Heading and optional subtitle for a page section
 - States: default
 - Accessibility: Renders h2; the section is labelled by it
 - Evidence: screen:skill-detail, screen:tailor-my-cv
-- QA: figma n/a · code pending · parity n/a
+- QA: figma n/a · code pass · parity n/a
 
 ## Wyjątki
 

@@ -20,3 +20,4 @@
 | D-014 | 5 | B1 foundations accepted | approved | pnpm check exit 0; Storybook on Astro 7 verified; foundations reviewed in Color, Typography and Spacing stories | foundation:color, foundation:typography, foundation:spacing | 2026-11-07 |
 | D-015 | 5 | B2 primitives accepted | approved | All five checks pass; owner reviewed the Primitives stories in Storybook; components stay needs_review for a developer | icon, inline-code, link, badge, button | 2026-11-07 |
 | D-016 | 5 | B3 composites accepted | approved | All five checks pass; owner reviewed Composites stories and the migrated cards; table and file list borders stay as they are for now | card, link-card, copy-command, callout | 2026-11-07 |
+| D-017 | 5 | B4 patterns accepted | approved | All five checks pass with 18 browser tests; owner reviewed Patterns stories, page headers and steps | disclosure, page-header, section-header | 2026-11-07 |
