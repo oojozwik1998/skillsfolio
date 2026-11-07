@@ -2,6 +2,7 @@ import type { Preview } from '@storybook-astro/framework';
 import '@fontsource-variable/mona-sans';
 import '@fontsource/poppins/400.css';
 import '../src/styles/global.css';
+import { themes } from 'storybook/theming';
 
 const preview: Preview = {
   globalTypes: {
@@ -19,7 +20,8 @@ const preview: Preview = {
       },
     },
   },
-  initialGlobals: { theme: 'system' },
+  // Dark by default; the toolbar can still switch to Light or System.
+  initialGlobals: { theme: 'dark' },
   decorators: [
     (story, context) => {
       // Stories are prerendered on the server, where there is no document.
@@ -33,6 +35,8 @@ const preview: Preview = {
   ],
   parameters: {
     a11y: { test: 'error' },
+    // Docs pages in dark, matching the stories.
+    docs: { theme: themes.dark },
   },
 };
 

@@ -79,3 +79,4 @@
 - 2026-11-07T20:50:50.276Z - set project:stage = "6"
 - 2026-11-07T20:51:13.923Z - Stage 6: HANDOFF.md written (inventory, usage rules, token workflow, setup, open items); no parity (code target)
 - 2026-11-07T21:03:48.577Z - Decision D-018: Delivered with open items (approved)
+- 2026-11-07T21:36:57.448Z - PR #4 merged to main (2026-11-07)
