@@ -1,0 +1,96 @@
+---
+/**
+ * Documentation-only view of the design tokens, used by the Foundations stories.
+ * Not part of the public component set.
+ */
+import { numericScale, tokensByPrefix } from '../../../lib/foundations';
+import { tokens } from '../tokens/tokens';
+
+interface Props {
+  section: 'color' | 'typography' | 'spacing';
+}
+
+const { section } = Astro.props;
+const colorGroups = ['surface', 'text', 'border', 'action', 'success', 'danger', 'actor'].map((group) => ({
+  group,
+  entries: tokensByPrefix(tokens, [`color.${group}`]),
+}));
+// Full class names, so Tailwind finds them; text-styles.test.ts keeps them in sync with the tokens.
+const textStyles = [
+  'type-display-large',
+  'type-display-small',
+  'type-heading-large',
+  'type-heading-medium',
+  'type-heading-small',
+  'type-text-large',
+  'type-text-medium',
+  'type-text-small',
+  'type-label',
+  'type-code',
+];
+const space = numericScale(tokens, 'space');
+const radius = numericScale(tokens, 'radius');
+---
+
+<div class="bg-surface-canvas text-text-default flex flex-col gap-10 p-8">
+  {
+    section === 'color' &&
+      colorGroups.map(({ group, entries }) => (
+        <section class="flex flex-col gap-4">
+          <h2 class="type-heading-medium capitalize">{group}</h2>
+          {entries.length === 0 ? (
+            <p class="type-text-medium text-text-subtle">No tokens in this group.</p>
+          ) : (
+            <ul class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {entries.map(({ id, cssVar }) => (
+                <li class="bg-surface-default border-border-subtle rounded-12 flex items-center gap-3 border p-3">
+                  <span class="border-border-default rounded-6 size-10 shrink-0 border" style={`background: ${cssVar}`} />
+                  <code class="type-code">{id}</code>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      ))
+  }
+  {
+    section === 'typography' && (
+      <ul class="flex flex-col gap-6">
+        {textStyles.map((name) => (
+          <li class="flex flex-col gap-1">
+            <code class="type-code text-text-subtle">{name}</code>
+            <p class={name}>Install a skill with one command</p>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+  {
+    section === 'spacing' && (
+      <>
+        <section class="flex flex-col gap-4">
+          <h2 class="type-heading-medium">Space</h2>
+          <ul class="flex flex-col gap-2">
+            {space.map(({ id, cssVar }) => (
+              <li class="flex items-center gap-4">
+                <code class="type-code w-24 shrink-0">{id}</code>
+                <span class="bg-actor-skill-border h-3" style={`width: ${cssVar}`} />
+              </li>
+            ))}
+          </ul>
+        </section>
+        <section class="flex flex-col gap-4">
+          <h2 class="type-heading-medium">Radius</h2>
+          <ul class="flex flex-wrap gap-4">
+            {radius.map(({ id, cssVar }) => (
+              <li class="flex flex-col items-center gap-2">
+                <span class="bg-surface-subtle border-border-default size-16 border" style={`border-radius: ${cssVar}`} />
+                <code class="type-code">{id}</code>
+              </li>
+            ))}
+          </ul>
+        </section>
+      </>
+    )
+  }
+</div>

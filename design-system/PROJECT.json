@@ -4,7 +4,7 @@
   "objective": "Code design system for the Skills Folio catalog: tokens from design.md, Astro components with documented states",
   "language": "pl",
   "createdAt": "2026-11-07T19:12:12.741Z",
-  "updatedAt": "2026-11-07T19:23:42.591Z",
+  "updatedAt": "2026-11-07T20:28:52.907Z",
   "modes": {
     "input": "existing",
     "target": "code",
@@ -108,11 +108,13 @@
         "test": "pnpm test",
         "a11y": "pnpm test:e2e",
         "build": "pnpm build",
-        "storybookBuild": null
+        "storybookBuild": "pnpm build-storybook"
       },
       "checkedAt": "2026-11-07T19:12:12.768Z",
       "notes": [
-        "React + TypeScript without Storybook: Storybook must be added (ask first) for the guaranteed path."
+        "Storybook 10.6 with @storybook-astro/framework 1.15 works on Astro 7 (D-002 verified in B1)",
+        "Storybook a11y addon runs in the UI only; automated axe checks run in pnpm test:e2e against the site",
+        "Exporter fixed in ds-code: rem units, prefers-color-scheme dark block, oklch colors in DTCG"
       ]
     }
   },
@@ -173,25 +175,27 @@
         "foundation:typography",
         "foundation:spacing"
       ],
-      "status": "pending",
+      "status": "completed",
       "versionId": null,
-      "evidence": [],
+      "evidence": [
+        "qa/code-report-B1.json"
+      ],
       "notes": [],
-      "updatedAt": "2026-11-07T19:23:42.588Z",
+      "updatedAt": "2026-11-07T20:28:17.056Z",
       "title": "Foundations: token export and Storybook with @storybook-astro/framework"
     }
   ],
-  "next": "Run batch B1 with ds-code: export tokens, add Storybook with @storybook-astro/framework, wire tokens; if Storybook fails on Astro 7, propose the /design-system page fallback (D-002)",
+  "next": "Run batch B2 with ds-code: icon, inline-code, link, badge, button",
   "blockers": [],
   "knownIssues": [],
-  "lastOperation": "Batch B1 (code: foundation:color, foundation:typography, foundation:spacing) → pending",
+  "lastOperation": "Batch B1 (code: foundation:color, foundation:typography, foundation:spacing) → completed",
   "renderedHashes": {
-    "PROGRESS.md": "63f0bc4a8a6053ef",
-    "DECISIONS.md": "c085ef9b24c78526",
+    "PROGRESS.md": "8e375f7b4b4ef74a",
+    "DECISIONS.md": "4a649708680edfb4",
     "DS-BLUEPRINT.md": "6379400d312aad83"
   },
   "lastValidation": {
-    "at": "2026-11-07T19:23:42.591Z",
+    "at": "2026-11-07T20:28:52.907Z",
     "errors": 0,
     "warnings": 0
   }

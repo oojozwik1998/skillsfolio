@@ -34,3 +34,15 @@
 - 2026-11-07T19:23:34.318Z - Batch B4 (code: disclosure, page-header, section-header) → pending
 - 2026-11-07T19:23:34.353Z - Stage 4 → 5
 - 2026-11-07T19:23:42.593Z - Batch B1 (code: foundation:color, foundation:typography, foundation:spacing) → pending
+- 2026-11-07T19:45:19.304Z - Batch B1 (code: foundation:color, foundation:typography, foundation:spacing) → in_progress
+- 2026-11-07T19:49:25.302Z - Decision D-012: Dark theme follows the system setting without JavaScript (approved)
+- 2026-11-07T19:49:25.334Z - Decision D-013: Rem units in code for font sizes and spacing (approved)
+- 2026-11-07T19:49:25.365Z - set blueprint:naming.cssUnits = {"rem":true,"base":16,"keepPx":["border.width"]}
+- 2026-11-07T19:49:25.397Z - set blueprint:naming.systemTheme = {"dark":"dark","light":"light"}
+- 2026-11-07T19:55:11.593Z - set project:capabilities.code.commands = {"typecheck":"pnpm typecheck","lint":"pnpm lint","test":"pnpm test","a11y":"pnpm test:e2e","build":"pnpm build","storybookBuild":"pnpm build-storybook"}
+- 2026-11-07T19:55:33.543Z - B1 code: tokens exported to src/components/ui/tokens (rem units, system dark mode), global.css wired to --ds-* variables, info/warning utilities replaced by actor-skill/actor-you, heading-small overrides removed, Storybook 10.6 + @storybook-astro/framework 1.15 with Foundations stories, pnpm check exit 0
+- 2026-11-07T19:55:33.572Z - set project:capabilities.code.notes = ["Storybook 10.6 with @storybook-astro/framework 1.15 works on Astro 7 (D-002 verified in B1)","Storybook a11y addon runs in the UI only; automated axe checks run in pnpm test:e2e against the site","Exporter fixed in ds-code: rem units, prefers-color-scheme dark block, oklch colors in DTCG"]
+- 2026-11-07T20:28:17.025Z - Decision D-014: B1 foundations accepted (approved)
+- 2026-11-07T20:28:17.061Z - Batch B1 (code: foundation:color, foundation:typography, foundation:spacing) → completed
+- 2026-11-07T20:28:52.881Z - set project:capabilities.code.repoPath = "."
+- 2026-11-07T20:28:52.909Z - set project:capabilities.code.stack.repo = "."

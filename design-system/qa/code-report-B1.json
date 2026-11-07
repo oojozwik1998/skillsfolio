@@ -1,0 +1,17 @@
+{
+  "batch": "B1",
+  "checkedAt": "2026-11-07T19:55:11.619Z",
+  "repo": ".",
+  "supportTier": "review",
+  "checks": {
+    "typecheck": {
+      "command": "pnpm typecheck",
+      "exitCode": 0,
+      "timedOut": false,
+      "seconds": 2,
+      "tail": "\u001b[2m20:55:12\u001b[22m \u001b[34m[content]\u001b[39m Syncing content\n\u001b[2m20:55:12\u001b[22m \u001b[34m[content]\u001b[39m Synced content\n\u001b[2m20:55:12\u001b[22m \u001b[34m[types]\u001b[39m Generated \u001b[2m224ms\u001b[22m\n\u001b[2m20:55:12\u001b[22m \u001b[34m[check]\u001b[39m Getting diagnostics for Astro files in ....\nResult (27 files): \n- 0 errors\n- 0 warnings\n- 0 hints\n\n$ astro check",
+      "status": "pass"
+    }
+  },
+  "components": {}
+}

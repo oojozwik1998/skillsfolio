@@ -20,16 +20,16 @@ const description = externalSkills.find(({ data }) => data.name === 'tailor-my-c
 
 const actorLabel: Record<Actor, string> = { you: 'You', skill: 'Skill' };
 const actorBadge: Record<Actor, string> = {
-  you: 'bg-warning-background text-warning-text',
-  skill: 'bg-info-background text-info-text',
+  you: 'bg-actor-you-background text-actor-you-text',
+  skill: 'bg-actor-skill-background text-actor-skill-text',
 };
 const actorStage: Record<Actor, string> = {
-  you: 'bg-warning-background border-warning-border text-warning-text',
-  skill: 'bg-info-background border-info-border text-info-text',
+  you: 'bg-actor-you-background border-actor-you-border text-actor-you-text',
+  skill: 'bg-actor-skill-background border-actor-skill-border text-actor-skill-text',
 };
 const toneBorder = {
   success: 'border-t-success-border',
-  warning: 'border-t-warning-border',
+  warning: 'border-t-actor-you-border',
   danger: 'border-t-danger-border',
 };
 ---
@@ -73,10 +73,10 @@ const toneBorder = {
       <p class="type-text-medium text-text-subtle mt-2">Click a stage to see its details below.</p>
       <div class="type-text-small text-text-subtle mt-4 flex gap-4">
         <span class="flex items-center gap-2">
-          <i class="bg-info-border rounded-2 size-3" aria-hidden="true"></i> The skill works
+          <i class="bg-actor-skill-border rounded-2 size-3" aria-hidden="true"></i> The skill works
         </span>
         <span class="flex items-center gap-2">
-          <i class="bg-warning-border rounded-2 size-3" aria-hidden="true"></i> You decide
+          <i class="bg-actor-you-border rounded-2 size-3" aria-hidden="true"></i> You decide
         </span>
       </div>
 
@@ -153,7 +153,7 @@ const toneBorder = {
             >
               <summary class="hover:bg-surface-hovered rounded-16 flex cursor-pointer list-none items-center gap-3 p-4 sm:px-6 [&::-webkit-details-marker]:hidden">
                 <span class="type-text-small text-text-subtle w-4 shrink-0">{index + 1}</span>
-                <span class="type-heading-small min-w-0 flex-1 leading-[1.3]">{step.title}</span>
+                <span class="type-heading-small min-w-0 flex-1">{step.title}</span>
                 <span class:list={['type-text-small rounded-6 shrink-0 px-2 py-0.5', actorBadge[step.actor]]}>
                   {actorLabel[step.actor]}
                 </span>
@@ -239,7 +239,7 @@ const toneBorder = {
                 toneBorder[card.tone],
               ]}
             >
-              <h3 class="type-heading-small leading-[1.3]">{card.title}</h3>
+              <h3 class="type-heading-small">{card.title}</h3>
               <ul class="type-text-medium rich-text mt-3 list-disc space-y-1 pl-5">
                 {card.items.map((item) => (
                   <li set:html={item} />
@@ -284,7 +284,7 @@ const toneBorder = {
         {
           memoryCards.map((card) => (
             <div class="bg-surface-default border-border-subtle rounded-16 border p-6">
-              <h3 class="type-heading-small leading-[1.3]">{card.title}</h3>
+              <h3 class="type-heading-small">{card.title}</h3>
               <ul class="type-text-medium rich-text mt-3 list-disc space-y-1 pl-5">
                 {card.items.map((item) => (
                   <li set:html={item} />
@@ -308,7 +308,7 @@ const toneBorder = {
               ]}
             >
               <dt>
-                <code class:list={['break-all', { 'text-warning-text': file.isPrivate }]}>{file.path}</code>
+                <code class:list={['break-all', { 'text-actor-you-text': file.isPrivate }]}>{file.path}</code>
               </dt>
               <dd>{file.description}</dd>
             </div>

@@ -4,7 +4,7 @@ import tseslint from 'typescript-eslint';
 
 export default [
   {
-    ignores: ['dist/', '.astro/', 'coverage/', 'playwright-report/', 'test-results/', 'tailor-my-cv/'],
+    ignores: ['dist/', 'storybook-static/', '.astro/', 'coverage/', 'playwright-report/', 'test-results/', 'tailor-my-cv/'],
   },
   js.configs.recommended,
   ...tseslint.configs.strict,

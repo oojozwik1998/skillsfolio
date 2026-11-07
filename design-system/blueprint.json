@@ -19,7 +19,18 @@
     "cssVariables": "--color-surface-default style, exposed as Tailwind utilities (bg-surface-default)",
     "textStyles": "type-<style> utilities",
     "components": "PascalCase in code",
-    "variantProps": "lowercase keys and values"
+    "variantProps": "lowercase keys and values",
+    "cssUnits": {
+      "rem": true,
+      "base": 16,
+      "keepPx": [
+        "border.width"
+      ]
+    },
+    "systemTheme": {
+      "dark": "dark",
+      "light": "light"
+    }
   },
   "tokens": [
     {

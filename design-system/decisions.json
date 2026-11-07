@@ -189,6 +189,57 @@
       ],
       "affects": [],
       "supersedes": null
+    },
+    {
+      "id": "D-012",
+      "at": "2026-11-07T19:49:25.297Z",
+      "stage": "5",
+      "gate": null,
+      "title": "Dark theme follows the system setting without JavaScript",
+      "choice": "approved",
+      "proposedBy": "agent",
+      "approvedBy": "user",
+      "rationale": "Exporter also emits a prefers-color-scheme dark block for :root without data-theme=light; data-theme still overrides, used by Storybook",
+      "alternatives": [],
+      "affects": [
+        "themes"
+      ],
+      "supersedes": null
+    },
+    {
+      "id": "D-013",
+      "at": "2026-11-07T19:49:25.330Z",
+      "stage": "5",
+      "gate": null,
+      "title": "Rem units in code for font sizes and spacing",
+      "choice": "approved",
+      "proposedBy": "agent",
+      "approvedBy": "user",
+      "rationale": "Reopens D-010 for units only: blueprint keeps px, exporter writes rem (16px = 1rem) except border widths, so browser text size settings keep working (WCAG 1.4.4); no visual change at default size",
+      "alternatives": [],
+      "affects": [
+        "text-styles",
+        "space"
+      ],
+      "supersedes": null
+    },
+    {
+      "id": "D-014",
+      "at": "2026-11-07T20:28:17.020Z",
+      "stage": "5",
+      "gate": null,
+      "title": "B1 foundations accepted",
+      "choice": "approved",
+      "proposedBy": "agent",
+      "approvedBy": "user",
+      "rationale": "pnpm check exit 0; Storybook on Astro 7 verified; foundations reviewed in Color, Typography and Spacing stories",
+      "alternatives": [],
+      "affects": [
+        "foundation:color",
+        "foundation:typography",
+        "foundation:spacing"
+      ],
+      "supersedes": null
     }
   ]
 }

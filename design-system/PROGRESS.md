@@ -6,7 +6,7 @@
 
 ## Następny krok
 
-**Run batch B1 with ds-code: export tokens, add Storybook with @storybook-astro/framework, wire tokens; if Storybook fails on Astro 7, propose the /design-system page fallback (D-002)**
+**Run batch B2 with ds-code: icon, inline-code, link, badge, button**
 
 ## Ustawienia
 
@@ -32,7 +32,7 @@
 | B2 | code | icon, inline-code, link, badge, button | pending |  |
 | B3 | code | card, link-card, copy-command, callout | pending |  |
 | B4 | code | disclosure, page-header, section-header | pending |  |
-| B1 | code | foundation:color, foundation:typography, foundation:spacing | pending |  |
+| B1 | code | foundation:color, foundation:typography, foundation:spacing | completed | qa/code-report-B1.json |
 
 ## Komponenty
 
@@ -61,11 +61,11 @@ _brak_
 
 ## Ostatnia zakończona operacja
 
-Batch B1 (code: foundation:color, foundation:typography, foundation:spacing) → pending
+Batch B1 (code: foundation:color, foundation:typography, foundation:spacing) → completed
 
 ## Ostatnia walidacja
 
-2026-11-07T19:23:42.591Z: 0 error(s), 0 warning(s)
+2026-11-07T20:28:52.907Z: 0 error(s), 0 warning(s)
 
 ## Jak wznowić
 
