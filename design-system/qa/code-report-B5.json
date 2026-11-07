@@ -1,0 +1,56 @@
+{
+  "batch": "B5",
+  "checkedAt": "2026-11-07T21:56:09.930Z",
+  "repo": ".",
+  "supportTier": "review",
+  "checks": {
+    "typecheck": {
+      "command": "pnpm typecheck",
+      "exitCode": 0,
+      "timedOut": false,
+      "seconds": 2,
+      "tail": "\u001b[2m22:56:10\u001b[22m \u001b[34m[content]\u001b[39m Syncing content\n\u001b[2m22:56:10\u001b[22m \u001b[34m[content]\u001b[39m Synced content\n\u001b[2m22:56:10\u001b[22m \u001b[34m[types]\u001b[39m Generated \u001b[2m187ms\u001b[22m\n\u001b[2m22:56:10\u001b[22m \u001b[34m[check]\u001b[39m Getting diagnostics for Astro files in ....\nResult (55 files): \n- 0 errors\n- 0 warnings\n- 0 hints\n\n$ astro check",
+      "status": "pass"
+    },
+    "lint": {
+      "command": "pnpm lint",
+      "exitCode": 0,
+      "timedOut": false,
+      "seconds": 1,
+      "tail": "$ eslint .",
+      "status": "pass"
+    },
+    "test": {
+      "command": "pnpm test",
+      "exitCode": 0,
+      "timedOut": false,
+      "seconds": 0,
+      "tail": "RUN  v5.1.0 .\n      Coverage enabled with v8\n\n\n Test Files  5 passed (5)\n      Tests  72 passed (72)\n   Start at  22:56:13\n   Duration  117ms (import 38%, worker 30%, tests 20%, transform 12%)\n\n\u001b[34m % \u001b[39m\u001b[2mCoverage report from \u001b[22m\u001b[33mv8\u001b[39m\nNo files with missing coverage.\n5 files fully covered.\n\n=============================== Coverage summary ===============================\nStatements   : 100% ( 150/150 )\nBranches     : 100% ( 37/37 )\nFunctions    : 100% ( 46/46 )\nLines        : 100% ( 138/138 )\n================================================================================\n$ vitest run --coverage",
+      "status": "pass"
+    },
+    "a11y": {
+      "command": "E2E_PORT=4329 pnpm test:e2e",
+      "exitCode": 0,
+      "timedOut": false,
+      "seconds": 4,
+      "tail": "Running 19 tests using 2 workers\n···················\n  19 passed (4.2s)\n::notice title=🎭 Playwright Run Summary::  19 passed (4.2s)\n$ playwright test\n[WebServer] $ astro preview --host localhost --port 4329 --ignore-lock",
+      "status": "pass"
+    },
+    "storybookBuild": {
+      "command": "pnpm build-storybook",
+      "exitCode": 0,
+      "timedOut": false,
+      "seconds": 3,
+      "tail": "storybook-static/_astro/TextLink.stories-BnGX31H5.js                              2.50 kB │ gzip:   0.96 kB\nstorybook-static/_astro/Icon.stories-CM2xh4TV.js                                  2.53 kB │ gzip:   0.99 kB\nstorybook-static/_astro/Callout.stories-C8s7m328.js                               2.55 kB │ gzip:   0.99 kB\nstorybook-static/_astro/LinkCard.stories-B4WfMSMN.js                              2.72 kB │ gzip:   1.00 kB\nstorybook-static/_astro/Button.stories-DeX46GUn.js                                2.90 kB │ gzip:   1.04 kB\nstorybook-static/_astro/Card.stories-Csi6__Fw.js                                  3.15 kB │ gzip:   1.17 kB\nstorybook-static/_astro/PageHeader.stories-IEwnlSGp.js                            3.55 kB │ gzip:   1.14 kB\nstorybook-static/_astro/Disclosure.stories-BIOTspUr.js                            3.87 kB │ gzip:   1.34 kB\nstorybook-static/_astro/chunk-242VQQM5-CQUR7y2g.js                                4.09 kB │ gzip:   1.52 kB\nstorybook-static/_astro/chunk-DRQKCCAG-CCU5JLR1.js                                4.91 kB │ gzip:   2.08 kB\nstorybook-static/_astro/chunk-7PIQR4A3-DUuI6D6u.js                                5.14 kB │ gzip:   1.93 kB\nstorybook-static/_astro/react-DlPsW1c0.js                                         7.87 kB │ gzip:   3.00 kB\nstorybook-static/_astro/chunk-W22LQPXL-DQgvF4ie.js                               23.01 kB │ gzip:   7.72 kB\nstorybook-static/vite-inject-mocker-entry.js                                     27.75 kB │ gzip:   9.66 kB\nstorybook-static/_astro/matchers-JIUQ3HVY-DLBmcvP1.js                            28.75 kB │ gzip:   9.66 kB\nstorybook-static/_astro/Color-6AOWCN3U-RGrbu1Gv.js                               30.41 kB │ gzip:  11.50 kB\nstorybook-static/_astro/WithTooltip-CDUNV5IS-CAVm3p3b.js                         32.65 kB │ gzip:  11.43 kB\nstorybook-static/_astro/theming-CU2lwCF8.js                                      55.30 kB │ gzip:  21.30 kB\nstorybook-static/_astro/syntaxhighlighter-4REYKNEV-BRXYnSny.js                   75.80 kB │ gzip:  27.21 kB\nstorybook-static/_astro/axe-B_PhqGaV.js                                         659.29 kB │ gzip: 187.87 kB\nstorybook-static/_astro/iframe-bFUiVgBm.js                                      900.64 kB │ gzip: 254.49 kB\nstorybook-static/_astro/DocsRenderer-JROSPFPF-CgM9Kifk.js                       958.86 kB │ gzip: 302.64 kB\n\n\u001b[33m\u001b[1m22:56:20\u001b[22m [WARN] [vite]\u001b[39m \u001b[33m[plugin builtin:vite-reporter] \n(!) Some chunks are larger than 500 kB after minification. Consider:\n- Using dynamic import() to code-split the application\n- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting\n- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.\u001b[39m\n\u001b[2m22:56:20\u001b[22m \u001b[34m[vite]\u001b[39m \u001b[32m✓ built in 1.89s\u001b[39m\n\u001b[90m│\u001b[39m\n\u001b[32m◇\u001b[39m  Output directory:\n\u001b[90m│\u001b[39m  ./storybook-static\n\u001b[90m│\u001b[39m\n\u001b[90m└\u001b[39m  Storybook build completed successfully\n\n$ storybook build -o storybook-static --quiet\n(node:3877) [DEP0205] DeprecationWarning: `module.register()` is deprecated. Use `module.registerHooks()` instead.\n(Use `node --trace-deprecation ...` to show where the warning was created)\n[storybook-astro] Auto-loaded 3 vite plugins from astro.config: @tailwindcss/vite:scan, @tailwindcss/vite:generate:serve, @tailwindcss/vite:generate:build\n\u001b[31m\u001b[1m22:56:20\u001b[22m [ERROR]\u001b[39m Failed to create the dev server app: transport was disconnected, cannot call \"fetchModule\"",
+      "status": "pass"
+    }
+  },
+  "components": {
+    "ascii-field": {
+      "checks": {},
+      "staticFindings": [],
+      "note": "developer review required for this stack",
+      "verdict": "pass"
+    }
+  }
+}

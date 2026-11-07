@@ -16,6 +16,14 @@ test('the catalog links to a skill', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1, name: 'example-skill' })).toBeVisible();
 });
 
+test('the home hero draws a decorative character field', async ({ page }) => {
+  await page.goto('/');
+
+  const field = page.locator('canvas[data-ascii-field]');
+  await expect(field).toHaveAttribute('aria-hidden', 'true');
+  await expect.poll(() => field.evaluate((canvas: HTMLCanvasElement) => canvas.width)).toBeGreaterThan(0);
+});
+
 test('a skill page shows its instructions and goes back to the catalog', async ({ page }) => {
   await page.goto('/skills/example-skill/');
 

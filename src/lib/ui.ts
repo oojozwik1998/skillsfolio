@@ -124,3 +124,19 @@ export function pageTitleClasses(size: PageHeaderSize = 'large'): string {
 export function disclosureId(prefix: string, number: number): string {
   return `${prefix}-${number}`;
 }
+
+export const asciiFieldLayouts = ['page', 'contained'] as const;
+export type AsciiFieldLayout = (typeof asciiFieldLayouts)[number];
+
+const asciiFieldLayoutClasses: Record<AsciiFieldLayout, string> = {
+  page: 'ascii-field-mask absolute inset-x-0 top-0 -z-10 h-[36rem]',
+  contained: 'block h-[28rem]',
+};
+
+/**
+ * `page` sits behind the top of the page and fades out under the title.
+ * `contained` fills its parent's width at a fixed height, for previews.
+ */
+export function asciiFieldClasses(layout: AsciiFieldLayout = 'page'): string {
+  return `text-text-subtle pointer-events-none w-full ${asciiFieldLayoutClasses[layout]}`;
+}

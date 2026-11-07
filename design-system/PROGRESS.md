@@ -33,6 +33,8 @@
 | B3 | code | card, link-card, copy-command, callout | completed | qa/code-report-B3.json |
 | B4 | code | disclosure, page-header, section-header | completed | qa/code-report-B4.json |
 | B1 | code | foundation:color, foundation:typography, foundation:spacing | completed | qa/code-report-B1.json |
+| B5 | code | ascii-field | completed | qa/code-report-B5.json |
+| B6 | code | ascii-field | completed | qa/code-report-B6.json |
 
 ## Komponenty
 
@@ -50,6 +52,7 @@
 | Disclosure | needs_review | n/a | pass | n/a |
 | Page header | needs_review | n/a | pass | n/a |
 | Section header | needs_review | n/a | pass | n/a |
+| ASCII field | needs_review | n/a | pass | n/a |
 
 ## Blokery
 
@@ -61,11 +64,11 @@ _brak_
 
 ## Ostatnia zakończona operacja
 
-Decision D-019: Disclosure without a border (approved)
+Batch B6 (code: ascii-field) → completed
 
 ## Ostatnia walidacja
 
-2026-11-07T21:41:12.097Z: 0 error(s), 0 warning(s)
+2026-11-07T22:24:25.854Z: 0 error(s), 0 warning(s)
 
 ## Jak wznowić
 

@@ -4,7 +4,7 @@
   "objective": "Code design system for the Skills Folio catalog: tokens from design.md, Astro components with documented states",
   "language": "pl",
   "createdAt": "2026-11-07T19:12:12.741Z",
-  "updatedAt": "2026-11-07T21:41:12.097Z",
+  "updatedAt": "2026-11-07T22:24:25.854Z",
   "modes": {
     "input": "existing",
     "target": "code",
@@ -189,19 +189,49 @@
       "notes": [],
       "updatedAt": "2026-11-07T20:28:17.056Z",
       "title": "Foundations: token export and Storybook with @storybook-astro/framework"
+    },
+    {
+      "id": "B5",
+      "target": "code",
+      "items": [
+        "ascii-field"
+      ],
+      "status": "completed",
+      "versionId": null,
+      "evidence": [
+        "qa/code-report-B5.json"
+      ],
+      "notes": [],
+      "updatedAt": "2026-11-07T21:56:33.762Z",
+      "title": "ASCII field (hero background)"
+    },
+    {
+      "id": "B6",
+      "target": "code",
+      "items": [
+        "ascii-field"
+      ],
+      "status": "completed",
+      "versionId": null,
+      "evidence": [
+        "qa/code-report-B6.json"
+      ],
+      "notes": [],
+      "updatedAt": "2026-11-07T22:24:25.851Z",
+      "title": "ASCII field: dot-matrix letters"
     }
   ],
   "next": "Pick open items from design-system/HANDOFF.md (suggested first: add pnpm build-storybook to CI)",
   "blockers": [],
   "knownIssues": [],
-  "lastOperation": "Decision D-019: Disclosure without a border (approved)",
+  "lastOperation": "Batch B6 (code: ascii-field) → completed",
   "renderedHashes": {
-    "PROGRESS.md": "04332216e413b4f4",
-    "DECISIONS.md": "b1f5f021120f5fcb",
-    "DS-BLUEPRINT.md": "dbaf6456e42fd177"
+    "PROGRESS.md": "bd1479bec6a540c9",
+    "DECISIONS.md": "07b5f79e16bc013a",
+    "DS-BLUEPRINT.md": "ae93fd3ef154d8c5"
   },
   "lastValidation": {
-    "at": "2026-11-07T21:41:12.097Z",
+    "at": "2026-11-07T22:24:25.854Z",
     "errors": 0,
     "warnings": 0
   }

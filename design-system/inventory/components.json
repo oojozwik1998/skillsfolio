@@ -359,6 +359,31 @@
       "recommendation": "keep",
       "priority": "P1",
       "decision": "keep"
+    },
+    {
+      "id": "component:ascii-field",
+      "kind": "component",
+      "label": "ASCII field",
+      "seenIn": [
+        "screen:catalog"
+      ],
+      "frequency": 1,
+      "complexity": "medium",
+      "importance": "medium",
+      "variations": [
+        "page background behind the hero",
+        "contained preview"
+      ],
+      "observedStates": [
+        "default",
+        "dots scatter on hover",
+        "reduced motion"
+      ],
+      "inferredMissingStates": [],
+      "existingComponent": "code:src/components/ui/ascii-field/AsciiField.astro",
+      "recommendation": "keep",
+      "priority": "P2",
+      "decision": "keep"
     }
   ]
 }

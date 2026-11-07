@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import AsciiField from '../components/ui/ascii-field/AsciiField.astro';
 import LinkCard from '../components/ui/link-card/LinkCard.astro';
 import PageHeader from '../components/ui/page-header/PageHeader.astro';
 import { site } from '../config';
@@ -11,6 +12,7 @@ const skills = sortByName([...(await getCollection('skills')), ...externalSkills
 ---
 
 <Base>
+  <AsciiField />
   <PageHeader title={site.name} lead={site.description} class="max-w-2xl" />
 
   {

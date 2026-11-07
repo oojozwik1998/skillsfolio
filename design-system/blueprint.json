@@ -1885,6 +1885,74 @@
         "path": "src/components/ui/section-header",
         "story": "src/components/ui/section-header/SectionHeader.stories.ts"
       }
+    },
+    {
+      "id": "ascii-field",
+      "label": "ASCII field",
+      "status": "needs_review",
+      "tier": "pattern",
+      "priority": "P2",
+      "purpose": "Decorative animated field of large dot-matrix letters behind the home page hero",
+      "usage": "Home page hero only, once per page. Decoration, never content: do not put meaning in it, do not use it behind body text or cards, do not stack two fields. Use layout contained only for previews",
+      "variants": {
+        "layout": [
+          "page",
+          "contained"
+        ]
+      },
+      "states": [
+        "default",
+        "hover (dots scatter)",
+        "reduced motion (static frame)",
+        "paused (off screen or tab hidden)"
+      ],
+      "properties": [
+        {
+          "name": "layout",
+          "type": "enum"
+        }
+      ],
+      "slots": [],
+      "behavior": [
+        "Letters A-Z 0-9 drawn from a 5 x 7 dot matrix: 2px dots on a 5px pitch, about 25 x 35 px per letter",
+        "About 40% of letters change every second; dots fade between the old and the new letter in about 0.2 s",
+        "Large abstract wave shapes drift through the field and set brightness (base opacity 0.05, up to 0.6 inside a wave)",
+        "Mouse within 200px breaks letters apart over a wide area: each dot drifts out at its own angle (up to about 75 degrees off straight) with its own strength and a light random kick; displaced dots are slightly brighter",
+        "A weak spring with damping brings dots back calmly; letters re-form in about 1.5 s after the mouse leaves; touch does not trigger scattering",
+        "Physics and drawing run every animation frame; pauses when off screen or when the tab is hidden",
+        "Redraws on system color scheme change and on data-theme change",
+        "layout page: absolute at the top of the page, full viewport width, 36rem high, behind content; a mask fades it toward the bottom and dims it behind the title",
+        "layout contained: in the flow, full parent width, 28rem high, no mask"
+      ],
+      "accessibility": [
+        "aria-hidden and pointer-events none; never carries information",
+        "prefers-reduced-motion: one static frame, no animation and no reaction to the mouse (WCAG 2.3.3)",
+        "The mask keeps the title and lead readable; dots stay at low opacity"
+      ],
+      "tokens": [
+        "color.text.subtle"
+      ],
+      "textStyles": [],
+      "dependencies": [],
+      "evidence": [
+        "screen:catalog"
+      ],
+      "qa": {
+        "figma": "n/a",
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B6.json"
+      },
+      "responsive": [
+        "Below 640px the title mask is wider and centred",
+        "Grid is rebuilt on resize and scaled for the device pixel ratio"
+      ],
+      "code": {
+        "package": "src/components/ui",
+        "export": "AsciiField",
+        "path": "src/components/ui/ascii-field",
+        "story": "src/components/ui/ascii-field/AsciiField.stories.ts"
+      }
     }
   ],
   "exceptions": []
