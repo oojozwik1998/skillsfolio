@@ -1,0 +1,18 @@
+---
+interface Props {
+  name: string;
+  description: string;
+}
+
+const { name, description } = Astro.props;
+---
+
+<li class="contents">
+  <a
+    href={`/skills/${name}/`}
+    class="bg-surface-default hover:bg-surface-hovered border-border-subtle rounded-16 flex flex-col gap-3 border p-8"
+  >
+    <h2 class="type-heading-small">{name}</h2>
+    <p class="type-text-medium text-text-subtle">{description}</p>
+  </a>
+</li>
