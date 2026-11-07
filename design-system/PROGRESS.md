@@ -6,7 +6,7 @@
 
 ## Następny krok
 
-**Push ds/B4 after owner approval; then pick open items from HANDOFF.md**
+**Pick open items from design-system/HANDOFF.md (suggested first: add pnpm build-storybook to CI)**
 
 ## Ustawienia
 
@@ -61,11 +61,11 @@ _brak_
 
 ## Ostatnia zakończona operacja
 
-Decision D-018: Delivered with open items (approved)
+Decision D-019: Disclosure without a border (approved)
 
 ## Ostatnia walidacja
 
-2026-11-07T21:03:48.607Z: 0 error(s), 0 warning(s)
+2026-11-07T21:41:12.097Z: 0 error(s), 0 warning(s)
 
 ## Jak wznowić
 

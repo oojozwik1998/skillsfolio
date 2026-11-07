@@ -311,6 +311,22 @@
       "alternatives": [],
       "affects": [],
       "supersedes": null
+    },
+    {
+      "id": "D-019",
+      "at": "2026-11-07T21:41:12.094Z",
+      "stage": "5",
+      "gate": null,
+      "title": "Disclosure without a border",
+      "choice": "approved",
+      "proposedBy": "agent",
+      "approvedBy": "user",
+      "rationale": "Owner: like cards in design.md (D-008), disclosures have no border; open state shown by the chevron and the content",
+      "alternatives": [],
+      "affects": [
+        "component:disclosure"
+      ],
+      "supersedes": null
     }
   ]
 }

@@ -4,7 +4,7 @@
   "objective": "Code design system for the Skills Folio catalog: tokens from design.md, Astro components with documented states",
   "language": "pl",
   "createdAt": "2026-11-07T19:12:12.741Z",
-  "updatedAt": "2026-11-07T21:03:48.607Z",
+  "updatedAt": "2026-11-07T21:41:12.097Z",
   "modes": {
     "input": "existing",
     "target": "code",
@@ -191,17 +191,17 @@
       "title": "Foundations: token export and Storybook with @storybook-astro/framework"
     }
   ],
-  "next": "Push ds/B4 after owner approval; then pick open items from HANDOFF.md",
+  "next": "Pick open items from design-system/HANDOFF.md (suggested first: add pnpm build-storybook to CI)",
   "blockers": [],
   "knownIssues": [],
-  "lastOperation": "Decision D-018: Delivered with open items (approved)",
+  "lastOperation": "Decision D-019: Disclosure without a border (approved)",
   "renderedHashes": {
-    "PROGRESS.md": "f0f4376126082c89",
-    "DECISIONS.md": "747ccc0cf6aedfde",
+    "PROGRESS.md": "04332216e413b4f4",
+    "DECISIONS.md": "b1f5f021120f5fcb",
     "DS-BLUEPRINT.md": "dbaf6456e42fd177"
   },
   "lastValidation": {
-    "at": "2026-11-07T21:03:48.607Z",
+    "at": "2026-11-07T21:41:12.097Z",
     "errors": 0,
     "warnings": 0
   }
