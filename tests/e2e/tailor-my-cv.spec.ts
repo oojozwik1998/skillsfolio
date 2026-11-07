@@ -55,3 +55,15 @@ test('the layout comparison images load', async ({ page }) => {
     await expect.poll(() => image.evaluate((el: HTMLImageElement) => el.naturalWidth)).toBeGreaterThan(0);
   }
 });
+
+test('a link to a step opens it on arrival and again after it was closed', async ({ page }) => {
+  await page.goto('/skills/tailor-my-cv/#step-5');
+  const step = page.locator('#step-5');
+  await expect(step).toHaveAttribute('open');
+
+  await step.locator('summary').click();
+  await expect(step).not.toHaveAttribute('open');
+  await page.getByRole('link', { name: /Assesses the fit/ }).click();
+
+  await expect(step).toHaveAttribute('open');
+});

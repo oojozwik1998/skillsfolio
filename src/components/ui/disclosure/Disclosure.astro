@@ -1,0 +1,55 @@
+---
+/**
+ * Expandable section with a summary line, built on native details/summary, so
+ * Enter and Space toggle it. It opens when a link to its id is followed. The
+ * chevron is decorative.
+ */
+import { type BadgeTone, badgeLabels } from '../../../lib/ui';
+import Badge from '../badge/Badge.astro';
+import Icon from '../icon/Icon.astro';
+
+export interface Props {
+  id: string;
+  title: string;
+  number?: number;
+  badge?: BadgeTone;
+  open?: boolean;
+}
+
+const { id, title, number, badge, open = false } = Astro.props;
+---
+
+<details
+  id={id}
+  open={open}
+  class="group bg-surface-default border-border-subtle open:border-border-default rounded-16 scroll-mt-(--ds-space-24) border-(length:--ds-border-width-default)"
+  data-disclosure
+>
+  <summary
+    class="hover:bg-surface-hovered rounded-16 flex cursor-pointer list-none items-center gap-(--ds-space-12) p-(--ds-space-16) sm:px-(--ds-space-24) [&::-webkit-details-marker]:hidden"
+  >
+    {number !== undefined && <span class="type-text-small text-text-subtle w-(--ds-space-16) shrink-0">{number}</span>}
+    <span class="type-heading-small min-w-0 flex-1">{title}</span>
+    {badge && <Badge tone={badge}>{badgeLabels[badge]}</Badge>}
+    <Icon name="chevron-down" class="text-text-subtle transition-transform group-open:rotate-180 motion-reduce:transition-none" />
+  </summary>
+  <div class="px-(--ds-space-16) pt-(--ds-space-8) pb-(--ds-space-24) sm:pr-(--ds-space-24) sm:pl-13">
+    <slot />
+  </div>
+</details>
+
+<script>
+  // Open the disclosure a link points to, also when the same link is followed again.
+  function openTarget(hash: string) {
+    if (!hash) return;
+    const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+    if (target instanceof HTMLDetailsElement && target.hasAttribute('data-disclosure')) target.open = true;
+  }
+
+  openTarget(location.hash);
+  window.addEventListener('hashchange', () => openTarget(location.hash));
+  document.addEventListener('click', (event) => {
+    const link = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>('a[href^="#"]') : null;
+    if (link) openTarget(link.hash);
+  });
+</script>

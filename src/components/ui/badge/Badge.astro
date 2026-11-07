@@ -1,0 +1,16 @@
+---
+/**
+ * Short actor label next to a title. The text label is always present,
+ * so color is never the only signal.
+ */
+import { type BadgeTone, badgeClasses } from '../../../lib/ui';
+
+export interface Props {
+  tone: BadgeTone;
+  class?: string;
+}
+
+const { tone, class: className } = Astro.props;
+---
+
+<span class:list={[badgeClasses(tone), className]}><slot /></span>

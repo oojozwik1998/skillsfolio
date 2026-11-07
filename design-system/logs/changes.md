@@ -1,0 +1,81 @@
+# Change log
+
+- 2026-11-07T19:12:12.745Z - Project "Skills Folio" initialized (existing/code/prototype)
+- 2026-11-07T19:12:12.797Z - set project:capabilities.code = {"repoPath":".","packagePath":null,"stack":{"repo":".","hasPackageJson":true,"notes":["React + TypeScript without Storybook: Storybook must be added (ask first) for the guaranteed path."],"packageManager":"pnpm","monorepo":false,"frameworks":[{"name":"react","version":"^19.3.1"}],"metaFramework":["astro"],"typescript":true,"styling":["tailwind"],"headlessLibraries":[],"storybook":null,"testing":["vitest","@playwright/test"],"lint":["eslint"],"suggestedCommands":{"typecheck":"pnpm typecheck","lint":"pnpm lint","test":"pnpm test","storybookBuild":null,"build":"pnpm build"},"supportTier":"full"},"supportTier":"full","commands":{"typecheck":"pnpm typecheck","lint":"pnpm lint","test":"pnpm test","storybookBuild":null,"build":"pnpm build"},"checkedAt":"2026-11-07T19:12:12.768Z","notes":["React + TypeScript without Storybook: Storybook must be added (ask first) for the guaranteed path."]}
+- 2026-11-07T19:12:34.716Z - set project:capabilities.code.supportTier = "review"
+- 2026-11-07T19:12:34.739Z - Stack detection reported supportTier full because React is installed for the Keystatic panel; site components are Astro, so the tier is set to review.
+- 2026-11-07T19:14:07.489Z - set project:capabilities.code.packagePath = "src/components/ui"
+- 2026-11-07T19:14:07.516Z - set project:capabilities.code.commands = {"typecheck":"pnpm typecheck","lint":"pnpm lint","test":"pnpm test","a11y":"pnpm test:e2e","build":"pnpm build","storybookBuild":null}
+- 2026-11-07T19:14:07.543Z - Decision D-001: Code target, prototype depth, design.md as the source of truth (approved)
+- 2026-11-07T19:14:07.569Z - Decision D-002: Storybook with @storybook-astro/framework (approved)
+- 2026-11-07T19:14:07.595Z - Decision D-003: Components in src/components/ui, state files public in the repo (approved)
+- 2026-11-07T19:14:07.621Z - Stage 0 → 1
+- 2026-11-07T19:14:44.587Z - Merged into screens: items: +3 new, 0 updated
+- 2026-11-07T19:14:44.613Z - Merged into inventory: items: +14 new, 0 updated
+- 2026-11-07T19:17:40.102Z - Decision D-004: Shortlist: 12 components plus Prose (approved)
+- 2026-11-07T19:17:40.129Z - Decision D-005: Card and LinkCard as separate components (alternative)
+- 2026-11-07T19:17:40.155Z - Decision D-006: Visual direction review skipped (skipped)
+- 2026-11-07T19:17:40.182Z - Stage 1 → 3
+- 2026-11-07T19:18:07.649Z - Merged into inventory: items: +0 new, 14 updated
+- 2026-11-07T19:18:34.414Z - set blueprint:themes = ["light","dark"]
+- 2026-11-07T19:18:44.633Z - Merged into blueprint: tokens: +81 new, 0 updated; textStyles: +10 new, 0 updated
+- 2026-11-07T19:21:01.130Z - Merged into blueprint: tokens: +2 new, 81 updated; textStyles: +0 new, 10 updated
+- 2026-11-07T19:21:01.160Z - set blueprint:naming = {"tokens":"dot.separated.lowercase","cssVariables":"--color-surface-default style, exposed as Tailwind utilities (bg-surface-default)","textStyles":"type-<style> utilities","components":"PascalCase in code","variantProps":"lowercase keys and values"}
+- 2026-11-07T19:21:01.189Z - set blueprint:principles = ["WCAG 2.2 AA as the target; automated checks are evidence, not certification","Controls at least 44px high; focus ring 2px border.focus with 2px offset","Never use color alone to show state","Respect prefers-reduced-motion","Light and dark mode follow the system setting","Only tokens in components: no raw colors, sizes or off-scale spacing","Emphasis through color (text.default over text.subtle), not font weight; only Poppins 400 is loaded","Primary button is out of the prototype: white on action-primary is 4.0:1, below 4.5:1 for 14px text"]
+- 2026-11-07T19:21:01.217Z - Decision D-007: Actor tokens color.actor.skill and color.actor.you (approved)
+- 2026-11-07T19:21:01.247Z - Decision D-008: Cards exactly as design.md: padding 2rem, 2rem between children, no border (alternative)
+- 2026-11-07T19:21:01.276Z - Decision D-009: heading-small line height 1.3 (approved)
+- 2026-11-07T19:21:01.303Z - Decision D-010: Foundations approved (approved)
+- 2026-11-07T19:21:01.333Z - Stage 3 → 4
+- 2026-11-07T19:22:08.348Z - Merged into blueprint: components: +12 new, 0 updated
+- 2026-11-07T19:23:34.139Z - Decision D-011: Blueprint and four code batches (approved)
+- 2026-11-07T19:23:34.224Z - Batch B2 (code: icon, inline-code, link, badge, button) → pending
+- 2026-11-07T19:23:34.262Z - Batch B3 (code: card, link-card, copy-command, callout) → pending
+- 2026-11-07T19:23:34.318Z - Batch B4 (code: disclosure, page-header, section-header) → pending
+- 2026-11-07T19:23:34.353Z - Stage 4 → 5
+- 2026-11-07T19:23:42.593Z - Batch B1 (code: foundation:color, foundation:typography, foundation:spacing) → pending
+- 2026-11-07T19:45:19.304Z - Batch B1 (code: foundation:color, foundation:typography, foundation:spacing) → in_progress
+- 2026-11-07T19:49:25.302Z - Decision D-012: Dark theme follows the system setting without JavaScript (approved)
+- 2026-11-07T19:49:25.334Z - Decision D-013: Rem units in code for font sizes and spacing (approved)
+- 2026-11-07T19:49:25.365Z - set blueprint:naming.cssUnits = {"rem":true,"base":16,"keepPx":["border.width"]}
+- 2026-11-07T19:49:25.397Z - set blueprint:naming.systemTheme = {"dark":"dark","light":"light"}
+- 2026-11-07T19:55:11.593Z - set project:capabilities.code.commands = {"typecheck":"pnpm typecheck","lint":"pnpm lint","test":"pnpm test","a11y":"pnpm test:e2e","build":"pnpm build","storybookBuild":"pnpm build-storybook"}
+- 2026-11-07T19:55:33.543Z - B1 code: tokens exported to src/components/ui/tokens (rem units, system dark mode), global.css wired to --ds-* variables, info/warning utilities replaced by actor-skill/actor-you, heading-small overrides removed, Storybook 10.6 + @storybook-astro/framework 1.15 with Foundations stories, pnpm check exit 0
+- 2026-11-07T19:55:33.572Z - set project:capabilities.code.notes = ["Storybook 10.6 with @storybook-astro/framework 1.15 works on Astro 7 (D-002 verified in B1)","Storybook a11y addon runs in the UI only; automated axe checks run in pnpm test:e2e against the site","Exporter fixed in ds-code: rem units, prefers-color-scheme dark block, oklch colors in DTCG"]
+- 2026-11-07T20:28:17.025Z - Decision D-014: B1 foundations accepted (approved)
+- 2026-11-07T20:28:17.061Z - Batch B1 (code: foundation:color, foundation:typography, foundation:spacing) → completed
+- 2026-11-07T20:28:52.881Z - set project:capabilities.code.repoPath = "."
+- 2026-11-07T20:28:52.909Z - set project:capabilities.code.stack.repo = "."
+- 2026-11-07T20:29:08.718Z - Batch B2 (code: icon, inline-code, link, badge, button) → in_progress
+- 2026-11-07T20:31:56.425Z - set blueprint:components[icon].code = {"package":"src/components/ui","export":"Icon","path":"src/components/ui/icon","story":"src/components/ui/icon/Icon.stories.ts"}
+- 2026-11-07T20:31:56.453Z - set blueprint:components[inline-code].code = {"package":"src/components/ui","export":"InlineCode","path":"src/components/ui/inline-code","story":"src/components/ui/inline-code/InlineCode.stories.ts"}
+- 2026-11-07T20:31:56.482Z - set blueprint:components[link].code = {"package":"src/components/ui","export":"TextLink","path":"src/components/ui/link","story":"src/components/ui/link/TextLink.stories.ts"}
+- 2026-11-07T20:31:56.510Z - set blueprint:components[badge].code = {"package":"src/components/ui","export":"Badge","path":"src/components/ui/badge","story":"src/components/ui/badge/Badge.stories.ts"}
+- 2026-11-07T20:31:56.538Z - set blueprint:components[button].code = {"package":"src/components/ui","export":"Button","path":"src/components/ui/button","story":"src/components/ui/button/Button.stories.ts"}
+- 2026-11-07T20:31:59.200Z - Merged into blueprint: components: +0 new, 5 updated
+- 2026-11-07T20:32:17.297Z - Merged into blueprint: components: +0 new, 5 updated
+- 2026-11-07T20:32:37.688Z - set project:capabilities.code.commands.a11y = "E2E_PORT=4329 pnpm test:e2e"
+- 2026-11-07T20:32:47.798Z - Merged into blueprint: components: +0 new, 5 updated
+- 2026-11-07T20:33:07.359Z - B2 code: Icon, InlineCode, TextLink, Badge, Button in src/components/ui with stories; site migrated (header and back links, source links, actor badges, three icons, copy button, inline-code utility replaces .rich-code and duplicated code rules); E2E_PORT added to playwright config; all five checks pass
+- 2026-11-07T20:35:56.806Z - Decision D-015: B2 primitives accepted (approved)
+- 2026-11-07T20:35:56.835Z - Batch B2 (code: icon, inline-code, link, badge, button) → completed
+- 2026-11-07T20:35:56.935Z - Batch B3 (code: card, link-card, copy-command, callout) → in_progress
+- 2026-11-07T20:37:20.583Z - set blueprint:components[card].code = {"package":"src/components/ui","export":"Card","path":"src/components/ui/card","story":"src/components/ui/card/Card.stories.ts"}
+- 2026-11-07T20:37:20.612Z - set blueprint:components[link-card].code = {"package":"src/components/ui","export":"LinkCard","path":"src/components/ui/link-card","story":"src/components/ui/link-card/LinkCard.stories.ts"}
+- 2026-11-07T20:37:20.642Z - set blueprint:components[copy-command].code = {"package":"src/components/ui","export":"CopyCommand","path":"src/components/ui/copy-command","story":"src/components/ui/copy-command/CopyCommand.stories.ts"}
+- 2026-11-07T20:37:20.682Z - set blueprint:components[callout].code = {"package":"src/components/ui","export":"Callout","path":"src/components/ui/callout","story":"src/components/ui/callout/Callout.stories.ts"}
+- 2026-11-07T20:37:33.856Z - Merged into blueprint: components: +0 new, 4 updated
+- 2026-11-07T20:38:00.528Z - B3 code: Card, LinkCard, CopyCommand, Callout with stories; SkillCard and InstallCommand removed; truth and memory cards, catalog list, install commands, loop note and From testing examples migrated; copy logic moved to src/lib/ui.ts; all five checks pass
+- 2026-11-07T20:44:55.876Z - Decision D-016: B3 composites accepted (approved)
+- 2026-11-07T20:44:55.909Z - Batch B3 (code: card, link-card, copy-command, callout) → completed
+- 2026-11-07T20:44:56.049Z - Batch B4 (code: disclosure, page-header, section-header) → in_progress
+- 2026-11-07T20:46:19.177Z - set blueprint:components[disclosure].code = {"package":"src/components/ui","export":"Disclosure","path":"src/components/ui/disclosure","story":"src/components/ui/disclosure/Disclosure.stories.ts"}
+- 2026-11-07T20:46:19.207Z - set blueprint:components[page-header].code = {"package":"src/components/ui","export":"PageHeader","path":"src/components/ui/page-header","story":"src/components/ui/page-header/PageHeader.stories.ts"}
+- 2026-11-07T20:46:19.235Z - set blueprint:components[section-header].code = {"package":"src/components/ui","export":"SectionHeader","path":"src/components/ui/section-header","story":"src/components/ui/section-header/SectionHeader.stories.ts"}
+- 2026-11-07T20:46:31.754Z - Merged into blueprint: components: +0 new, 3 updated
+- 2026-11-07T20:46:54.394Z - B4 code: Disclosure, PageHeader, SectionHeader with stories; all three pages use PageHeader, tailor-my-cv uses SectionHeader for 7 sections and Disclosure for 9 steps; disclosure opens from any link to its id (page script removed); new e2e test for anchor opening; all five checks pass (18 browser tests)
+- 2026-11-07T20:50:40.481Z - Decision D-017: B4 patterns accepted (approved)
+- 2026-11-07T20:50:40.511Z - Batch B4 (code: disclosure, page-header, section-header) → completed
+- 2026-11-07T20:50:50.276Z - set project:stage = "6"
+- 2026-11-07T20:51:13.923Z - Stage 6: HANDOFF.md written (inventory, usage rules, token workflow, setup, open items); no parity (code target)
+- 2026-11-07T21:03:48.577Z - Decision D-018: Delivered with open items (approved)

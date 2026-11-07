@@ -1,0 +1,19 @@
+---
+/**
+ * Heading and optional subtitle for a page section. Renders an h2 with the
+ * given id; label the section with aria-labelledby={id}.
+ */
+export interface Props {
+  id: string;
+  title: string;
+  subtitle?: string;
+  class?: string;
+}
+
+const { id, title, subtitle, class: className } = Astro.props;
+---
+
+<div class:list={['flex flex-col gap-(--ds-space-8)', className]}>
+  <h2 id={id} class="type-heading-large">{title}</h2>
+  {subtitle && <p class="type-text-medium text-text-subtle max-w-2xl">{subtitle}</p>}
+</div>

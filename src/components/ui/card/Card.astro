@@ -1,0 +1,17 @@
+---
+/**
+ * Static block grouping related content, for example a list of facts.
+ * Use LinkCard when the whole block navigates. The accent edge is decoration;
+ * the title inside carries the meaning.
+ */
+import { type CardAccent, cardClasses } from '../../../lib/ui';
+
+export interface Props {
+  accent?: CardAccent;
+  class?: string;
+}
+
+const { accent = 'none', class: className } = Astro.props;
+---
+
+<div class:list={[cardClasses(accent), className]}><slot /></div>

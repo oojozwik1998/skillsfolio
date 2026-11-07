@@ -1,0 +1,364 @@
+{
+  "schemaVersion": "1",
+  "items": [
+    {
+      "id": "component:card",
+      "kind": "component",
+      "label": "Card",
+      "seenIn": [
+        "screen:catalog",
+        "screen:tailor-my-cv"
+      ],
+      "frequency": 7,
+      "complexity": "low",
+      "importance": "high",
+      "variations": [
+        "link card, padding 2rem, hover",
+        "static card, padding 1.5rem",
+        "static card with 3px colored top border"
+      ],
+      "observedStates": [
+        "default",
+        "hover (link card)"
+      ],
+      "inferredMissingStates": [
+        "focus-visible styling beyond the global outline",
+        "pressed"
+      ],
+      "existingComponent": "code:src/components/SkillCard.astro (link card only)",
+      "recommendation": "standardize",
+      "priority": "P0",
+      "decision": "standardize"
+    },
+    {
+      "id": "component:button",
+      "kind": "component",
+      "label": "Button",
+      "seenIn": [
+        "screen:skill-detail",
+        "screen:tailor-my-cv"
+      ],
+      "frequency": 2,
+      "complexity": "low",
+      "importance": "high",
+      "variations": [
+        "secondary, 44px"
+      ],
+      "observedStates": [
+        "default",
+        "hover",
+        "pressed",
+        "focus-visible",
+        "copied",
+        "copy failed"
+      ],
+      "inferredMissingStates": [
+        "disabled",
+        "primary appearance (token exists, unused)"
+      ],
+      "existingComponent": "code:inline in src/components/InstallCommand.astro",
+      "recommendation": "standardize",
+      "priority": "P0",
+      "decision": "standardize"
+    },
+    {
+      "id": "component:copy-command",
+      "kind": "component",
+      "label": "Copy command",
+      "seenIn": [
+        "screen:skill-detail",
+        "screen:tailor-my-cv"
+      ],
+      "frequency": 2,
+      "complexity": "medium",
+      "importance": "high",
+      "variations": [
+        "npx skills add",
+        "git clone"
+      ],
+      "observedStates": [
+        "default",
+        "copied",
+        "copy failed",
+        "wrapped on phones"
+      ],
+      "inferredMissingStates": [],
+      "existingComponent": "code:src/components/InstallCommand.astro",
+      "recommendation": "keep",
+      "priority": "P0",
+      "decision": "keep"
+    },
+    {
+      "id": "component:link",
+      "kind": "component",
+      "label": "Text link",
+      "seenIn": [
+        "screen:catalog",
+        "screen:skill-detail",
+        "screen:tailor-my-cv"
+      ],
+      "frequency": 5,
+      "complexity": "low",
+      "importance": "medium",
+      "variations": [
+        "header site name, default text",
+        "back link 'All skills', subtle",
+        "'View source / repository', subtle"
+      ],
+      "observedStates": [
+        "default",
+        "hover underline",
+        "focus-visible"
+      ],
+      "inferredMissingStates": [
+        "visited",
+        "external link indicator"
+      ],
+      "existingComponent": "none (repeated classes)",
+      "recommendation": "standardize",
+      "priority": "P1",
+      "decision": "standardize"
+    },
+    {
+      "id": "component:badge",
+      "kind": "component",
+      "label": "Badge",
+      "seenIn": [
+        "screen:tailor-my-cv"
+      ],
+      "frequency": 9,
+      "complexity": "low",
+      "importance": "medium",
+      "variations": [
+        "You",
+        "Skill"
+      ],
+      "observedStates": [
+        "default"
+      ],
+      "inferredMissingStates": [],
+      "existingComponent": "none (inline classes)",
+      "recommendation": "standardize",
+      "priority": "P1",
+      "decision": "standardize"
+    },
+    {
+      "id": "component:disclosure",
+      "kind": "component",
+      "label": "Disclosure",
+      "seenIn": [
+        "screen:tailor-my-cv"
+      ],
+      "frequency": 9,
+      "complexity": "medium",
+      "importance": "medium",
+      "variations": [
+        "number, title, badge, chevron"
+      ],
+      "observedStates": [
+        "closed",
+        "open",
+        "hover",
+        "focus-visible"
+      ],
+      "inferredMissingStates": [],
+      "existingComponent": "none (inline details element)",
+      "recommendation": "standardize",
+      "priority": "P1",
+      "decision": "standardize"
+    },
+    {
+      "id": "component:callout",
+      "kind": "component",
+      "label": "Callout",
+      "seenIn": [
+        "screen:tailor-my-cv"
+      ],
+      "frequency": 8,
+      "complexity": "low",
+      "importance": "low",
+      "variations": [
+        "dashed note with icon",
+        "subtle box 'From testing'"
+      ],
+      "observedStates": [
+        "default"
+      ],
+      "inferredMissingStates": [],
+      "existingComponent": "none",
+      "recommendation": "standardize",
+      "priority": "P2",
+      "decision": "standardize"
+    },
+    {
+      "id": "component:inline-code",
+      "kind": "component",
+      "label": "Inline code",
+      "seenIn": [
+        "screen:skill-detail",
+        "screen:tailor-my-cv"
+      ],
+      "frequency": 20,
+      "complexity": "low",
+      "importance": "medium",
+      "variations": [
+        "code in prose",
+        "code in lists and tables"
+      ],
+      "observedStates": [
+        "default"
+      ],
+      "inferredMissingStates": [],
+      "existingComponent": "code:.rich-code and .skill-body code in global.css (duplicated rule)",
+      "recommendation": "standardize",
+      "priority": "P1",
+      "decision": "standardize"
+    },
+    {
+      "id": "component:page-header",
+      "kind": "component",
+      "label": "Page header",
+      "seenIn": [
+        "screen:catalog",
+        "screen:skill-detail",
+        "screen:tailor-my-cv"
+      ],
+      "frequency": 3,
+      "complexity": "low",
+      "importance": "medium",
+      "variations": [
+        "display-large title + lead",
+        "display-small title + lead",
+        "with back link"
+      ],
+      "observedStates": [
+        "default"
+      ],
+      "inferredMissingStates": [],
+      "existingComponent": "none",
+      "recommendation": "standardize",
+      "priority": "P1",
+      "decision": "standardize"
+    },
+    {
+      "id": "component:section-header",
+      "kind": "component",
+      "label": "Section header",
+      "seenIn": [
+        "screen:skill-detail",
+        "screen:tailor-my-cv"
+      ],
+      "frequency": 8,
+      "complexity": "low",
+      "importance": "low",
+      "variations": [
+        "heading-large + subtitle",
+        "heading-small only"
+      ],
+      "observedStates": [
+        "default"
+      ],
+      "inferredMissingStates": [],
+      "existingComponent": "none",
+      "recommendation": "standardize",
+      "priority": "P2",
+      "decision": "standardize"
+    },
+    {
+      "id": "component:icon",
+      "kind": "component",
+      "label": "Icon",
+      "seenIn": [
+        "screen:tailor-my-cv"
+      ],
+      "frequency": 4,
+      "complexity": "low",
+      "importance": "medium",
+      "variations": [
+        "arrow",
+        "chevron",
+        "loop"
+      ],
+      "observedStates": [
+        "default"
+      ],
+      "inferredMissingStates": [],
+      "existingComponent": "none (inline SVG)",
+      "recommendation": "standardize",
+      "priority": "P1",
+      "decision": "standardize"
+    },
+    {
+      "id": "component:process-flow",
+      "kind": "component",
+      "label": "Process flow",
+      "seenIn": [
+        "screen:tailor-my-cv"
+      ],
+      "frequency": 1,
+      "complexity": "medium",
+      "importance": "low",
+      "variations": [
+        "lane of linked stages with arrows"
+      ],
+      "observedStates": [
+        "default",
+        "hover",
+        "focus-visible"
+      ],
+      "inferredMissingStates": [],
+      "existingComponent": "none",
+      "recommendation": "exclude",
+      "priority": "P3",
+      "decision": "exclude"
+    },
+    {
+      "id": "component:data-table",
+      "kind": "component",
+      "label": "Table",
+      "seenIn": [
+        "screen:tailor-my-cv"
+      ],
+      "frequency": 1,
+      "complexity": "medium",
+      "importance": "low",
+      "variations": [
+        "3 columns, row headers"
+      ],
+      "observedStates": [
+        "default"
+      ],
+      "inferredMissingStates": [
+        "tables inside SKILL.md (unstyled)"
+      ],
+      "existingComponent": "none",
+      "recommendation": "decide-later",
+      "priority": "P3",
+      "decision": "decide-later"
+    },
+    {
+      "id": "component:prose",
+      "kind": "component",
+      "label": "Prose",
+      "seenIn": [
+        "screen:skill-detail"
+      ],
+      "frequency": 1,
+      "complexity": "medium",
+      "importance": "high",
+      "variations": [
+        "rendered SKILL.md"
+      ],
+      "observedStates": [
+        "default"
+      ],
+      "inferredMissingStates": [
+        "tables, blockquotes, images, bold text"
+      ],
+      "existingComponent": "code:.skill-body in global.css",
+      "recommendation": "keep",
+      "priority": "P1",
+      "decision": "keep"
+    }
+  ]
+}

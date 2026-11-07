@@ -1,0 +1,1893 @@
+{
+  "schemaVersion": "1",
+  "themes": [
+    "light",
+    "dark"
+  ],
+  "principles": [
+    "WCAG 2.2 AA as the target; automated checks are evidence, not certification",
+    "Controls at least 44px high; focus ring 2px border.focus with 2px offset",
+    "Never use color alone to show state",
+    "Respect prefers-reduced-motion",
+    "Light and dark mode follow the system setting",
+    "Only tokens in components: no raw colors, sizes or off-scale spacing",
+    "Emphasis through color (text.default over text.subtle), not font weight; only Poppins 400 is loaded",
+    "Primary button is out of the prototype: white on action-primary is 4.0:1, below 4.5:1 for 14px text"
+  ],
+  "naming": {
+    "tokens": "dot.separated.lowercase",
+    "cssVariables": "--color-surface-default style, exposed as Tailwind utilities (bg-surface-default)",
+    "textStyles": "type-<style> utilities",
+    "components": "PascalCase in code",
+    "variantProps": "lowercase keys and values",
+    "cssUnits": {
+      "rem": true,
+      "base": 16,
+      "keepPx": [
+        "border.width"
+      ]
+    },
+    "systemTheme": {
+      "dark": "dark",
+      "light": "light"
+    }
+  },
+  "tokens": [
+    {
+      "id": "color.white",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(1 0 0)",
+      "status": "approved",
+      "evidence": [
+        "design.md:white"
+      ]
+    },
+    {
+      "id": "color.red.700",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.505 0.213 27.518)",
+      "status": "approved",
+      "evidence": [
+        "design.md:red-700"
+      ]
+    },
+    {
+      "id": "color.red.400",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.704 0.191 22.216)",
+      "status": "approved",
+      "evidence": [
+        "design.md:red-400"
+      ]
+    },
+    {
+      "id": "color.orange.950",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.266 0.079 36.259)",
+      "status": "approved",
+      "evidence": [
+        "design.md:orange-950"
+      ]
+    },
+    {
+      "id": "color.orange.700",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.553 0.195 38.402)",
+      "status": "approved",
+      "evidence": [
+        "design.md:orange-700"
+      ]
+    },
+    {
+      "id": "color.orange.400",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.75 0.183 55.934)",
+      "status": "approved",
+      "evidence": [
+        "design.md:orange-400"
+      ]
+    },
+    {
+      "id": "color.orange.200",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.901 0.076 70.697)",
+      "status": "approved",
+      "evidence": [
+        "design.md:orange-200"
+      ]
+    },
+    {
+      "id": "color.mist.950",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.148 0.004 228.8)",
+      "status": "approved",
+      "evidence": [
+        "design.md:mist-950"
+      ]
+    },
+    {
+      "id": "color.mist.900",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.218 0.008 223.9)",
+      "status": "approved",
+      "evidence": [
+        "design.md:mist-900"
+      ]
+    },
+    {
+      "id": "color.mist.800",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.275 0.011 216.9)",
+      "status": "approved",
+      "evidence": [
+        "design.md:mist-800"
+      ]
+    },
+    {
+      "id": "color.mist.700",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.378 0.015 216)",
+      "status": "approved",
+      "evidence": [
+        "design.md:mist-700"
+      ]
+    },
+    {
+      "id": "color.mist.600",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.45 0.017 213.2)",
+      "status": "approved",
+      "evidence": [
+        "design.md:mist-600"
+      ]
+    },
+    {
+      "id": "color.mist.50",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.987 0.002 197.1)",
+      "status": "approved",
+      "evidence": [
+        "design.md:mist-50"
+      ]
+    },
+    {
+      "id": "color.mist.300",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.872 0.007 219.6)",
+      "status": "approved",
+      "evidence": [
+        "design.md:mist-300"
+      ]
+    },
+    {
+      "id": "color.mist.200",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.925 0.005 214.3)",
+      "status": "approved",
+      "evidence": [
+        "design.md:mist-200"
+      ]
+    },
+    {
+      "id": "color.mist.100",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.963 0.002 197.1)",
+      "status": "approved",
+      "evidence": [
+        "design.md:mist-100"
+      ]
+    },
+    {
+      "id": "color.green.700",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.527 0.154 150.069)",
+      "status": "approved",
+      "evidence": [
+        "design.md:green-700"
+      ]
+    },
+    {
+      "id": "color.green.400",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.792 0.209 151.711)",
+      "status": "approved",
+      "evidence": [
+        "design.md:green-400"
+      ]
+    },
+    {
+      "id": "color.blue.950",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.282 0.091 267.935)",
+      "status": "approved",
+      "evidence": [
+        "design.md:blue-950"
+      ]
+    },
+    {
+      "id": "color.blue.700",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.488 0.243 264.376)",
+      "status": "approved",
+      "evidence": [
+        "design.md:blue-700"
+      ]
+    },
+    {
+      "id": "color.blue.400",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.707 0.165 254.624)",
+      "status": "approved",
+      "evidence": [
+        "design.md:blue-400"
+      ]
+    },
+    {
+      "id": "color.blue.200",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.882 0.059 254.128)",
+      "status": "approved",
+      "evidence": [
+        "design.md:blue-200"
+      ]
+    },
+    {
+      "id": "color.azure-radiance.700",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.55 0.179 257)",
+      "status": "approved",
+      "evidence": [
+        "design.md:azure-radiance-700"
+      ]
+    },
+    {
+      "id": "color.azure-radiance.300",
+      "type": "color",
+      "tier": "primitive",
+      "value": "oklch(0.85 0.087 234)",
+      "status": "approved",
+      "evidence": [
+        "design.md:azure-radiance-300"
+      ]
+    },
+    {
+      "id": "color.surface.canvas",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.mist.50}",
+        "dark": "{color.mist.950}"
+      },
+      "description": "Page background",
+      "status": "approved",
+      "evidence": [
+        "design.md:surface-canvas"
+      ]
+    },
+    {
+      "id": "color.surface.default",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.white}",
+        "dark": "{color.mist.900}"
+      },
+      "description": "Cards, code blocks and other raised surfaces",
+      "status": "approved",
+      "evidence": [
+        "design.md:surface-default"
+      ]
+    },
+    {
+      "id": "color.surface.subtle",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.mist.100}",
+        "dark": "{color.mist.800}"
+      },
+      "description": "Inline code, callouts and quiet fills",
+      "status": "approved",
+      "evidence": [
+        "design.md:surface-subtle"
+      ]
+    },
+    {
+      "id": "color.surface.hovered",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.mist.100}",
+        "dark": "{color.mist.800}"
+      },
+      "description": "Hover fill of link cards and disclosures",
+      "status": "approved",
+      "evidence": [
+        "design.md:surface-hovered"
+      ]
+    },
+    {
+      "id": "color.text.default",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.mist.950}",
+        "dark": "{color.white}"
+      },
+      "description": "Body text and headings",
+      "status": "approved",
+      "evidence": [
+        "design.md:text-default"
+      ]
+    },
+    {
+      "id": "color.text.subtle",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.mist.600}",
+        "dark": "{color.mist.300}"
+      },
+      "description": "Secondary text, leads and quiet links",
+      "status": "approved",
+      "evidence": [
+        "design.md:text-subtle"
+      ]
+    },
+    {
+      "id": "color.border.default",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "color-mix(in srgb, oklch(0.148 0.004 228.8) 20%, transparent)",
+        "dark": "color-mix(in srgb, oklch(0.987 0.002 197.1) 25%, transparent)"
+      },
+      "description": "Stronger dividers, dashed callout outline, open disclosure",
+      "status": "approved",
+      "evidence": [
+        "design.md:border-default"
+      ]
+    },
+    {
+      "id": "color.border.subtle",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "color-mix(in srgb, oklch(0.148 0.004 228.8) 7%, transparent)",
+        "dark": "color-mix(in srgb, oklch(0.987 0.002 197.1) 12%, transparent)"
+      },
+      "description": "Card and table outlines, dividers",
+      "status": "approved",
+      "evidence": [
+        "design.md:border-subtle"
+      ]
+    },
+    {
+      "id": "color.border.focus",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.azure-radiance.700}",
+        "dark": "{color.azure-radiance.300}"
+      },
+      "description": "Focus ring",
+      "status": "approved",
+      "evidence": [
+        "design.md:border-focus"
+      ]
+    },
+    {
+      "id": "color.action.secondary.background",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.mist.50}",
+        "dark": "{color.mist.900}"
+      },
+      "description": "Secondary button fill",
+      "status": "approved",
+      "evidence": [
+        "design.md:action-secondary-background"
+      ]
+    },
+    {
+      "id": "color.action.secondary.hovered",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.mist.100}",
+        "dark": "{color.mist.800}"
+      },
+      "description": "Secondary button hover",
+      "status": "approved",
+      "evidence": [
+        "design.md:action-secondary-hovered"
+      ]
+    },
+    {
+      "id": "color.action.secondary.pressed",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.mist.200}",
+        "dark": "{color.mist.950}"
+      },
+      "description": "Secondary button pressed",
+      "status": "approved",
+      "evidence": [
+        "design.md:action-secondary-pressed"
+      ]
+    },
+    {
+      "id": "color.action.secondary.border",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.mist.200}",
+        "dark": "{color.mist.700}"
+      },
+      "description": "Secondary button outline",
+      "status": "approved",
+      "evidence": [
+        "design.md:action-secondary-border"
+      ]
+    },
+    {
+      "id": "color.action.secondary.text",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.mist.950}",
+        "dark": "{color.white}"
+      },
+      "description": "Secondary button label",
+      "status": "approved",
+      "evidence": [
+        "design.md:action-secondary-text"
+      ]
+    },
+    {
+      "id": "color.success.border",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.green.400}",
+        "dark": "{color.green.700}"
+      },
+      "description": "Accent edge for positive cards",
+      "status": "approved",
+      "evidence": [
+        "design.md:success-border"
+      ]
+    },
+    {
+      "id": "color.danger.border",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.red.400}",
+        "dark": "{color.red.700}"
+      },
+      "description": "Accent edge for cautionary cards",
+      "status": "approved",
+      "evidence": [
+        "design.md:danger-border"
+      ]
+    },
+    {
+      "id": "color.actor.skill.background",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.blue.200}",
+        "dark": "{color.blue.950}"
+      },
+      "description": "Stages and badges for steps the skill performs (background). Same values as design.md info-background, without its status meaning.",
+      "status": "approved",
+      "evidence": [
+        "design.md:info-background",
+        "screen:tailor-my-cv"
+      ]
+    },
+    {
+      "id": "color.actor.skill.border",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.blue.400}",
+        "dark": "{color.blue.700}"
+      },
+      "description": "Stages and badges for steps the skill performs (border). Same values as design.md info-border, without its status meaning.",
+      "status": "approved",
+      "evidence": [
+        "design.md:info-border",
+        "screen:tailor-my-cv"
+      ]
+    },
+    {
+      "id": "color.actor.skill.text",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.blue.950}",
+        "dark": "{color.blue.200}"
+      },
+      "description": "Stages and badges for steps the skill performs (text). Same values as design.md info-text, without its status meaning.",
+      "status": "approved",
+      "evidence": [
+        "design.md:info-text",
+        "screen:tailor-my-cv"
+      ]
+    },
+    {
+      "id": "color.actor.you.background",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.orange.200}",
+        "dark": "{color.orange.950}"
+      },
+      "description": "Stages and badges for steps the user performs (background). Same values as design.md warning-background, without its status meaning.",
+      "status": "approved",
+      "evidence": [
+        "design.md:warning-background",
+        "screen:tailor-my-cv"
+      ]
+    },
+    {
+      "id": "color.actor.you.border",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.orange.400}",
+        "dark": "{color.orange.700}"
+      },
+      "description": "Stages and badges for steps the user performs (border). Same values as design.md warning-border, without its status meaning.",
+      "status": "approved",
+      "evidence": [
+        "design.md:warning-border",
+        "screen:tailor-my-cv"
+      ]
+    },
+    {
+      "id": "color.actor.you.text",
+      "type": "color",
+      "tier": "semantic",
+      "modes": {
+        "light": "{color.orange.950}",
+        "dark": "{color.orange.200}"
+      },
+      "description": "Stages and badges for steps the user performs (text). Same values as design.md warning-text, without its status meaning.",
+      "status": "approved",
+      "evidence": [
+        "design.md:warning-text",
+        "screen:tailor-my-cv"
+      ]
+    },
+    {
+      "id": "radius.2",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "2px",
+      "status": "approved",
+      "evidence": [
+        "design.md:radius-2"
+      ]
+    },
+    {
+      "id": "radius.6",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "6px",
+      "status": "approved",
+      "evidence": [
+        "design.md:radius-6"
+      ]
+    },
+    {
+      "id": "radius.12",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "12px",
+      "status": "approved",
+      "evidence": [
+        "design.md:radius-12"
+      ]
+    },
+    {
+      "id": "radius.16",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "16px",
+      "status": "approved",
+      "evidence": [
+        "design.md:radius-16"
+      ]
+    },
+    {
+      "id": "space.2",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "2px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-2"
+      ]
+    },
+    {
+      "id": "space.4",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "4px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-4"
+      ]
+    },
+    {
+      "id": "space.6",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "6px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-6"
+      ]
+    },
+    {
+      "id": "space.8",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "8px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-8"
+      ]
+    },
+    {
+      "id": "space.12",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "12px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-12"
+      ]
+    },
+    {
+      "id": "space.16",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "16px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-16"
+      ]
+    },
+    {
+      "id": "space.20",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "20px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-20"
+      ]
+    },
+    {
+      "id": "space.24",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "24px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-24"
+      ]
+    },
+    {
+      "id": "space.28",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "28px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-28"
+      ]
+    },
+    {
+      "id": "space.32",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "32px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-32"
+      ]
+    },
+    {
+      "id": "space.36",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "36px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-36"
+      ]
+    },
+    {
+      "id": "space.40",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "40px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-40"
+      ]
+    },
+    {
+      "id": "space.44",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "44px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-44"
+      ]
+    },
+    {
+      "id": "space.48",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "48px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-48"
+      ]
+    },
+    {
+      "id": "space.56",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "64px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-56"
+      ]
+    },
+    {
+      "id": "space.80",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "80px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-80"
+      ]
+    },
+    {
+      "id": "space.96",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "96px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-96"
+      ]
+    },
+    {
+      "id": "space.112",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "112px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-112"
+      ]
+    },
+    {
+      "id": "space.128",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "128px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-128"
+      ]
+    },
+    {
+      "id": "space.144",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "144px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-144"
+      ]
+    },
+    {
+      "id": "space.160",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "160px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-160"
+      ]
+    },
+    {
+      "id": "space.192",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "192px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-192"
+      ]
+    },
+    {
+      "id": "space.256",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "256px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-256"
+      ]
+    },
+    {
+      "id": "space.320",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "320px",
+      "status": "approved",
+      "evidence": [
+        "design.md:size-320"
+      ]
+    },
+    {
+      "id": "size.control.md",
+      "type": "dimension",
+      "tier": "semantic",
+      "value": "{space.44}",
+      "description": "Button height and minimum touch target",
+      "status": "approved",
+      "evidence": [
+        "design.md:button height"
+      ]
+    },
+    {
+      "id": "size.icon.sm",
+      "type": "dimension",
+      "tier": "semantic",
+      "value": "{space.16}",
+      "description": "Inline icons: arrows, chevrons",
+      "status": "approved",
+      "evidence": [
+        "screen:tailor-my-cv"
+      ]
+    },
+    {
+      "id": "border.width.default",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "1px",
+      "status": "approved",
+      "evidence": [
+        "screen:catalog"
+      ]
+    },
+    {
+      "id": "border.width.strong",
+      "type": "dimension",
+      "tier": "primitive",
+      "value": "2px",
+      "description": "Focus ring and card accent edge (replaces the off-scale 3px)",
+      "status": "approved",
+      "evidence": [
+        "screen:tailor-my-cv"
+      ]
+    },
+    {
+      "id": "font.family.display",
+      "type": "fontFamily",
+      "tier": "primitive",
+      "value": [
+        "Mona Sans Variable",
+        "Mona Sans",
+        "sans-serif"
+      ],
+      "status": "approved",
+      "evidence": [
+        "design.md:display-*"
+      ],
+      "description": "Self-hosted via @fontsource-variable/mona-sans (OFL)"
+    },
+    {
+      "id": "font.family.body",
+      "type": "fontFamily",
+      "tier": "primitive",
+      "value": [
+        "Poppins",
+        "sans-serif"
+      ],
+      "status": "approved",
+      "evidence": [
+        "design.md:heading/text/label"
+      ],
+      "description": "Self-hosted via @fontsource/poppins (OFL), weight 400 only"
+    },
+    {
+      "id": "font.family.code",
+      "type": "fontFamily",
+      "tier": "primitive",
+      "value": [
+        "ui-monospace",
+        "SF Mono",
+        "Menlo",
+        "monospace"
+      ],
+      "status": "approved",
+      "evidence": [
+        "screen:skill-detail"
+      ],
+      "description": "System monospace; not defined in design.md yet"
+    },
+    {
+      "id": "space.inset.card",
+      "type": "dimension",
+      "tier": "semantic",
+      "value": "{space.32}",
+      "description": "Card padding (design.md)",
+      "status": "approved",
+      "evidence": [
+        "design.md:card padding",
+        "decision:D-008"
+      ]
+    },
+    {
+      "id": "space.stack.card",
+      "type": "dimension",
+      "tier": "semantic",
+      "value": "{space.32}",
+      "description": "Gap between card children (design.md)",
+      "status": "approved",
+      "evidence": [
+        "design.md:Cards",
+        "decision:D-008"
+      ]
+    }
+  ],
+  "textStyles": [
+    {
+      "id": "display-large",
+      "fontFamily": "{font.family.display}",
+      "fontSize": "64px",
+      "fontWeight": 500,
+      "lineHeight": 1,
+      "letterSpacing": "-0.05em",
+      "status": "approved",
+      "evidence": [
+        "design.md:display-large"
+      ]
+    },
+    {
+      "id": "display-small",
+      "fontFamily": "{font.family.display}",
+      "fontSize": "44px",
+      "fontWeight": 500,
+      "lineHeight": 1,
+      "letterSpacing": "-0.05em",
+      "status": "approved",
+      "evidence": [
+        "design.md:display-small"
+      ]
+    },
+    {
+      "id": "heading-large",
+      "fontFamily": "{font.family.body}",
+      "fontSize": "28px",
+      "fontWeight": 400,
+      "lineHeight": 1.1,
+      "letterSpacing": "-0.01em",
+      "status": "approved",
+      "evidence": [
+        "design.md:heading-large"
+      ]
+    },
+    {
+      "id": "heading-medium",
+      "fontFamily": "{font.family.body}",
+      "fontSize": "24px",
+      "fontWeight": 400,
+      "lineHeight": 1.2,
+      "letterSpacing": "-0.005em",
+      "status": "approved",
+      "evidence": [
+        "design.md:heading-medium"
+      ]
+    },
+    {
+      "id": "heading-small",
+      "fontFamily": "{font.family.body}",
+      "fontSize": "18px",
+      "fontWeight": 400,
+      "lineHeight": 1.3,
+      "letterSpacing": "0em",
+      "status": "approved",
+      "evidence": [
+        "design.md:heading-small",
+        "decision:D-009"
+      ]
+    },
+    {
+      "id": "text-large",
+      "fontFamily": "{font.family.body}",
+      "fontSize": "18px",
+      "fontWeight": 400,
+      "lineHeight": 1.5,
+      "letterSpacing": "0em",
+      "status": "approved",
+      "evidence": [
+        "design.md:text-large"
+      ]
+    },
+    {
+      "id": "text-medium",
+      "fontFamily": "{font.family.body}",
+      "fontSize": "14px",
+      "fontWeight": 400,
+      "lineHeight": 1.5,
+      "letterSpacing": "0em",
+      "status": "approved",
+      "evidence": [
+        "design.md:text-medium"
+      ]
+    },
+    {
+      "id": "text-small",
+      "fontFamily": "{font.family.body}",
+      "fontSize": "12px",
+      "fontWeight": 400,
+      "lineHeight": 1.333,
+      "letterSpacing": "0em",
+      "status": "approved",
+      "evidence": [
+        "design.md:text-small"
+      ]
+    },
+    {
+      "id": "label",
+      "fontFamily": "{font.family.body}",
+      "fontSize": "14px",
+      "fontWeight": 400,
+      "lineHeight": 1.5,
+      "letterSpacing": "0em",
+      "status": "approved",
+      "evidence": [
+        "design.md:label"
+      ]
+    },
+    {
+      "id": "code",
+      "fontFamily": "{font.family.code}",
+      "fontSize": "13px",
+      "fontWeight": 400,
+      "lineHeight": 1.5,
+      "letterSpacing": "0em",
+      "status": "approved",
+      "evidence": [
+        "screen:skill-detail"
+      ],
+      "usage": "Inline code and commands; not in design.md yet"
+    }
+  ],
+  "components": [
+    {
+      "id": "icon",
+      "label": "Icon",
+      "status": "needs_review",
+      "tier": "primitive",
+      "priority": "P1",
+      "purpose": "Decorative SVG icons drawn with currentColor",
+      "usage": "Inside links, stages, disclosures and callouts. Not for meaning on its own",
+      "variants": {
+        "name": [
+          "arrow-right",
+          "chevron-down",
+          "loop"
+        ]
+      },
+      "states": [
+        "default"
+      ],
+      "properties": [
+        {
+          "name": "name",
+          "type": "enum"
+        },
+        {
+          "name": "class",
+          "type": "string"
+        }
+      ],
+      "slots": [],
+      "behavior": [
+        "Rotation is set by the parent, e.g. chevron in an open disclosure"
+      ],
+      "accessibility": [
+        "aria-hidden by default; never the only carrier of meaning"
+      ],
+      "tokens": [
+        "size.icon.sm"
+      ],
+      "textStyles": [],
+      "dependencies": [],
+      "evidence": [
+        "screen:tailor-my-cv"
+      ],
+      "qa": {
+        "figma": "n/a",
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B2.json"
+      },
+      "code": {
+        "package": "src/components/ui",
+        "export": "Icon",
+        "path": "src/components/ui/icon",
+        "story": "src/components/ui/icon/Icon.stories.ts"
+      }
+    },
+    {
+      "id": "inline-code",
+      "label": "Inline code",
+      "status": "needs_review",
+      "tier": "primitive",
+      "priority": "P1",
+      "purpose": "Short code, paths and commands inside text",
+      "usage": "Inside prose, lists and tables. Use Copy command for anything the reader should copy",
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "properties": [],
+      "slots": [
+        "default"
+      ],
+      "behavior": [
+        "Wraps long values instead of overflowing on phones"
+      ],
+      "accessibility": [
+        "Plain code element, no extra semantics"
+      ],
+      "tokens": [
+        "color.surface.subtle",
+        "radius.6",
+        "space.2",
+        "space.4"
+      ],
+      "textStyles": [
+        "code"
+      ],
+      "dependencies": [],
+      "evidence": [
+        "screen:skill-detail",
+        "screen:tailor-my-cv"
+      ],
+      "qa": {
+        "figma": "n/a",
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B2.json"
+      },
+      "notes": [
+        "Replaces the duplicated .rich-code and .skill-body code rules"
+      ],
+      "code": {
+        "package": "src/components/ui",
+        "export": "InlineCode",
+        "path": "src/components/ui/inline-code",
+        "story": "src/components/ui/inline-code/InlineCode.stories.ts"
+      }
+    },
+    {
+      "id": "link",
+      "label": "Text link",
+      "status": "needs_review",
+      "tier": "primitive",
+      "priority": "P1",
+      "purpose": "Navigation to another page or site",
+      "usage": "Back links, source links, the site name in the header",
+      "variants": {
+        "tone": [
+          "default",
+          "subtle"
+        ]
+      },
+      "states": [
+        "default",
+        "hover",
+        "focus-visible"
+      ],
+      "properties": [
+        {
+          "name": "href",
+          "type": "string"
+        },
+        {
+          "name": "tone",
+          "type": "enum"
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "behavior": [
+        "Underline on hover",
+        "External links open in the same tab"
+      ],
+      "accessibility": [
+        "Visible focus ring",
+        "Link text names the destination"
+      ],
+      "tokens": [
+        "color.text.default",
+        "color.text.subtle",
+        "color.border.focus"
+      ],
+      "textStyles": [
+        "label"
+      ],
+      "dependencies": [],
+      "evidence": [
+        "screen:catalog",
+        "screen:skill-detail",
+        "screen:tailor-my-cv"
+      ],
+      "qa": {
+        "figma": "n/a",
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B2.json"
+      },
+      "code": {
+        "package": "src/components/ui",
+        "export": "TextLink",
+        "path": "src/components/ui/link",
+        "story": "src/components/ui/link/TextLink.stories.ts"
+      }
+    },
+    {
+      "id": "badge",
+      "label": "Badge",
+      "status": "needs_review",
+      "tier": "primitive",
+      "priority": "P1",
+      "purpose": "Short status or actor label",
+      "usage": "Next to a title to say who performs a step",
+      "variants": {
+        "tone": [
+          "skill",
+          "you"
+        ]
+      },
+      "states": [
+        "default"
+      ],
+      "properties": [
+        {
+          "name": "tone",
+          "type": "enum"
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "behavior": [],
+      "accessibility": [
+        "Text label always present; color is never the only signal"
+      ],
+      "tokens": [
+        "color.actor.skill.background",
+        "color.actor.skill.text",
+        "color.actor.you.background",
+        "color.actor.you.text",
+        "radius.6",
+        "space.2",
+        "space.8"
+      ],
+      "textStyles": [
+        "text-small"
+      ],
+      "dependencies": [],
+      "evidence": [
+        "screen:tailor-my-cv"
+      ],
+      "qa": {
+        "figma": "n/a",
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B2.json"
+      },
+      "code": {
+        "package": "src/components/ui",
+        "export": "Badge",
+        "path": "src/components/ui/badge",
+        "story": "src/components/ui/badge/Badge.stories.ts"
+      }
+    },
+    {
+      "id": "button",
+      "label": "Button",
+      "status": "needs_review",
+      "tier": "primitive",
+      "priority": "P0",
+      "purpose": "Trigger an action on the page",
+      "usage": "Copy actions. Use Text link for navigation",
+      "variants": {
+        "appearance": [
+          "secondary"
+        ]
+      },
+      "states": [
+        "default",
+        "hover",
+        "pressed",
+        "focus-visible",
+        "disabled"
+      ],
+      "properties": [
+        {
+          "name": "type",
+          "type": "enum"
+        },
+        {
+          "name": "disabled",
+          "type": "boolean"
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "behavior": [
+        "Label can change to report the result of the action"
+      ],
+      "accessibility": [
+        "Native button element",
+        "Height at least 44px",
+        "Result announced through aria-live"
+      ],
+      "tokens": [
+        "color.action.secondary.background",
+        "color.action.secondary.hovered",
+        "color.action.secondary.pressed",
+        "color.action.secondary.border",
+        "color.action.secondary.text",
+        "radius.12",
+        "space.20",
+        "size.control.md",
+        "border.width.default"
+      ],
+      "textStyles": [
+        "label"
+      ],
+      "dependencies": [],
+      "evidence": [
+        "screen:skill-detail",
+        "screen:tailor-my-cv"
+      ],
+      "qa": {
+        "figma": "n/a",
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B2.json"
+      },
+      "notes": [
+        "Primary appearance deferred: white on action-primary is 4.0:1"
+      ],
+      "code": {
+        "package": "src/components/ui",
+        "export": "Button",
+        "path": "src/components/ui/button",
+        "story": "src/components/ui/button/Button.stories.ts"
+      }
+    },
+    {
+      "id": "card",
+      "label": "Card",
+      "status": "needs_review",
+      "tier": "composite",
+      "priority": "P0",
+      "purpose": "Static block grouping related content",
+      "usage": "Lists of facts or rules. Use Link card when the whole block navigates",
+      "variants": {
+        "accent": [
+          "none",
+          "success",
+          "warning",
+          "danger"
+        ]
+      },
+      "states": [
+        "default"
+      ],
+      "properties": [
+        {
+          "name": "accent",
+          "type": "enum"
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "behavior": [],
+      "accessibility": [
+        "Accent edge is decoration; the title carries the meaning"
+      ],
+      "tokens": [
+        "color.surface.default",
+        "radius.16",
+        "space.inset.card",
+        "space.stack.card",
+        "border.width.strong",
+        "color.success.border",
+        "color.danger.border",
+        "color.actor.you.border"
+      ],
+      "textStyles": [
+        "heading-small"
+      ],
+      "dependencies": [],
+      "evidence": [
+        "screen:tailor-my-cv"
+      ],
+      "qa": {
+        "figma": "n/a",
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B3.json"
+      },
+      "notes": [
+        "design.md: padding 2rem, 2rem between children, no border (D-008)"
+      ],
+      "code": {
+        "package": "src/components/ui",
+        "export": "Card",
+        "path": "src/components/ui/card",
+        "story": "src/components/ui/card/Card.stories.ts"
+      }
+    },
+    {
+      "id": "link-card",
+      "label": "Link card",
+      "status": "needs_review",
+      "tier": "composite",
+      "priority": "P0",
+      "purpose": "A card that opens another page",
+      "usage": "Skill list items",
+      "variants": {},
+      "states": [
+        "default",
+        "hover",
+        "focus-visible"
+      ],
+      "properties": [
+        {
+          "name": "href",
+          "type": "string"
+        },
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "description",
+          "type": "string"
+        }
+      ],
+      "slots": [],
+      "behavior": [
+        "The whole card is one link"
+      ],
+      "accessibility": [
+        "One link per card; title is the accessible name",
+        "Visible focus ring"
+      ],
+      "tokens": [
+        "color.surface.default",
+        "color.surface.hovered",
+        "radius.16",
+        "space.inset.card",
+        "space.stack.card",
+        "color.text.subtle"
+      ],
+      "textStyles": [
+        "heading-small",
+        "text-medium"
+      ],
+      "dependencies": [],
+      "evidence": [
+        "screen:catalog"
+      ],
+      "qa": {
+        "figma": "n/a",
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B3.json"
+      },
+      "notes": [
+        "Separate from Card by owner decision D-005"
+      ],
+      "code": {
+        "package": "src/components/ui",
+        "export": "LinkCard",
+        "path": "src/components/ui/link-card",
+        "story": "src/components/ui/link-card/LinkCard.stories.ts"
+      }
+    },
+    {
+      "id": "copy-command",
+      "label": "Copy command",
+      "status": "needs_review",
+      "tier": "composite",
+      "priority": "P0",
+      "purpose": "Show a command and copy it in one click",
+      "usage": "Install instructions",
+      "variants": {},
+      "states": [
+        "default",
+        "copied",
+        "copy failed"
+      ],
+      "properties": [
+        {
+          "name": "command",
+          "type": "string"
+        }
+      ],
+      "slots": [],
+      "behavior": [
+        "Copies the exact command to the clipboard",
+        "Command wraps on phones"
+      ],
+      "accessibility": [
+        "Result announced through aria-live"
+      ],
+      "tokens": [
+        "color.surface.default",
+        "radius.16",
+        "space.12"
+      ],
+      "textStyles": [
+        "code"
+      ],
+      "dependencies": [
+        "button",
+        "inline-code"
+      ],
+      "evidence": [
+        "screen:skill-detail",
+        "screen:tailor-my-cv"
+      ],
+      "qa": {
+        "figma": "n/a",
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B3.json"
+      },
+      "responsive": [
+        "Stacked with a full-width button below 640px"
+      ],
+      "code": {
+        "package": "src/components/ui",
+        "export": "CopyCommand",
+        "path": "src/components/ui/copy-command",
+        "story": "src/components/ui/copy-command/CopyCommand.stories.ts"
+      }
+    },
+    {
+      "id": "callout",
+      "label": "Callout",
+      "status": "needs_review",
+      "tier": "composite",
+      "priority": "P2",
+      "purpose": "Draw attention to a side note or an example",
+      "usage": "Notes and 'From testing' examples. Not for errors",
+      "variants": {
+        "appearance": [
+          "note",
+          "example"
+        ]
+      },
+      "states": [
+        "default"
+      ],
+      "properties": [
+        {
+          "name": "appearance",
+          "type": "enum"
+        },
+        {
+          "name": "label",
+          "type": "string"
+        }
+      ],
+      "slots": [
+        "default",
+        "icon"
+      ],
+      "behavior": [],
+      "accessibility": [
+        "Not a live region; plain paragraph semantics"
+      ],
+      "tokens": [
+        "color.surface.subtle",
+        "color.border.default",
+        "radius.12",
+        "space.12",
+        "border.width.default"
+      ],
+      "textStyles": [
+        "text-medium"
+      ],
+      "dependencies": [
+        "icon"
+      ],
+      "evidence": [
+        "screen:tailor-my-cv"
+      ],
+      "qa": {
+        "figma": "n/a",
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B3.json"
+      },
+      "code": {
+        "package": "src/components/ui",
+        "export": "Callout",
+        "path": "src/components/ui/callout",
+        "story": "src/components/ui/callout/Callout.stories.ts"
+      }
+    },
+    {
+      "id": "disclosure",
+      "label": "Disclosure",
+      "status": "needs_review",
+      "tier": "composite",
+      "priority": "P1",
+      "purpose": "Expandable section with a summary line",
+      "usage": "Step-by-step content that would be too long open",
+      "variants": {},
+      "states": [
+        "closed",
+        "open",
+        "hover",
+        "focus-visible"
+      ],
+      "properties": [
+        {
+          "name": "id",
+          "type": "string"
+        },
+        {
+          "name": "open",
+          "type": "boolean"
+        },
+        {
+          "name": "number",
+          "type": "number"
+        },
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "badge",
+          "type": "enum"
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "behavior": [
+        "Native details and summary",
+        "Opens when its anchor is targeted"
+      ],
+      "accessibility": [
+        "Keyboard: Enter and Space toggle",
+        "Chevron is decorative"
+      ],
+      "tokens": [
+        "color.surface.default",
+        "color.surface.hovered",
+        "color.border.subtle",
+        "color.border.default",
+        "radius.16",
+        "space.16",
+        "space.24"
+      ],
+      "textStyles": [
+        "heading-small",
+        "text-small"
+      ],
+      "dependencies": [
+        "badge",
+        "icon"
+      ],
+      "evidence": [
+        "screen:tailor-my-cv"
+      ],
+      "qa": {
+        "figma": "n/a",
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B4.json"
+      },
+      "code": {
+        "package": "src/components/ui",
+        "export": "Disclosure",
+        "path": "src/components/ui/disclosure",
+        "story": "src/components/ui/disclosure/Disclosure.stories.ts"
+      }
+    },
+    {
+      "id": "page-header",
+      "label": "Page header",
+      "status": "needs_review",
+      "tier": "pattern",
+      "priority": "P1",
+      "purpose": "Title and lead at the top of a page",
+      "usage": "Every page, once",
+      "variants": {
+        "size": [
+          "large",
+          "small"
+        ]
+      },
+      "states": [
+        "default"
+      ],
+      "properties": [
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "lead",
+          "type": "string"
+        },
+        {
+          "name": "backHref",
+          "type": "string"
+        },
+        {
+          "name": "size",
+          "type": "enum"
+        }
+      ],
+      "slots": [
+        "default"
+      ],
+      "behavior": [],
+      "accessibility": [
+        "Contains the page's only h1"
+      ],
+      "tokens": [
+        "color.text.default",
+        "color.text.subtle",
+        "space.24"
+      ],
+      "textStyles": [
+        "display-large",
+        "display-small",
+        "text-large",
+        "label"
+      ],
+      "dependencies": [
+        "link"
+      ],
+      "evidence": [
+        "screen:catalog",
+        "screen:skill-detail",
+        "screen:tailor-my-cv"
+      ],
+      "qa": {
+        "figma": "n/a",
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B4.json"
+      },
+      "responsive": [
+        "large uses display-small below 640px"
+      ],
+      "code": {
+        "package": "src/components/ui",
+        "export": "PageHeader",
+        "path": "src/components/ui/page-header",
+        "story": "src/components/ui/page-header/PageHeader.stories.ts"
+      }
+    },
+    {
+      "id": "section-header",
+      "label": "Section header",
+      "status": "needs_review",
+      "tier": "pattern",
+      "priority": "P2",
+      "purpose": "Heading and optional subtitle for a page section",
+      "usage": "Sections inside a page",
+      "variants": {},
+      "states": [
+        "default"
+      ],
+      "properties": [
+        {
+          "name": "title",
+          "type": "string"
+        },
+        {
+          "name": "subtitle",
+          "type": "string"
+        },
+        {
+          "name": "id",
+          "type": "string"
+        }
+      ],
+      "slots": [],
+      "behavior": [],
+      "accessibility": [
+        "Renders h2; the section is labelled by it"
+      ],
+      "tokens": [
+        "color.text.default",
+        "color.text.subtle",
+        "space.8"
+      ],
+      "textStyles": [
+        "heading-large",
+        "text-medium"
+      ],
+      "dependencies": [],
+      "evidence": [
+        "screen:skill-detail",
+        "screen:tailor-my-cv"
+      ],
+      "qa": {
+        "figma": "n/a",
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B4.json"
+      },
+      "code": {
+        "package": "src/components/ui",
+        "export": "SectionHeader",
+        "path": "src/components/ui/section-header",
+        "story": "src/components/ui/section-header/SectionHeader.stories.ts"
+      }
+    }
+  ],
+  "exceptions": []
+}

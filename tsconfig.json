@@ -1,5 +1,5 @@
 {
   "extends": "astro/tsconfigs/strict",
   "include": [".astro/types.d.ts", "**/*"],
-  "exclude": ["dist", "coverage", "playwright-report", "test-results", "tailor-my-cv"]
+  "exclude": ["dist", "storybook-static", "coverage", "playwright-report", "test-results", "tailor-my-cv"]
 }

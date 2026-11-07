@@ -1,0 +1,37 @@
+---
+/**
+ * Shows a command and copies it in one click. The result (Copied / Copy failed)
+ * is announced through aria-live. The command wraps on phones.
+ */
+import { copyLabels } from '../../../lib/ui';
+import Button from '../button/Button.astro';
+
+export interface Props {
+  command: string;
+}
+
+const { command } = Astro.props;
+---
+
+<div
+  class="bg-surface-default rounded-16 flex flex-col gap-(--ds-space-12) p-(--ds-space-12) sm:flex-row sm:items-center"
+  data-copy-command
+>
+  <code class="type-code min-w-0 flex-1 px-(--ds-space-8) py-(--ds-space-4) break-all sm:break-normal">{command}</code>
+  <Button data-command={command}>
+    <span aria-live="polite">{copyLabels.idle}</span>
+  </Button>
+</div>
+
+<script>
+  import { copyToClipboard } from '../../../lib/ui';
+
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-command] [data-command]').forEach((button) => {
+    const label = button.querySelector('span');
+    if (!label) return;
+
+    button.addEventListener('click', async () => {
+      label.textContent = await copyToClipboard(navigator.clipboard, button.dataset.command ?? '');
+    });
+  });
+</script>

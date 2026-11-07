@@ -1,0 +1,22 @@
+---
+/**
+ * A card that opens another page. The whole card is one link and the title is
+ * its accessible name. Wrap it in an <li> when it is part of a list.
+ */
+import { linkCardClasses } from '../../../lib/ui';
+
+export interface Props {
+  href: string;
+  title: string;
+  description: string;
+  headingLevel?: 2 | 3;
+}
+
+const { href, title, description, headingLevel = 2 } = Astro.props;
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+---
+
+<a href={href} class={linkCardClasses}>
+  <Heading class="type-heading-small">{title}</Heading>
+  <p class="type-text-medium text-text-subtle">{description}</p>
+</a>

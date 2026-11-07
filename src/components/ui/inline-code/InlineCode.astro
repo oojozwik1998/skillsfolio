@@ -1,0 +1,14 @@
+---
+/**
+ * Short code, paths and commands inside text. Use CopyCommand for anything
+ * the reader should copy. HTML from data files gets the same look through
+ * the `inline-code` utility on `.rich-text code`.
+ */
+export interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<code class:list={['inline-code', className]}><slot /></code>

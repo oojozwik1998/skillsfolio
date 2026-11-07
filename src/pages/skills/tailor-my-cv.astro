@@ -1,5 +1,13 @@
 ---
-import InstallCommand from '../../components/InstallCommand.astro';
+import CopyCommand from '../../components/ui/copy-command/CopyCommand.astro';
+import Callout from '../../components/ui/callout/Callout.astro';
+import Card from '../../components/ui/card/Card.astro';
+import Disclosure from '../../components/ui/disclosure/Disclosure.astro';
+import Icon from '../../components/ui/icon/Icon.astro';
+import InlineCode from '../../components/ui/inline-code/InlineCode.astro';
+import TextLink from '../../components/ui/link/TextLink.astro';
+import PageHeader from '../../components/ui/page-header/PageHeader.astro';
+import SectionHeader from '../../components/ui/section-header/SectionHeader.astro';
 import { externalSkills } from '../../data/external-skills';
 import {
   factMarks,
@@ -15,45 +23,31 @@ import {
 } from '../../data/tailor-my-cv';
 import Base from '../../layouts/Base.astro';
 import { cloneCommand, repositoryUrl } from '../../lib/skills';
+import { badgeLabels } from '../../lib/ui';
 
 const description = externalSkills.find(({ data }) => data.name === 'tailor-my-cv')?.data.description;
 
-const actorLabel: Record<Actor, string> = { you: 'You', skill: 'Skill' };
-const actorBadge: Record<Actor, string> = {
-  you: 'bg-warning-background text-warning-text',
-  skill: 'bg-info-background text-info-text',
-};
 const actorStage: Record<Actor, string> = {
-  you: 'bg-warning-background border-warning-border text-warning-text',
-  skill: 'bg-info-background border-info-border text-info-text',
-};
-const toneBorder = {
-  success: 'border-t-success-border',
-  warning: 'border-t-warning-border',
-  danger: 'border-t-danger-border',
+  you: 'bg-actor-you-background border-actor-you-border text-actor-you-text',
+  skill: 'bg-actor-skill-background border-actor-skill-border text-actor-skill-text',
 };
 ---
 
 <Base title="How tailor-my-cv works" description={description}>
   <article>
-    <a href="/" class="type-label text-text-subtle hover:underline">All skills</a>
-
-    <header class="mt-6 max-w-3xl">
-      <h1 class="type-display-small sm:type-display-large">How tailor-my-cv works</h1>
-      <p class="type-text-large text-text-subtle mt-6">
-        Paste a job offer. The skill assesses your fit and makes a CV for that offer, in your layout and using only
-        true facts. With each application, it knows more about you.
-      </p>
-    </header>
+    <PageHeader
+      title="How tailor-my-cv works"
+      lead="Paste a job offer. The skill assesses your fit and makes a CV for that offer, in your layout and using only true facts. With each application, it knows more about you."
+      backHref="/"
+      class="max-w-3xl"
+    />
 
     <section class="mt-12 max-w-3xl" aria-labelledby="install-heading">
-      <h2 id="install-heading" class="type-heading-large mb-6">Install</h2>
+      <SectionHeader id="install-heading" title="Install" class="mb-6" />
       <p class="type-text-medium text-text-subtle mb-4">
-        This skill is a complete workspace, so you download its repository instead of using <code
-          class="rich-code">npx skills add</code
-        >.
+        This skill is a complete workspace, so you download its repository instead of using <InlineCode>npx skills add</InlineCode>.
       </p>
-      <InstallCommand command={cloneCommand(repository, installFolder)} />
+      <CopyCommand command={cloneCommand(repository, installFolder)} />
       <ol class="type-text-medium rich-text mt-6 list-decimal space-y-1 pl-5">
         <li>Go to the folder: <code>cd {installFolder}</code></li>
         <li>Check your setup: <code>scripts/doctor.sh</code></li>
@@ -63,20 +57,19 @@ const toneBorder = {
       <ul class="type-text-medium rich-text mt-3 list-disc space-y-1 pl-5">
         {requirements.map((item) => <li set:html={item} />)}
       </ul>
-      <a href={repositoryUrl(repository)} class="type-label text-text-subtle mt-6 inline-block hover:underline">
+      <TextLink href={repositoryUrl(repository)} tone="subtle" class="mt-6 inline-block">
         View repository on GitHub
-      </a>
+      </TextLink>
     </section>
 
     <section class="mt-20" aria-labelledby="process-heading">
-      <h2 id="process-heading" class="type-heading-large">The whole process on one picture</h2>
-      <p class="type-text-medium text-text-subtle mt-2">Click a stage to see its details below.</p>
+      <SectionHeader id="process-heading" title="The whole process on one picture" subtitle="Click a stage to see its details below." />
       <div class="type-text-small text-text-subtle mt-4 flex gap-4">
         <span class="flex items-center gap-2">
-          <i class="bg-info-border rounded-2 size-3" aria-hidden="true"></i> The skill works
+          <i class="bg-actor-skill-border rounded-2 size-3" aria-hidden="true"></i> The skill works
         </span>
         <span class="flex items-center gap-2">
-          <i class="bg-warning-border rounded-2 size-3" aria-hidden="true"></i> You decide
+          <i class="bg-actor-you-border rounded-2 size-3" aria-hidden="true"></i> You decide
         </span>
       </div>
 
@@ -93,24 +86,12 @@ const toneBorder = {
                       'rounded-12 block h-full border p-3 hover:underline',
                       actorStage[stage.actor],
                     ]}
-                    data-step-link
                   >
-                    <span class="type-text-small block">{actorLabel[stage.actor]}</span>
+                    <span class="type-text-small block">{badgeLabels[stage.actor]}</span>
                     <span class="type-text-medium block">{stage.label}</span>
                   </a>
                   {index < lane.stages.length - 1 && (
-                    <svg
-                      class="text-text-subtle absolute -bottom-5.5 left-6 size-4 rotate-90 lg:top-1/2 lg:-right-5 lg:bottom-auto lg:left-auto lg:-translate-y-1/2 lg:rotate-0"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      aria-hidden="true"
-                    >
-                      <path d="M2 8h12M10 4l4 4-4 4" />
-                    </svg>
+                    <Icon name="arrow-right" class="text-text-subtle absolute -bottom-5.5 left-6 rotate-90 lg:top-1/2 lg:-right-5 lg:bottom-auto lg:left-auto lg:-translate-y-1/2 lg:rotate-0" />
                   )}
                 </li>
               ))}
@@ -119,87 +100,49 @@ const toneBorder = {
         ))
       }
 
-      <p
-        class="bg-surface-subtle border-border-default rounded-12 type-text-medium mt-6 flex items-start gap-3 border border-dashed p-3"
-      >
-        <svg
-          class="mt-0.5 size-4 shrink-0"
-          viewBox="0 0 16 16"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M2.5 8a5.5 5.5 0 1 0 1.6-3.9L2.5 5.7M2.5 2.5v3.2h3.2" />
-        </svg>
+      <Callout class="mt-6">
+        <Icon slot="icon" name="loop" class="mt-0.5" />
         Your answers and rejected suggestions go into the fact base, so the next offer starts with more knowledge.
-      </p>
+      </Callout>
     </section>
 
     <section class="mt-20" aria-labelledby="steps-heading">
-      <h2 id="steps-heading" class="type-heading-large">Step by step</h2>
-      <p class="type-text-medium text-text-subtle mt-2">
-        The examples come from tests with a fictional person: Sam Example, a data analyst.
-      </p>
+      <SectionHeader id="steps-heading" title="Step by step" subtitle="The examples come from tests with a fictional person: Sam Example, a data analyst." />
       <div class="mt-6 flex flex-col gap-3">
         {
           steps.map((step, index) => (
-            <details
+            <Disclosure
               id={`step-${index + 1}`}
+              number={index + 1}
+              title={step.title}
+              badge={step.actor}
               open={index === 0}
-              class="group bg-surface-default border-border-subtle open:border-border-default rounded-16 scroll-mt-6 border"
             >
-              <summary class="hover:bg-surface-hovered rounded-16 flex cursor-pointer list-none items-center gap-3 p-4 sm:px-6 [&::-webkit-details-marker]:hidden">
-                <span class="type-text-small text-text-subtle w-4 shrink-0">{index + 1}</span>
-                <span class="type-heading-small min-w-0 flex-1 leading-[1.3]">{step.title}</span>
-                <span class:list={['type-text-small rounded-6 shrink-0 px-2 py-0.5', actorBadge[step.actor]]}>
-                  {actorLabel[step.actor]}
-                </span>
-                <svg
-                  class="text-text-subtle size-4 shrink-0 transition-transform group-open:rotate-180"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  aria-hidden="true"
-                >
-                  <path d="M4 6l4 4 4-4" />
-                </svg>
-              </summary>
-              <div class="px-4 pt-2 pb-6 sm:pr-6 sm:pl-13">
-                <div class="grid gap-6 md:grid-cols-2">
-                  {step.columns.map((column) => (
-                    <div>
-                      <h3 class="type-label text-text-subtle mb-2">{column.heading}</h3>
-                      <ul class="type-text-medium rich-text list-disc space-y-1 pl-5">
-                        {column.items.map((item) => (
-                          <li set:html={item} />
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-                {step.example && (
-                  <p class="bg-surface-subtle rounded-12 type-text-medium mt-6 p-3">
-                    <strong class="font-medium">From testing:</strong> {step.example}
-                  </p>
-                )}
+              <div class="grid gap-6 md:grid-cols-2">
+                {step.columns.map((column) => (
+                  <div>
+                    <h3 class="type-label text-text-subtle mb-2">{column.heading}</h3>
+                    <ul class="type-text-medium rich-text list-disc space-y-1 pl-5">
+                      {column.items.map((item) => (
+                        <li set:html={item} />
+                      ))}
+                    </ul>
+                  </div>
+                ))}
               </div>
-            </details>
+              {step.example && (
+                <Callout appearance="example" label="From testing" class="mt-6">
+                  {step.example}
+                </Callout>
+              )}
+            </Disclosure>
           ))
         }
       </div>
     </section>
 
     <section class="mt-20" aria-labelledby="layout-heading">
-      <h2 id="layout-heading" class="type-heading-large">Does the layout really match?</h2>
-      <p class="type-text-medium text-text-subtle mt-2 max-w-2xl">
-        A test on Sam’s two-column CV. This is the screen you get to approve on the first run.
-      </p>
+      <SectionHeader id="layout-heading" title="Does the layout really match?" subtitle="A test on Sam’s two-column CV. This is the screen you get to approve on the first run." />
       <div class="mt-6 grid gap-6 md:grid-cols-2">
         <figure>
           <img
@@ -229,33 +172,25 @@ const toneBorder = {
     </section>
 
     <section class="mt-20" aria-labelledby="truth-heading">
-      <h2 id="truth-heading" class="type-heading-large">Where the line of truth is</h2>
+      <SectionHeader id="truth-heading" title="Where the line of truth is" />
       <div class="mt-6 grid gap-4 md:grid-cols-3">
         {
           truthCards.map((card) => (
-            <div
-              class:list={[
-                'bg-surface-default border-border-subtle rounded-16 border border-t-3 p-6',
-                toneBorder[card.tone],
-              ]}
-            >
-              <h3 class="type-heading-small leading-[1.3]">{card.title}</h3>
-              <ul class="type-text-medium rich-text mt-3 list-disc space-y-1 pl-5">
+            <Card accent={card.tone}>
+              <h3 class="type-heading-small">{card.title}</h3>
+              <ul class="type-text-medium rich-text list-disc space-y-1 pl-5">
                 {card.items.map((item) => (
                   <li set:html={item} />
                 ))}
               </ul>
-            </div>
+            </Card>
           ))
         }
       </div>
     </section>
 
     <section class="mt-20" aria-labelledby="memory-heading">
-      <h2 id="memory-heading" class="type-heading-large">What the skill remembers about you</h2>
-      <p class="type-text-medium text-text-subtle mt-2">
-        Every fact is marked with where it came from. That decides how it can be used.
-      </p>
+      <SectionHeader id="memory-heading" title="What the skill remembers about you" subtitle="Every fact is marked with where it came from. That decides how it can be used." />
       <div class="bg-surface-default border-border-subtle rounded-16 mt-6 overflow-hidden border">
         <table class="type-text-medium w-full text-left">
           <thead class="text-text-subtle">
@@ -283,21 +218,21 @@ const toneBorder = {
       <div class="mt-4 grid gap-4 md:grid-cols-3">
         {
           memoryCards.map((card) => (
-            <div class="bg-surface-default border-border-subtle rounded-16 border p-6">
-              <h3 class="type-heading-small leading-[1.3]">{card.title}</h3>
-              <ul class="type-text-medium rich-text mt-3 list-disc space-y-1 pl-5">
+            <Card>
+              <h3 class="type-heading-small">{card.title}</h3>
+              <ul class="type-text-medium rich-text list-disc space-y-1 pl-5">
                 {card.items.map((item) => (
                   <li set:html={item} />
                 ))}
               </ul>
-            </div>
+            </Card>
           ))
         }
       </div>
     </section>
 
     <section class="mt-20" aria-labelledby="files-heading">
-      <h2 id="files-heading" class="type-heading-large">Where everything lives</h2>
+      <SectionHeader id="files-heading" title="Where everything lives" />
       <dl class="bg-surface-default border-border-subtle rounded-16 rich-text type-text-medium mt-6 border">
         {
           files.map((file, index) => (
@@ -308,7 +243,7 @@ const toneBorder = {
               ]}
             >
               <dt>
-                <code class:list={['break-all', { 'text-warning-text': file.isPrivate }]}>{file.path}</code>
+                <code class:list={['break-all', { 'text-actor-you-text': file.isPrivate }]}>{file.path}</code>
               </dt>
               <dd>{file.description}</dd>
             </div>
@@ -328,12 +263,3 @@ const toneBorder = {
   </article>
 </Base>
 
-<script>
-  // Clicking a stage in the process opens its step.
-  document.querySelectorAll<HTMLAnchorElement>('[data-step-link]').forEach((link) => {
-    link.addEventListener('click', () => {
-      const step = document.querySelector<HTMLDetailsElement>(link.hash);
-      if (step) step.open = true;
-    });
-  });
-</script>

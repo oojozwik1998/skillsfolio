@@ -1,6 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
-import SkillCard from '../components/SkillCard.astro';
+import LinkCard from '../components/ui/link-card/LinkCard.astro';
+import PageHeader from '../components/ui/page-header/PageHeader.astro';
 import { site } from '../config';
 import { externalSkills } from '../data/external-skills';
 import Base from '../layouts/Base.astro';
@@ -10,16 +11,19 @@ const skills = sortByName([...(await getCollection('skills')), ...externalSkills
 ---
 
 <Base>
-  <div class="max-w-2xl">
-    <h1 class="type-display-small sm:type-display-large">{site.name}</h1>
-    <p class="type-text-large text-text-subtle mt-6">{site.description}</p>
-  </div>
+  <PageHeader title={site.name} lead={site.description} class="max-w-2xl" />
 
   {
     skills.length > 0 ? (
       <ul class="mt-16 grid gap-4 md:grid-cols-2">
         {skills.map((skill) => (
-          <SkillCard name={skill.data.name} description={skill.data.description} />
+          <li>
+            <LinkCard
+              href={`/skills/${skill.data.name}/`}
+              title={skill.data.name}
+              description={skill.data.description}
+            />
+          </li>
         ))}
       </ul>
     ) : (

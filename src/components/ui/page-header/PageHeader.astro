@@ -1,0 +1,26 @@
+---
+/**
+ * Title and lead at the top of a page. Contains the page's only h1, so use it
+ * once per page. An optional back link sits above the title.
+ */
+import { type PageHeaderSize, pageTitleClasses } from '../../../lib/ui';
+import TextLink from '../link/TextLink.astro';
+
+export interface Props {
+  title: string;
+  lead?: string;
+  backHref?: string;
+  backLabel?: string;
+  size?: PageHeaderSize;
+  class?: string;
+}
+
+const { title, lead, backHref, backLabel = 'All skills', size = 'large', class: className } = Astro.props;
+---
+
+<header class:list={['flex flex-col items-start gap-(--ds-space-24)', className]}>
+  {backHref && <TextLink href={backHref} tone="subtle">{backLabel}</TextLink>}
+  <h1 class={pageTitleClasses(size)}>{title}</h1>
+  {lead && <p class="type-text-large text-text-subtle">{lead}</p>}
+  <slot />
+</header>
