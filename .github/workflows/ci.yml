@@ -15,7 +15,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        check: [build, typecheck, lint, test]
+        check: [build, typecheck, lint, test, build-storybook]
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
