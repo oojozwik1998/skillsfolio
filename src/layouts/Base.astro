@@ -2,7 +2,6 @@
 import '@fontsource-variable/mona-sans';
 import '@fontsource/poppins/400.css';
 import '../styles/global.css';
-import TextLink from '../components/ui/link/TextLink.astro';
 import { site } from '../config';
 
 interface Props {
@@ -25,7 +24,13 @@ const { title, description = site.description } = Astro.props;
   <body>
     <div class="mx-auto flex min-h-dvh w-full max-w-5xl flex-col px-4 sm:px-8">
       <header class="py-6">
-        <TextLink href="/">{site.name}</TextLink>
+        <a href="/" aria-label={`${site.name} - home`} class="inline-block transition-opacity hover:opacity-70">
+          <span
+            aria-hidden="true"
+            class="block aspect-636/120 h-6 bg-current"
+            style="mask: url('/logo.png') center / contain no-repeat; -webkit-mask: url('/logo.png') center / contain no-repeat;"
+          ></span>
+        </a>
       </header>
       <main class="flex-1 pt-10 pb-24 sm:pt-20">
         <slot />

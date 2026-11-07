@@ -9,7 +9,7 @@ export default {
   argTypes: { tone: { control: 'inline-radio', options: linkTones } },
 };
 
-export const Default = { args: { href: '/', tone: 'default', slots: { default: 'Skills Folio' } } };
+export const Default = { args: { href: '/', tone: 'default', slots: { default: 'designskills' } } };
 export const Subtle = { args: { href: '/', tone: 'subtle', slots: { default: 'All skills' } } };
 export const LongText = {
   args: { href: '/', tone: 'subtle', slots: { default: 'View the source of this skill in the GitHub repository' } },
