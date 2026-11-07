@@ -1,5 +1,19 @@
 import { describe, expect, it } from 'vitest';
-import { badgeClasses, badgeTones, buttonClasses, iconNames, iconPaths, linkClasses, linkTones } from './ui';
+import {
+  badgeClasses,
+  badgeTones,
+  buttonClasses,
+  calloutClasses,
+  cardAccents,
+  cardClasses,
+  copyLabels,
+  copyToClipboard,
+  iconNames,
+  iconPaths,
+  linkCardClasses,
+  linkClasses,
+  linkTones,
+} from './ui';
 
 describe('icons', () => {
   it('has path data for every icon name', () => {
@@ -42,5 +56,56 @@ describe('buttonClasses', () => {
   it('has a disabled look that does not rely on opacity', () => {
     expect(buttonClasses()).toContain('disabled:text-text-subtle');
     expect(buttonClasses()).not.toContain('opacity');
+  });
+});
+
+describe('cardClasses', () => {
+  it('has no border and uses the card spacing tokens by default', () => {
+    const classes = cardClasses();
+    expect(classes).toContain('p-(--ds-space-inset-card)');
+    expect(classes).toContain('gap-(--ds-space-stack-card)');
+    expect(classes).not.toMatch(/\bborder\b|border-t/);
+  });
+
+  it.each(cardAccents.filter((accent) => accent !== 'none'))('adds a strong top edge for the %s accent', (accent) => {
+    expect(cardClasses(accent)).toContain('border-t-(length:--ds-border-width-strong)');
+  });
+
+  it('uses the you color for the warning accent', () => {
+    expect(cardClasses('warning')).toContain('border-t-actor-you-border');
+  });
+});
+
+describe('linkCardClasses', () => {
+  it('changes the surface on hover', () => {
+    expect(linkCardClasses).toContain('hover:bg-surface-hovered');
+  });
+});
+
+describe('calloutClasses', () => {
+  it('draws a dashed border for notes by default', () => {
+    expect(calloutClasses()).toContain('border-dashed');
+  });
+
+  it('has no border for examples', () => {
+    expect(calloutClasses('example')).not.toContain('border');
+  });
+});
+
+describe('copyToClipboard', () => {
+  it('reports success after writing the text', async () => {
+    const written: string[] = [];
+    const clipboard = { writeText: (text: string) => Promise.resolve(void written.push(text)) };
+    await expect(copyToClipboard(clipboard, 'npx skills add x')).resolves.toBe(copyLabels.copied);
+    expect(written).toEqual(['npx skills add x']);
+  });
+
+  it('reports a failure when writing is refused', async () => {
+    const clipboard = { writeText: () => Promise.reject(new Error('denied')) };
+    await expect(copyToClipboard(clipboard, 'x')).resolves.toBe(copyLabels.failed);
+  });
+
+  it('reports a failure when there is no clipboard', async () => {
+    await expect(copyToClipboard(undefined, 'x')).resolves.toBe(copyLabels.failed);
   });
 });

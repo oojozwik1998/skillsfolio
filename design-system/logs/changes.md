@@ -59,3 +59,12 @@
 - 2026-11-07T20:33:07.359Z - B2 code: Icon, InlineCode, TextLink, Badge, Button in src/components/ui with stories; site migrated (header and back links, source links, actor badges, three icons, copy button, inline-code utility replaces .rich-code and duplicated code rules); E2E_PORT added to playwright config; all five checks pass
 - 2026-11-07T20:35:56.806Z - Decision D-015: B2 primitives accepted (approved)
 - 2026-11-07T20:35:56.835Z - Batch B2 (code: icon, inline-code, link, badge, button) → completed
+- 2026-11-07T20:35:56.935Z - Batch B3 (code: card, link-card, copy-command, callout) → in_progress
+- 2026-11-07T20:37:20.583Z - set blueprint:components[card].code = {"package":"src/components/ui","export":"Card","path":"src/components/ui/card","story":"src/components/ui/card/Card.stories.ts"}
+- 2026-11-07T20:37:20.612Z - set blueprint:components[link-card].code = {"package":"src/components/ui","export":"LinkCard","path":"src/components/ui/link-card","story":"src/components/ui/link-card/LinkCard.stories.ts"}
+- 2026-11-07T20:37:20.642Z - set blueprint:components[copy-command].code = {"package":"src/components/ui","export":"CopyCommand","path":"src/components/ui/copy-command","story":"src/components/ui/copy-command/CopyCommand.stories.ts"}
+- 2026-11-07T20:37:20.682Z - set blueprint:components[callout].code = {"package":"src/components/ui","export":"Callout","path":"src/components/ui/callout","story":"src/components/ui/callout/Callout.stories.ts"}
+- 2026-11-07T20:37:33.856Z - Merged into blueprint: components: +0 new, 4 updated
+- 2026-11-07T20:38:00.528Z - B3 code: Card, LinkCard, CopyCommand, Callout with stories; SkillCard and InstallCommand removed; truth and memory cards, catalog list, install commands, loop note and From testing examples migrated; copy logic moved to src/lib/ui.ts; all five checks pass
+- 2026-11-07T20:44:55.876Z - Decision D-016: B3 composites accepted (approved)
+- 2026-11-07T20:44:55.909Z - Batch B3 (code: card, link-card, copy-command, callout) → completed

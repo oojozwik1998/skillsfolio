@@ -260,6 +260,25 @@
         "button"
       ],
       "supersedes": null
+    },
+    {
+      "id": "D-016",
+      "at": "2026-11-07T20:44:55.864Z",
+      "stage": "5",
+      "gate": null,
+      "title": "B3 composites accepted",
+      "choice": "approved",
+      "proposedBy": "agent",
+      "approvedBy": "user",
+      "rationale": "All five checks pass; owner reviewed Composites stories and the migrated cards; table and file list borders stay as they are for now",
+      "alternatives": [],
+      "affects": [
+        "card",
+        "link-card",
+        "copy-command",
+        "callout"
+      ],
+      "supersedes": null
     }
   ]
 }

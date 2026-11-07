@@ -4,7 +4,7 @@
   "objective": "Code design system for the Skills Folio catalog: tokens from design.md, Astro components with documented states",
   "language": "pl",
   "createdAt": "2026-11-07T19:12:12.741Z",
-  "updatedAt": "2026-11-07T20:35:56.833Z",
+  "updatedAt": "2026-11-07T20:44:55.907Z",
   "modes": {
     "input": "existing",
     "target": "code",
@@ -147,11 +147,13 @@
         "copy-command",
         "callout"
       ],
-      "status": "pending",
+      "status": "completed",
       "versionId": null,
-      "evidence": [],
+      "evidence": [
+        "qa/code-report-B3.json"
+      ],
       "notes": [],
-      "updatedAt": "2026-11-07T19:23:34.254Z",
+      "updatedAt": "2026-11-07T20:44:55.904Z",
       "title": "Composites"
     },
     {
@@ -187,17 +189,17 @@
       "title": "Foundations: token export and Storybook with @storybook-astro/framework"
     }
   ],
-  "next": "Owner reviews B2 at gate G5C (pnpm storybook, section Primitives); after approval commit B2 and start B3 (card, link-card, copy-command, callout)",
+  "next": "Owner reviews B3 at gate G5C (Storybook section Composites, catalog and tailor-my-cv cards); after approval commit B3 and start B4 (disclosure, page-header, section-header)",
   "blockers": [],
   "knownIssues": [],
-  "lastOperation": "Batch B2 (code: icon, inline-code, link, badge, button) → completed",
+  "lastOperation": "Batch B3 (code: card, link-card, copy-command, callout) → completed",
   "renderedHashes": {
-    "PROGRESS.md": "48164decd653a1d3",
-    "DECISIONS.md": "3a9b0a6b08faa55a",
-    "DS-BLUEPRINT.md": "4b5deb181fa7caf5"
+    "PROGRESS.md": "647eff7208ac6e55",
+    "DECISIONS.md": "e102b561c06a7936",
+    "DS-BLUEPRINT.md": "464d87a92349fe04"
   },
   "lastValidation": {
-    "at": "2026-11-07T20:35:56.833Z",
+    "at": "2026-11-07T20:44:55.907Z",
     "errors": 0,
     "warnings": 0
   }

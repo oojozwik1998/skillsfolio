@@ -1,0 +1,24 @@
+---
+/**
+ * Side note or example next to the main content. Not for errors and not a
+ * live region. A note can carry an icon (slot "icon"); an example starts with
+ * a bold label such as "From testing".
+ */
+import { type CalloutAppearance, calloutClasses } from '../../../lib/ui';
+
+export interface Props {
+  appearance?: CalloutAppearance;
+  label?: string;
+  class?: string;
+}
+
+const { appearance = 'note', label, class: className } = Astro.props;
+---
+
+<p class:list={[calloutClasses(appearance), className]}>
+  <slot name="icon" />
+  <span>
+    {label && <strong class="font-medium">{label}:</strong>}{label && ' '}
+    <slot />
+  </span>
+</p>

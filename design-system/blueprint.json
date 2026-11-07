@@ -1418,7 +1418,7 @@
     {
       "id": "card",
       "label": "Card",
-      "status": "proposed",
+      "status": "needs_review",
       "tier": "composite",
       "priority": "P0",
       "purpose": "Static block grouping related content",
@@ -1466,17 +1466,24 @@
       ],
       "qa": {
         "figma": "n/a",
-        "code": "pending",
-        "parity": "n/a"
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B3.json"
       },
       "notes": [
         "design.md: padding 2rem, 2rem between children, no border (D-008)"
-      ]
+      ],
+      "code": {
+        "package": "src/components/ui",
+        "export": "Card",
+        "path": "src/components/ui/card",
+        "story": "src/components/ui/card/Card.stories.ts"
+      }
     },
     {
       "id": "link-card",
       "label": "Link card",
-      "status": "proposed",
+      "status": "needs_review",
       "tier": "composite",
       "priority": "P0",
       "purpose": "A card that opens another page",
@@ -1527,17 +1534,24 @@
       ],
       "qa": {
         "figma": "n/a",
-        "code": "pending",
-        "parity": "n/a"
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B3.json"
       },
       "notes": [
         "Separate from Card by owner decision D-005"
-      ]
+      ],
+      "code": {
+        "package": "src/components/ui",
+        "export": "LinkCard",
+        "path": "src/components/ui/link-card",
+        "story": "src/components/ui/link-card/LinkCard.stories.ts"
+      }
     },
     {
       "id": "copy-command",
       "label": "Copy command",
-      "status": "proposed",
+      "status": "needs_review",
       "tier": "composite",
       "priority": "P0",
       "purpose": "Show a command and copy it in one click",
@@ -1580,17 +1594,24 @@
       ],
       "qa": {
         "figma": "n/a",
-        "code": "pending",
-        "parity": "n/a"
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B3.json"
       },
       "responsive": [
         "Stacked with a full-width button below 640px"
-      ]
+      ],
+      "code": {
+        "package": "src/components/ui",
+        "export": "CopyCommand",
+        "path": "src/components/ui/copy-command",
+        "story": "src/components/ui/copy-command/CopyCommand.stories.ts"
+      }
     },
     {
       "id": "callout",
       "label": "Callout",
-      "status": "proposed",
+      "status": "needs_review",
       "tier": "composite",
       "priority": "P2",
       "purpose": "Draw attention to a side note or an example",
@@ -1640,8 +1661,15 @@
       ],
       "qa": {
         "figma": "n/a",
-        "code": "pending",
-        "parity": "n/a"
+        "code": "pass",
+        "parity": "n/a",
+        "codeReport": "qa/code-report-B3.json"
+      },
+      "code": {
+        "package": "src/components/ui",
+        "export": "Callout",
+        "path": "src/components/ui/callout",
+        "story": "src/components/ui/callout/Callout.stories.ts"
       }
     },
     {

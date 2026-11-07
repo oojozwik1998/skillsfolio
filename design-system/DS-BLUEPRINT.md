@@ -175,37 +175,37 @@ Themes: light, dark
 
 ### Card (`card`)
 
-- Status: proposed · tier: composite · priority: P0
+- Status: needs_review · tier: composite · priority: P0
 - Purpose: Static block grouping related content
 - Variants: accent = none / success / warning / danger
 - States: default
 - Slots: default
 - Accessibility: Accent edge is decoration; the title carries the meaning
 - Evidence: screen:tailor-my-cv
-- QA: figma n/a · code pending · parity n/a
+- QA: figma n/a · code pass · parity n/a
 
 ### Link card (`link-card`)
 
-- Status: proposed · tier: composite · priority: P0
+- Status: needs_review · tier: composite · priority: P0
 - Purpose: A card that opens another page
 - States: default, hover, focus-visible
 - Accessibility: One link per card; title is the accessible name; Visible focus ring
 - Evidence: screen:catalog
-- QA: figma n/a · code pending · parity n/a
+- QA: figma n/a · code pass · parity n/a
 
 ### Copy command (`copy-command`)
 
-- Status: proposed · tier: composite · priority: P0
+- Status: needs_review · tier: composite · priority: P0
 - Purpose: Show a command and copy it in one click
 - States: default, copied, copy failed
 - Accessibility: Result announced through aria-live
 - Depends on: button, inline-code
 - Evidence: screen:skill-detail, screen:tailor-my-cv
-- QA: figma n/a · code pending · parity n/a
+- QA: figma n/a · code pass · parity n/a
 
 ### Callout (`callout`)
 
-- Status: proposed · tier: composite · priority: P2
+- Status: needs_review · tier: composite · priority: P2
 - Purpose: Draw attention to a side note or an example
 - Variants: appearance = note / example
 - States: default
@@ -213,7 +213,7 @@ Themes: light, dark
 - Accessibility: Not a live region; plain paragraph semantics
 - Depends on: icon
 - Evidence: screen:tailor-my-cv
-- QA: figma n/a · code pending · parity n/a
+- QA: figma n/a · code pass · parity n/a
 
 ### Disclosure (`disclosure`)
 

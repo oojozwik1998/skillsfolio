@@ -52,3 +52,54 @@ export function buttonClasses(appearance: ButtonAppearance = 'secondary'): strin
     buttonAppearanceClasses[appearance],
   ].join(' ');
 }
+
+export const cardAccents = ['none', 'success', 'warning', 'danger'] as const;
+export type CardAccent = (typeof cardAccents)[number];
+
+const cardAccentClasses: Record<CardAccent, string> = {
+  none: '',
+  success: 'border-t-(length:--ds-border-width-strong) border-t-success-border',
+  warning: 'border-t-(length:--ds-border-width-strong) border-t-actor-you-border',
+  danger: 'border-t-(length:--ds-border-width-strong) border-t-danger-border',
+};
+
+/** design.md cards: no border, card inset padding and card stack spacing (D-008). The accent is a top edge. */
+export function cardClasses(accent: CardAccent = 'none'): string {
+  return ['bg-surface-default rounded-16 flex flex-col gap-(--ds-space-stack-card) p-(--ds-space-inset-card)', cardAccentClasses[accent]]
+    .filter(Boolean)
+    .join(' ');
+}
+
+export const linkCardClasses =
+  'bg-surface-default hover:bg-surface-hovered rounded-16 flex h-full flex-col gap-(--ds-space-stack-card) p-(--ds-space-inset-card)';
+
+export const calloutAppearances = ['note', 'example'] as const;
+export type CalloutAppearance = (typeof calloutAppearances)[number];
+
+const calloutAppearanceClasses: Record<CalloutAppearance, string> = {
+  note: 'border-(length:--ds-border-width-default) border-dashed border-border-default',
+  example: '',
+};
+
+export function calloutClasses(appearance: CalloutAppearance = 'note'): string {
+  return ['bg-surface-subtle rounded-12 type-text-medium flex items-start gap-(--ds-space-12) p-(--ds-space-12)', calloutAppearanceClasses[appearance]]
+    .filter(Boolean)
+    .join(' ');
+}
+
+export const copyLabels = { idle: 'Copy', copied: 'Copied', failed: 'Copy failed' } as const;
+export type CopyLabel = (typeof copyLabels)[keyof typeof copyLabels];
+
+/** Copies text and returns the label the button should show next. */
+export async function copyToClipboard(
+  clipboard: Pick<Clipboard, 'writeText'> | undefined,
+  text: string,
+): Promise<CopyLabel> {
+  try {
+    if (!clipboard) return copyLabels.failed;
+    await clipboard.writeText(text);
+    return copyLabels.copied;
+  } catch {
+    return copyLabels.failed;
+  }
+}

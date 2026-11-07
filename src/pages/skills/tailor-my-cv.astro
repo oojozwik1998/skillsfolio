@@ -1,6 +1,8 @@
 ---
-import InstallCommand from '../../components/InstallCommand.astro';
+import CopyCommand from '../../components/ui/copy-command/CopyCommand.astro';
 import Badge from '../../components/ui/badge/Badge.astro';
+import Callout from '../../components/ui/callout/Callout.astro';
+import Card from '../../components/ui/card/Card.astro';
 import Icon from '../../components/ui/icon/Icon.astro';
 import InlineCode from '../../components/ui/inline-code/InlineCode.astro';
 import TextLink from '../../components/ui/link/TextLink.astro';
@@ -27,11 +29,6 @@ const actorStage: Record<Actor, string> = {
   you: 'bg-actor-you-background border-actor-you-border text-actor-you-text',
   skill: 'bg-actor-skill-background border-actor-skill-border text-actor-skill-text',
 };
-const toneBorder = {
-  success: 'border-t-success-border',
-  warning: 'border-t-actor-you-border',
-  danger: 'border-t-danger-border',
-};
 ---
 
 <Base title="How tailor-my-cv works" description={description}>
@@ -51,7 +48,7 @@ const toneBorder = {
       <p class="type-text-medium text-text-subtle mb-4">
         This skill is a complete workspace, so you download its repository instead of using <InlineCode>npx skills add</InlineCode>.
       </p>
-      <InstallCommand command={cloneCommand(repository, installFolder)} />
+      <CopyCommand command={cloneCommand(repository, installFolder)} />
       <ol class="type-text-medium rich-text mt-6 list-decimal space-y-1 pl-5">
         <li>Go to the folder: <code>cd {installFolder}</code></li>
         <li>Check your setup: <code>scripts/doctor.sh</code></li>
@@ -106,12 +103,10 @@ const toneBorder = {
         ))
       }
 
-      <p
-        class="bg-surface-subtle border-border-default rounded-12 type-text-medium mt-6 flex items-start gap-3 border border-dashed p-3"
-      >
-        <Icon name="loop" class="mt-0.5" />
+      <Callout class="mt-6">
+        <Icon slot="icon" name="loop" class="mt-0.5" />
         Your answers and rejected suggestions go into the fact base, so the next offer starts with more knowledge.
-      </p>
+      </Callout>
     </section>
 
     <section class="mt-20" aria-labelledby="steps-heading">
@@ -147,9 +142,9 @@ const toneBorder = {
                   ))}
                 </div>
                 {step.example && (
-                  <p class="bg-surface-subtle rounded-12 type-text-medium mt-6 p-3">
-                    <strong class="font-medium">From testing:</strong> {step.example}
-                  </p>
+                  <Callout appearance="example" label="From testing" class="mt-6">
+                    {step.example}
+                  </Callout>
                 )}
               </div>
             </details>
@@ -196,19 +191,14 @@ const toneBorder = {
       <div class="mt-6 grid gap-4 md:grid-cols-3">
         {
           truthCards.map((card) => (
-            <div
-              class:list={[
-                'bg-surface-default border-border-subtle rounded-16 border border-t-3 p-6',
-                toneBorder[card.tone],
-              ]}
-            >
+            <Card accent={card.tone}>
               <h3 class="type-heading-small">{card.title}</h3>
-              <ul class="type-text-medium rich-text mt-3 list-disc space-y-1 pl-5">
+              <ul class="type-text-medium rich-text list-disc space-y-1 pl-5">
                 {card.items.map((item) => (
                   <li set:html={item} />
                 ))}
               </ul>
-            </div>
+            </Card>
           ))
         }
       </div>
@@ -246,14 +236,14 @@ const toneBorder = {
       <div class="mt-4 grid gap-4 md:grid-cols-3">
         {
           memoryCards.map((card) => (
-            <div class="bg-surface-default border-border-subtle rounded-16 border p-6">
+            <Card>
               <h3 class="type-heading-small">{card.title}</h3>
-              <ul class="type-text-medium rich-text mt-3 list-disc space-y-1 pl-5">
+              <ul class="type-text-medium rich-text list-disc space-y-1 pl-5">
                 {card.items.map((item) => (
                   <li set:html={item} />
                 ))}
               </ul>
-            </div>
+            </Card>
           ))
         }
       </div>

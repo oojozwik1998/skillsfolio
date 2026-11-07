@@ -6,7 +6,7 @@
 
 ## Następny krok
 
-**Owner reviews B2 at gate G5C (pnpm storybook, section Primitives); after approval commit B2 and start B3 (card, link-card, copy-command, callout)**
+**Owner reviews B3 at gate G5C (Storybook section Composites, catalog and tailor-my-cv cards); after approval commit B3 and start B4 (disclosure, page-header, section-header)**
 
 ## Ustawienia
 
@@ -30,7 +30,7 @@
 | ID | Cel wdrożenia | Elementy | Status | Dowody |
 |---|---|---|---|---|
 | B2 | code | icon, inline-code, link, badge, button | completed | qa/code-report-B2.json |
-| B3 | code | card, link-card, copy-command, callout | pending |  |
+| B3 | code | card, link-card, copy-command, callout | completed | qa/code-report-B3.json |
 | B4 | code | disclosure, page-header, section-header | pending |  |
 | B1 | code | foundation:color, foundation:typography, foundation:spacing | completed | qa/code-report-B1.json |
 
@@ -43,10 +43,10 @@
 | Text link | needs_review | n/a | pass | n/a |
 | Badge | needs_review | n/a | pass | n/a |
 | Button | needs_review | n/a | pass | n/a |
-| Card | proposed | n/a | pending | n/a |
-| Link card | proposed | n/a | pending | n/a |
-| Copy command | proposed | n/a | pending | n/a |
-| Callout | proposed | n/a | pending | n/a |
+| Card | needs_review | n/a | pass | n/a |
+| Link card | needs_review | n/a | pass | n/a |
+| Copy command | needs_review | n/a | pass | n/a |
+| Callout | needs_review | n/a | pass | n/a |
 | Disclosure | proposed | n/a | pending | n/a |
 | Page header | proposed | n/a | pending | n/a |
 | Section header | proposed | n/a | pending | n/a |
@@ -61,11 +61,11 @@ _brak_
 
 ## Ostatnia zakończona operacja
 
-Batch B2 (code: icon, inline-code, link, badge, button) → completed
+Batch B3 (code: card, link-card, copy-command, callout) → completed
 
 ## Ostatnia walidacja
 
-2026-11-07T20:35:56.833Z: 0 error(s), 0 warning(s)
+2026-11-07T20:44:55.907Z: 0 error(s), 0 warning(s)
 
 ## Jak wznowić
 

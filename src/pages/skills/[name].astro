@@ -1,6 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
-import InstallCommand from '../../components/InstallCommand.astro';
+import CopyCommand from '../../components/ui/copy-command/CopyCommand.astro';
 import TextLink from '../../components/ui/link/TextLink.astro';
 import { site } from '../../config';
 import Base from '../../layouts/Base.astro';
@@ -24,7 +24,7 @@ const { Content } = await render(skill);
 
     <section class="mt-12" aria-labelledby="install-heading">
       <h2 id="install-heading" class="type-heading-small mb-4">Install</h2>
-      <InstallCommand command={installCommand(site.repository, name)} />
+      <CopyCommand command={installCommand(site.repository, name)} />
       <TextLink href={sourceUrl(site.repository, name)} tone="subtle" class="mt-4 inline-block">
         View source on GitHub
       </TextLink>
