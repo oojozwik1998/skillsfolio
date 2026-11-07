@@ -1,6 +1,8 @@
+Replaced by `2026-11-07-hero-dot-letters.md`: the owner kept the dot-letter variant after comparing both.
+
 # Animated hero background
 
-Status: implemented
+Status: replaced
 
 ## Goal
 

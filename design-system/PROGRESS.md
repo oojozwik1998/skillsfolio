@@ -34,6 +34,7 @@
 | B4 | code | disclosure, page-header, section-header | completed | qa/code-report-B4.json |
 | B1 | code | foundation:color, foundation:typography, foundation:spacing | completed | qa/code-report-B1.json |
 | B5 | code | ascii-field | completed | qa/code-report-B5.json |
+| B6 | code | ascii-field | completed | qa/code-report-B6.json |
 
 ## Komponenty
 
@@ -63,11 +64,11 @@ _brak_
 
 ## Ostatnia zakończona operacja
 
-Batch B5 (code: ascii-field) → completed
+Batch B6 (code: ascii-field) → completed
 
 ## Ostatnia walidacja
 
-2026-11-07T21:56:33.823Z: 0 error(s), 0 warning(s)
+2026-11-07T22:24:25.854Z: 0 error(s), 0 warning(s)
 
 ## Jak wznowić
 

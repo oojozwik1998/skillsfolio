@@ -1,6 +1,7 @@
 ---
 /**
- * Decorative field of changing random characters behind the home page hero.
+ * Decorative field of large dot-matrix letters behind the home page hero. Letters
+ * keep changing and dots scatter under the mouse, then spring back.
  * The page layout is positioned against the page, so render it outside any
  * positioned parent. Logic lives in src/lib/ascii-field.ts.
  */
@@ -36,7 +37,7 @@ const { layout = 'page' } = Astro.props;
 </style>
 
 <script>
-  import { createFieldAnimation } from '../../../lib/ascii-field';
+  import { createDotFieldAnimation } from '../../../lib/ascii-field';
 
   document.querySelectorAll<HTMLCanvasElement>('[data-ascii-field]').forEach((canvas) => {
     const context = canvas.getContext('2d');
@@ -46,7 +47,7 @@ const { layout = 'page' } = Astro.props;
     const scheme = window.matchMedia('(prefers-color-scheme: dark)');
     const style = getComputedStyle(canvas);
 
-    const animation = createFieldAnimation({
+    const animation = createDotFieldAnimation({
       context,
       measure: () => ({ width: canvas.clientWidth, height: canvas.clientHeight, pixelRatio: window.devicePixelRatio }),
       setBitmapSize: (width, height) => {
@@ -54,7 +55,6 @@ const { layout = 'page' } = Astro.props;
         canvas.height = height;
       },
       color: () => style.color,
-      fontFamily: () => style.fontFamily,
       requestFrame: (callback) => window.requestAnimationFrame(callback),
       cancelFrame: (id) => window.cancelAnimationFrame(id),
       random: Math.random,

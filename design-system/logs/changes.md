@@ -91,3 +91,10 @@
 - 2026-11-07T21:56:33.730Z - Decision D-020: ASCII field added as a pattern after delivery (approved)
 - 2026-11-07T21:56:33.766Z - Batch B5 (code: ascii-field) → completed
 - 2026-11-07T21:56:33.793Z - B5: ascii-field added (pattern, hero background). QA 5/5 pass in qa/code-report-B5.json. Spec .ai/specs/2026-11-07-animated-hero.md
+- 2026-11-07T22:24:03.595Z - Merged into blueprint: components: +0 new, 1 updated
+- 2026-11-07T22:24:03.622Z - Merged into inventory: items: +0 new, 1 updated
+- 2026-11-07T22:24:03.650Z - Batch B6 (code: ascii-field) → in_progress
+- 2026-11-07T22:24:16.150Z - Merged into blueprint: components: +0 new, 1 updated
+- 2026-11-07T22:24:25.821Z - Decision D-021: ASCII field draws dot-matrix letters (approved)
+- 2026-11-07T22:24:25.856Z - Batch B6 (code: ascii-field) → completed
+- 2026-11-07T22:24:25.886Z - B6: ascii-field now draws dot-matrix letters that scatter under the mouse; character variant removed. QA 5/5 pass in qa/code-report-B6.json. Spec .ai/specs/implemented/2026-11-07-hero-dot-letters.md

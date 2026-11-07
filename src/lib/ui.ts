@@ -138,5 +138,5 @@ const asciiFieldLayoutClasses: Record<AsciiFieldLayout, string> = {
  * `contained` fills its parent's width at a fixed height, for previews.
  */
 export function asciiFieldClasses(layout: AsciiFieldLayout = 'page'): string {
-  return `text-text-subtle pointer-events-none w-full font-mono ${asciiFieldLayoutClasses[layout]}`;
+  return `text-text-subtle pointer-events-none w-full ${asciiFieldLayoutClasses[layout]}`;
 }

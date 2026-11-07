@@ -1,36 +1,35 @@
 import { describe, expect, it, vi } from 'vitest';
 import {
-  createField,
-  createFieldAnimation,
-  defaultFieldConfig,
-  type DrawTarget,
-  drawField,
+  createDotField,
+  createDotFieldAnimation,
+  defaultDotFieldConfig,
+  type DotDrawTarget,
   type FieldHost,
-  fieldChars,
+  dotJitter,
+  dotsPerLetter,
+  drawDots,
+  glyphChars,
+  glyphColumns,
+  glyphDots,
+  glyphRows,
+  glyphs,
   patchStrength,
-  pointerStrength,
-  scrambleNear,
-  randomChar,
-  swapChars,
+  setLetter,
+  stepDots,
+  swapLetters,
 } from './ascii-field';
 
-const config = { ...defaultFieldConfig, cellWidth: 10, cellHeight: 10, pointerRadius: 10, pointerSwapRate: 0.5 };
-
-function sequence(...values: number[]) {
-  let i = 0;
-  return () => values[i++ % values.length] ?? 0;
-}
+// One letter is 5 × 5 + 5 = 30 wide and 7 × 5 + 5 = 40 high.
+const config = { ...defaultDotFieldConfig, dotPitch: 5, letterGapX: 5, letterGapY: 5 };
 
 function fakeContext() {
   return {
     globalAlpha: 1,
     fillStyle: '',
-    font: '',
-    textBaseline: 'alphabetic',
     clearRect: vi.fn(),
-    fillText: vi.fn(),
+    fillRect: vi.fn(),
     setTransform: vi.fn(),
-  } satisfies DrawTarget;
+  } satisfies DotDrawTarget;
 }
 
 function fakeHost(overrides: Partial<FieldHost> = {}) {
@@ -38,13 +37,12 @@ function fakeHost(overrides: Partial<FieldHost> = {}) {
   const context = fakeContext();
   const host = {
     context,
-    measure: () => ({ width: 30, height: 20, pixelRatio: 2 }),
+    measure: () => ({ width: 60, height: 40, pixelRatio: 2 }),
     setBitmapSize: vi.fn(),
     color: () => 'gray',
-    fontFamily: () => 'monospace',
     requestFrame: vi.fn((callback: (ms: number) => void) => frames.push(callback)),
     cancelFrame: vi.fn(),
-    random: sequence(0.5),
+    random: () => 0,
     reducedMotion: false,
     ...overrides,
   } satisfies FieldHost;
@@ -52,31 +50,182 @@ function fakeHost(overrides: Partial<FieldHost> = {}) {
   return { host, context, runFrame };
 }
 
-describe('randomChar', () => {
-  it('picks from the character set, including both ends', () => {
-    expect(randomChar(() => 0)).toBe(fieldChars[0]);
-    expect(randomChar(() => 0.9999)).toBe(fieldChars.at(-1));
-    expect(randomChar(() => 1)).toBe(fieldChars[0]);
+// Digits come first in key order, so random() = 0 picks '0' and 0.99 picks 'Z'.
+const first = glyphChars[0] ?? '';
+const last = glyphChars.at(-1) ?? '';
+const dotCount = (char: string) => glyphDots(char).filter(Boolean).length;
+
+describe('glyphs', () => {
+  it('has a full 5 × 7 matrix with at least one dot for every character', () => {
+    expect(glyphChars).toHaveLength(36);
+    for (const char of glyphChars) {
+      const rows = glyphs[char] ?? [];
+      expect(rows).toHaveLength(glyphRows);
+      for (const row of rows) expect(row).toMatch(new RegExp(`^[#.]{${glyphColumns}}$`));
+      expect(dotCount(char)).toBeGreaterThan(0);
+    }
+  });
+
+  it('has no dots for an unknown character', () => {
+    expect(glyphDots('?')).toEqual([]);
   });
 });
 
-describe('createField', () => {
-  it('covers the area with whole cells', () => {
-    const field = createField(25, 15, config, () => 0);
-    expect(field).toMatchObject({ cols: 3, rows: 2 });
-    expect(field.cells).toHaveLength(6);
+describe('createDotField', () => {
+  it('lays out whole letters and places every dot at home and visible as its glyph', () => {
+    const field = createDotField(50, 30, config, () => 0);
+    expect(field).toMatchObject({ cols: 2, rows: 1 });
+    expect(field.x).toHaveLength(2 * dotsPerLetter);
+    expect([field.homeX[0], field.homeY[0]]).toEqual([5, 5]);
+    expect(field.homeX[dotsPerLetter]).toBe(35);
+    expect(field.x).toEqual(field.homeX);
+    expect(Array.from(field.level)).toEqual(Array.from(field.target));
+    expect(Array.from(field.target.slice(0, dotsPerLetter))).toEqual(glyphDots(first).map(Number));
   });
 
   it('is empty for an empty area', () => {
-    expect(createField(0, 0, config, () => 0).cells).toEqual([]);
+    expect(createDotField(0, 0, config, () => 0).x).toHaveLength(0);
   });
 });
 
-describe('swapChars', () => {
-  it('replaces the given share of cells', () => {
-    const field = createField(100, 10, config, () => 0);
-    swapChars(field, 0.2, sequence(0, 0.5, 0.5, 0.5));
-    expect(field.cells.filter((char) => char !== fieldChars[0])).toHaveLength(2);
+describe('setLetter and swapLetters', () => {
+  it('sets the target dots of one letter', () => {
+    const field = createDotField(30, 40, config, () => 0);
+    setLetter(field, 0, 'I');
+    expect(field.target.reduce((sum, on) => sum + on, 0)).toBe(dotCount('I'));
+  });
+
+  it('changes about rate × letters × seconds letters', () => {
+    const field = createDotField(300, 40, config, () => 0);
+    const random = vi.fn().mockReturnValueOnce(0).mockReturnValue(0.99);
+    swapLetters(field, 0.2, 1, random);
+    // 10 letters × 0.2 = 2 swaps, both to the last glyph in the last letter.
+    expect(random).toHaveBeenCalledTimes(5);
+    expect(field.target.slice(9 * dotsPerLetter).reduce((sum, on) => sum + on, 0)).toBe(dotCount(last));
+  });
+});
+
+describe('dotJitter', () => {
+  it('stays between 0.6 and 1.4 and differs between dots', () => {
+    const values = Array.from({ length: 200 }, (_, i) => dotJitter(i));
+    expect(Math.min(...values)).toBeGreaterThanOrEqual(0.6);
+    expect(Math.max(...values)).toBeLessThanOrEqual(1.4);
+    expect(new Set(values).size).toBeGreaterThan(150);
+  });
+});
+
+describe('stepDots', () => {
+  it('fades dots toward their target', () => {
+    const field = createDotField(30, 40, config, () => 0);
+    field.level.fill(0);
+    stepDots(field, null, config, () => 0.5);
+    expect(field.level[1]).toBeCloseTo(config.fadeSpeed);
+    expect(field.level[0]).toBe(0);
+  });
+
+  it('pushes dots near the pointer away and leaves far dots in place', () => {
+    const field = createDotField(300, 40, config, () => 0);
+    const near = 1;
+    stepDots(field, { x: field.homeX[near] - 3, y: field.homeY[near] }, config, () => 0.5);
+    expect(field.x[near]).toBeGreaterThan(field.homeX[near]);
+    const far = 9 * dotsPerLetter;
+    expect(field.x[far]).toBe(field.homeX[far]);
+  });
+
+  it('sends dots out at different angles and adds a random kick', () => {
+    const calm = createDotField(30, 40, config, () => 0);
+    const kicked = createDotField(30, 40, config, () => 0);
+    const pointer = { x: calm.homeX[0] - 3, y: calm.homeY[0] };
+    stepDots(calm, pointer, config, () => 0.5);
+    stepDots(kicked, pointer, config, () => 1);
+    // Straight out from the pointer would keep y at home; the bend moves it.
+    expect(calm.y[0]).not.toBeCloseTo(calm.homeY[0], 3);
+    expect(kicked.x[0]).not.toBeCloseTo(calm.x[0], 3);
+  });
+
+  it('pushes a dot right under the pointer without dividing by zero', () => {
+    const field = createDotField(30, 40, config, () => 0);
+    stepDots(field, { x: field.homeX[0], y: field.homeY[0] }, config, () => 0.5);
+    expect(Number.isFinite(field.x[0])).toBe(true);
+  });
+
+  it('springs scattered dots back home once the pointer leaves', () => {
+    const field = createDotField(30, 40, config, () => 0);
+    field.x[0] = field.homeX[0] + 30;
+    for (let frame = 0; frame < 200; frame += 1) stepDots(field, null, config, () => 0.5);
+    expect(field.x[0]).toBeCloseTo(field.homeX[0], 1);
+  });
+});
+
+describe('drawDots', () => {
+  it('draws only visible dots and brightens scattered ones, up to full opacity', () => {
+    const context = fakeContext();
+    const alphas: number[] = [];
+    context.fillRect.mockImplementation(() => alphas.push(context.globalAlpha));
+    const field = createDotField(30, 40, config, () => 0);
+    drawDots(context, field, 0, config, { color: 'red', width: 30, height: 40 });
+
+    expect(context.clearRect).toHaveBeenCalledWith(0, 0, 30, 40);
+    expect(context.fillStyle).toBe('red');
+    expect(context.fillRect).toHaveBeenCalledTimes(dotCount(first));
+    expect(context.fillRect).toHaveBeenCalledWith(field.homeX[1] - 1, field.homeY[1] - 1, 2, 2);
+
+    alphas.length = 0;
+    field.x[1] += 100;
+    drawDots(context, field, 0, { ...config, scatterAlpha: 5 }, { color: 'red', width: 30, height: 40 });
+    expect(alphas[0]).toBe(1);
+    expect(alphas[1]).toBeLessThan(1);
+    expect(context.globalAlpha).toBe(1);
+  });
+});
+
+describe('createDotFieldAnimation', () => {
+  it('sizes the bitmap for the pixel ratio and draws on resize', () => {
+    const { host, context } = fakeHost();
+    createDotFieldAnimation(host, config).resize();
+    expect(host.setBitmapSize).toHaveBeenCalledWith(120, 80);
+    expect(context.setTransform).toHaveBeenCalledWith(2, 0, 0, 2, 0, 0);
+    expect(context.fillRect).toHaveBeenCalledTimes(2 * dotCount(first));
+  });
+
+  it('animates every frame and scatters dots around the pointer', () => {
+    const { host, context, runFrame } = fakeHost();
+    const animation = createDotFieldAnimation(host, config);
+    animation.resize();
+    animation.setActive(true);
+    animation.setActive(true);
+    expect(host.requestFrame).toHaveBeenCalledTimes(1);
+
+    animation.setPointer({ x: 3, y: 5 });
+    context.fillRect.mockClear();
+    runFrame(16);
+    runFrame(32);
+    expect(context.fillRect).toHaveBeenCalledTimes(4 * dotCount(first));
+    const [x = 0, y = 0] = context.fillRect.mock.calls.at(-2 * dotCount(first)) ?? [];
+    // The first visible dot rests at (9, 4) once the half dot size is taken off.
+    expect(Math.hypot(x - 9, y - 4)).toBeGreaterThan(0.5);
+  });
+
+  it('pauses, restarts the clock, and pausing twice is harmless', () => {
+    const { host } = fakeHost();
+    const animation = createDotFieldAnimation(host, config);
+    animation.setActive(true);
+    animation.setActive(false);
+    animation.destroy();
+    expect(host.cancelFrame).toHaveBeenCalledTimes(1);
+  });
+
+  it('never animates or reacts to the pointer with reduced motion, but redraws on request', () => {
+    const { host, context } = fakeHost({ reducedMotion: true });
+    const animation = createDotFieldAnimation(host, config);
+    animation.resize();
+    animation.setActive(true);
+    animation.setPointer({ x: 3, y: 5 });
+    expect(host.requestFrame).not.toHaveBeenCalled();
+
+    context.clearRect.mockClear();
+    animation.redraw();
+    expect(context.clearRect).toHaveBeenCalledTimes(1);
   });
 });
 
@@ -86,121 +235,5 @@ describe('patchStrength', () => {
     expect(Math.min(...values)).toBe(0);
     expect(Math.max(...values)).toBeLessThanOrEqual(1);
     expect(Math.max(...values)).toBeGreaterThan(0);
-  });
-});
-
-describe('pointerStrength', () => {
-  it('is 1 under the pointer, fades softly to 0 at the edge and is 0 without a pointer', () => {
-    expect(pointerStrength(5, 5, { x: 5, y: 5 }, 10)).toBe(1);
-    expect(pointerStrength(10, 5, { x: 5, y: 5 }, 10)).toBeCloseTo(0.356, 3);
-    expect(pointerStrength(14.9, 5, { x: 5, y: 5 }, 10)).toBeLessThan(0.002);
-    expect(pointerStrength(50, 5, { x: 5, y: 5 }, 10)).toBe(0);
-    expect(pointerStrength(5, 5, null, 10)).toBe(0);
-  });
-});
-
-describe('scrambleNear', () => {
-  it('swaps only characters within reach of the pointer, by chance', () => {
-    const field = createField(40, 10, config, () => 0);
-    scrambleNear(field, { x: 5, y: 5 }, config, sequence(0.1, 0.5));
-    expect(field.cells.map((char) => char !== fieldChars[0])).toEqual([true, false, false, false]);
-  });
-
-  it('does nothing without a pointer', () => {
-    const field = createField(40, 10, config, () => 0);
-    scrambleNear(field, null, config, () => 0.1);
-    expect(field.cells.every((char) => char === fieldChars[0])).toBe(true);
-  });
-});
-
-describe('drawField', () => {
-  it('brightens cells under the pointer, up to full opacity', () => {
-    const context = fakeContext();
-    const alphas: number[] = [];
-    context.fillText.mockImplementation(() => alphas.push(context.globalAlpha));
-    const field = createField(20, 10, config, () => 0);
-    const bright = { ...config, pointerAlpha: 2 };
-    drawField(context, field, 0, bright, { color: 'red', fontFamily: 'mono', width: 20, height: 10, pointer: { x: 5, y: 5 } });
-
-    expect(alphas[0]).toBe(1);
-    expect(alphas[1]).toBeLessThan(1);
-  });
-
-  it('clears the canvas and draws every cell in its place', () => {
-    const context = fakeContext();
-    const field = createField(20, 20, config, () => 0);
-    drawField(context, field, 0, config, { color: 'red', fontFamily: 'mono', width: 20, height: 20, pointer: null });
-
-    expect(context.clearRect).toHaveBeenCalledWith(0, 0, 20, 20);
-    expect(context.fillStyle).toBe('red');
-    expect(context.font).toBe(`${config.fontSize}px mono`);
-    expect(context.textBaseline).toBe('top');
-    expect(context.fillText.mock.calls.map(([, x, y]) => [x, y])).toEqual([
-      [0, 0],
-      [10, 0],
-      [0, 10],
-      [10, 10],
-    ]);
-    expect(context.globalAlpha).toBe(1);
-  });
-});
-
-describe('createFieldAnimation', () => {
-  it('sizes the bitmap for the pixel ratio and draws on resize', () => {
-    const { host, context } = fakeHost();
-    createFieldAnimation(host, config).resize();
-
-    expect(host.setBitmapSize).toHaveBeenCalledWith(60, 40);
-    expect(context.setTransform).toHaveBeenCalledWith(2, 0, 0, 2, 0, 0);
-    expect(context.fillText).toHaveBeenCalledTimes(6);
-  });
-
-  it('draws at the configured frame rate while active', () => {
-    const { host, context, runFrame } = fakeHost();
-    const animation = createFieldAnimation(host, config);
-    animation.resize();
-    animation.setActive(true);
-    animation.setActive(true);
-    expect(host.requestFrame).toHaveBeenCalledTimes(1);
-
-    context.fillText.mockClear();
-    runFrame(10);
-    expect(context.fillText).not.toHaveBeenCalled();
-    runFrame(100);
-    expect(context.fillText).toHaveBeenCalledTimes(6);
-  });
-
-  it('pauses, and pausing twice is harmless', () => {
-    const { host } = fakeHost();
-    const animation = createFieldAnimation(host, config);
-    animation.setActive(true);
-    animation.setActive(false);
-    animation.destroy();
-    expect(host.cancelFrame).toHaveBeenCalledTimes(1);
-  });
-
-  it('follows the pointer while animating', () => {
-    const { host, context, runFrame } = fakeHost({ random: () => 0.9 });
-    const animation = createFieldAnimation(host, { ...config, pointerAlpha: 0 });
-    animation.resize();
-    animation.setActive(true);
-    animation.setPointer({ x: 5, y: 5 });
-    const alphas: number[] = [];
-    context.fillText.mockImplementation(() => alphas.push(context.globalAlpha));
-    runFrame(100);
-    expect(alphas).toHaveLength(6);
-  });
-
-  it('never animates with reduced motion, but redraws on request', () => {
-    const { host, context } = fakeHost({ reducedMotion: true });
-    const animation = createFieldAnimation(host, config);
-    animation.resize();
-    animation.setActive(true);
-    animation.setPointer({ x: 5, y: 5 });
-    expect(host.requestFrame).not.toHaveBeenCalled();
-
-    context.clearRect.mockClear();
-    animation.redraw();
-    expect(context.clearRect).toHaveBeenCalledTimes(1);
   });
 });

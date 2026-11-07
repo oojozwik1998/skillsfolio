@@ -27,7 +27,7 @@ Status as of 2026-11-07. Target: code only (no Figma library), prototype depth.
 | Disclosure | `Disclosure` | composite | Step by step; opens from any link to its id |
 | Page header | `PageHeader` | pattern | All pages (the only h1) |
 | Section header | `SectionHeader` | pattern | Sections on tailor-my-cv |
-| ASCII field | `AsciiField` | pattern | Home page hero background (added in B5, D-020) |
+| ASCII field | `AsciiField` | pattern | Home page hero background: dot-matrix letters (added in B5, D-020; dot letters in B6, D-021) |
 
 All 13 pass typecheck, lint, unit tests (100% coverage of `src/lib`), browser tests with axe and the Storybook build. All are `needs_review`: Astro is not the skill's fully supported stack, so a developer should review them.
 

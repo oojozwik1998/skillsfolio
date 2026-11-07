@@ -376,7 +376,7 @@
       ],
       "observedStates": [
         "default",
-        "hover glow",
+        "dots scatter on hover",
         "reduced motion"
       ],
       "inferredMissingStates": [],

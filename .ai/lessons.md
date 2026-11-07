@@ -13,3 +13,4 @@ One line per lesson, newest first: `YYYY-MM-DD - what went wrong - the rule that
 - 2026-11-06 - The Keystatic collection used `fields` instead of `schema`, and the panel route still returned 200 - a 200 does not prove the panel works, so run `pnpm typecheck` and open the panel in a browser after changing `keystatic.config.ts`.
 - 2026-11-06 - `git add -A` failed on a folder with its own repository - stage explicit paths, and keep separate repositories in `.gitignore`.
 - 2026-11-07 - Type browser-API stand-ins with `Pick<RealType, ...>` (e.g. `Pick<CanvasRenderingContext2D, ...>`), not hand-written interfaces - unit tests pass but `astro check` rejects the real object when a property type is narrower.
+- 2026-11-07 - A test assumed `Object.keys(glyphs)[0]` was 'A', but JavaScript puts integer-like keys ('0'-'9') first - read the first and last key from the list in tests instead of hard-coding them.

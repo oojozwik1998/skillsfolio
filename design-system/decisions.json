@@ -343,6 +343,22 @@
         "component:ascii-field"
       ],
       "supersedes": null
+    },
+    {
+      "id": "D-021",
+      "at": "2026-11-07T22:24:25.809Z",
+      "stage": "5",
+      "gate": null,
+      "title": "ASCII field draws dot-matrix letters",
+      "choice": "approved",
+      "proposedBy": "user",
+      "approvedBy": "user",
+      "rationale": "Owner compared the character field with large dot letters that scatter under the mouse and kept the dot letters after tuning a wide, calm scatter and lively letter changes; the character variant was removed, so one version stays",
+      "alternatives": [],
+      "affects": [
+        "component:ascii-field"
+      ],
+      "supersedes": "D-020"
     }
   ]
 }
