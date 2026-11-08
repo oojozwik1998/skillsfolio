@@ -1,4 +1,4 @@
-# Skills Folio
+# designskills
 
 A public catalog of agent skills by Oskar Jóźwik. Browse the skills, open one and install it with a single command:
 
