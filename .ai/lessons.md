@@ -14,3 +14,5 @@ One line per lesson, newest first: `YYYY-MM-DD - what went wrong - the rule that
 - 2026-11-06 - `git add -A` failed on a folder with its own repository - stage explicit paths, and keep separate repositories in `.gitignore`.
 - 2026-11-07 - Type browser-API stand-ins with `Pick<RealType, ...>` (e.g. `Pick<CanvasRenderingContext2D, ...>`), not hand-written interfaces - unit tests pass but `astro check` rejects the real object when a property type is narrower.
 - 2026-11-07 - A test assumed `Object.keys(glyphs)[0]` was 'A', but JavaScript puts integer-like keys ('0'-'9') first - read the first and last key from the list in tests instead of hard-coding them.
+- 2026-11-11 - `python3 -m unittest discover -s skills` found 0 tests, because skill folders are not Python packages - run discover once per `skills/*/tests` folder (`pnpm test:skills` does this).
+- 2026-11-11 - The standalone board server stops about a minute after its last tab closes, so a long manual test can hit a closed port - restart `board.py open` before a browser test instead of assuming it still runs.

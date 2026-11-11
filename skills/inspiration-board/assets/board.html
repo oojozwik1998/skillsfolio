@@ -1,0 +1,923 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inspiration boards</title>
+<style>
+  :root {
+    --bg: #f6f6f4; --surface: #ffffff; --ink: #18181b; --ink-2: #52525b; --ink-3: #8a8a93;
+    --line: #e4e4e7; --accent: #18181b; --on-accent: #ffffff; --like: #16a34a; --like-bg: rgba(22,163,74,.12);
+    --dislike: #dc2626; --dislike-bg: rgba(220,38,38,.12); --focus: #2563eb; --warn-bg: #fef3c7; --warn: #92400e;
+    --header: rgba(246,246,244,.92); --r: 10px; --shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #111113; --surface: #1c1c1f; --ink: #f4f4f5; --ink-2: #b4b4bb; --ink-3: #85858f;
+      --line: #2e2e33; --accent: #f4f4f5; --on-accent: #111113; --like: #22c55e; --like-bg: rgba(34,197,94,.16);
+      --dislike: #f87171; --dislike-bg: rgba(248,113,113,.16); --focus: #60a5fa; --warn-bg: #3a2a0a; --warn: #fcd34d;
+      --header: rgba(17,17,19,.9); --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--bg); color: var(--ink);
+    font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", sans-serif; }
+  button, input, textarea, select { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; }
+  [hidden] { display: none !important; }
+
+  header { position: sticky; top: 0; z-index: 20; background: var(--header);
+    backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  .bar { max-width: 1400px; margin: 0 auto; padding: 12px 24px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .crumbs { display: flex; gap: 6px; align-items: baseline; min-width: 0; flex: 1; }
+  .crumbs a { color: var(--ink-2); text-decoration: none; font-size: 13px; white-space: nowrap; }
+  .crumbs a:hover { color: var(--ink); text-decoration: underline; }
+  .crumbs h1 { margin: 0; font-size: 15px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .crumbs .sep { color: var(--ink-3); }
+  .tabs { display: flex; gap: 2px; background: var(--line); border-radius: 9px; padding: 2px; }
+  .tabs a { text-decoration: none; padding: 5px 12px; border-radius: 7px; font-size: 13px; color: var(--ink-2); }
+  .tabs a:hover { color: var(--ink); }
+  .tabs a[aria-current="page"] { background: var(--surface); color: var(--ink); font-weight: 600; box-shadow: var(--shadow); }
+  .chip-wait { font-size: 12px; font-weight: 600; color: var(--warn); background: var(--warn-bg); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
+  .status { font-size: 12px; color: var(--ink-3); min-width: 64px; text-align: right; }
+  .btn { height: 36px; padding: 0 14px; border-radius: 8px; border: 1px solid var(--line);
+    background: var(--surface); font-weight: 500; white-space: nowrap; }
+  .btn:hover { border-color: var(--ink-3); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+  .btn.primary:hover { opacity: .88; }
+  .btn.small { height: 30px; padding: 0 10px; font-size: 13px; }
+  .btn:disabled { opacity: .5; cursor: progress; }
+  .link { border: 0; background: none; padding: 0; color: var(--ink-2); font-size: 13px; text-decoration: underline; text-underline-offset: 2px; }
+  .link:hover { color: var(--ink); }
+  .tools { max-width: 1400px; margin: 0 auto; padding: 0 24px 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .add { display: flex; gap: 6px; flex: 1 1 420px; }
+  input.text, select { height: 36px; padding: 0 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); min-width: 0; }
+  input.text:hover, select:hover, textarea:hover { border-color: var(--ink-3); }
+  .add input { flex: 1; }
+  .hint { color: var(--ink-2); font-size: 12px; }
+  kbd { font: 11px ui-monospace, monospace; border: 1px solid var(--line); border-bottom-width: 2px;
+    border-radius: 4px; padding: 0 4px; background: var(--surface); }
+
+  main { max-width: 1400px; margin: 0 auto; padding: 24px; }
+  .banner { display: flex; gap: 12px; align-items: center; justify-content: space-between; flex-wrap: wrap;
+    background: var(--warn-bg); color: var(--warn); border-radius: var(--r); padding: 10px 14px; margin-bottom: 16px; font-size: 13px; }
+  .banner code { font: 12px ui-monospace, monospace; background: rgba(0,0,0,.06); padding: 1px 5px; border-radius: 4px; }
+  .empty { text-align: center; padding: 72px 24px; color: var(--ink-2); border: 2px dashed var(--line); border-radius: var(--r); }
+  .empty h2 { color: var(--ink); font-size: 18px; margin: 0 0 6px; }
+
+  /* topics screen + grid */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+  .card { display: flex; flex-direction: column; text-align: left; background: var(--surface); border: 1px solid transparent;
+    border-radius: var(--r); box-shadow: var(--shadow); overflow: hidden; text-decoration: none; padding: 0; }
+  .card:hover { border-color: var(--ink-3); }
+  .card .thumb { position: relative; aspect-ratio: 16 / 10; background: var(--line); }
+  .card .thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .card .body { padding: 10px 12px 12px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .card h3 { margin: 0; font-size: 14px; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .card .meta { color: var(--ink-2); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .badges { position: absolute; left: 8px; top: 8px; display: flex; gap: 4px; flex-wrap: wrap; }
+  .badge { font-size: 11px; font-weight: 600; border-radius: 4px; padding: 0 6px; line-height: 20px; background: rgba(24,24,27,.82); color: #fff; }
+  .badge.new { background: var(--focus); }
+  .badge.wait { background: #b45309; }
+  .badge.old { background: var(--ink-3); }
+  .grid-items { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
+  .newtopic { display: flex; gap: 6px; margin-bottom: 20px; max-width: 520px; }
+  .newtopic input { flex: 1; }
+  .filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 16px; }
+  .fchip { height: 30px; padding: 0 12px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font-size: 13px; color: var(--ink-2); }
+  .fchip:hover { border-color: var(--ink-3); color: var(--ink); }
+  .fchip[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+
+  /* single inspiration */
+  .nav { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; }
+  .nav .arrow { width: 36px; flex: none; padding: 0; font-size: 16px; }
+  .strip { display: flex; gap: 8px; overflow-x: auto; flex: 1; padding: 2px; scrollbar-width: thin; }
+  .sthumb { position: relative; flex: none; width: 96px; height: 60px; border-radius: 8px; overflow: hidden;
+    border: 2px solid transparent; padding: 0; background: var(--surface); box-shadow: var(--shadow); }
+  .sthumb:hover { border-color: var(--ink-3); }
+  .sthumb img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .sthumb.on { border-color: var(--ink); }
+  .sthumb .no { position: absolute; left: 4px; top: 4px; background: rgba(24,24,27,.82); color: #fff;
+    font-size: 11px; font-weight: 600; border-radius: 4px; padding: 0 5px; line-height: 18px; }
+  .counter { font-size: 12px; color: var(--ink-2); min-width: 44px; text-align: right; flex: none; }
+  .item { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 20px; align-items: start; }
+  .frames { display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+  .frame-cap { font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); margin: 0 0 6px; }
+  .stage { position: relative; background: var(--surface); border-radius: var(--r); box-shadow: var(--shadow);
+    overflow: hidden; user-select: none; cursor: crosshair; }
+  .stage.ro { cursor: default; }
+  .stage img { display: block; width: 100%; height: auto; pointer-events: none; }
+  .pin { position: absolute; border: 2px solid var(--like); background: var(--like-bg); border-radius: 3px; cursor: pointer; }
+  .pin.dislike { border-color: var(--dislike); background: var(--dislike-bg); }
+  .pin.active { box-shadow: 0 0 0 3px rgba(37,99,235,.45); }
+  .pin .num { position: absolute; top: -2px; left: -2px; min-width: 22px; height: 22px; padding: 0 6px;
+    border-radius: 3px 0 6px 0; background: var(--like); color: #fff; font-size: 12px; font-weight: 600; display: grid; place-items: center; }
+  .pin.dislike .num { background: var(--dislike); }
+  .pin.point { width: 26px; height: 26px; margin: -13px 0 0 -13px; border: 2px solid #fff; border-radius: 50%;
+    background: var(--like); box-shadow: 0 2px 8px rgba(0,0,0,.35); display: grid; place-items: center; }
+  .pin.point.dislike { background: var(--dislike); }
+  .pin.point .num { position: static; min-width: 0; height: auto; padding: 0; background: none; border-radius: 0; }
+  .pin.point.active { box-shadow: 0 0 0 4px rgba(37,99,235,.55), 0 2px 8px rgba(0,0,0,.35); }
+  .draft { position: absolute; border: 2px dashed var(--focus); background: rgba(37,99,235,.08); pointer-events: none; }
+  aside { position: sticky; top: 140px; background: var(--surface); border-radius: var(--r); box-shadow: var(--shadow);
+    padding: 16px; display: flex; flex-direction: column; gap: 14px; max-height: calc(100vh - 160px); overflow: auto; }
+  .src { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+  .src a, .src span { color: var(--ink-2); font-size: 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .idx { font-weight: 600; font-size: 13px; }
+  label.cap, .cap { display: block; font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); margin-bottom: 6px; }
+  textarea { width: 100%; resize: vertical; min-height: 64px; padding: 8px 10px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+  .pins { display: flex; flex-direction: column; gap: 8px; }
+  .row { display: grid; grid-template-columns: 26px 1fr auto; gap: 8px; align-items: start; padding: 8px; border: 1px solid var(--line); border-radius: 8px; }
+  .row.active { border-color: var(--focus); }
+  .row .fr { display: block; font-size: 10px; color: var(--ink-3); text-align: center; margin-top: 2px; }
+  .row .n { width: 22px; height: 22px; border-radius: 4px; background: var(--like); color: #fff; font-size: 12px; font-weight: 600; display: grid; place-items: center; }
+  .row.dislike .n { background: var(--dislike); }
+  .row textarea { min-height: 36px; padding: 4px 6px; border: 0; }
+  .row textarea:focus { outline: 1px solid var(--line); }
+  .row .feat { grid-column: 2 / 4; display: flex; gap: 4px; flex-wrap: wrap; }
+  .tag { font-size: 11px; border-radius: 4px; padding: 0 6px; line-height: 18px; background: var(--bg); color: var(--ink-2); border: 1px solid var(--line); }
+  .tag.wait { color: var(--warn); background: var(--warn-bg); border-color: transparent; }
+  .icon { border: 0; background: none; color: var(--ink-3); padding: 2px 4px; border-radius: 4px; font-size: 13px; }
+  .icon:hover { color: var(--ink); background: var(--bg); }
+  .icon:disabled { opacity: .35; cursor: not-allowed; }
+  .icon:disabled:hover { background: none; color: var(--ink-3); }
+  .empty-pins { color: var(--ink-3); font-size: 12px; }
+  .remove { align-self: flex-start; border: 0; background: none; color: var(--ink-3); font-size: 12px; padding: 0; }
+  .remove:hover { color: var(--dislike); }
+  .pop { position: fixed; z-index: 40; width: 300px; background: var(--surface); border-radius: var(--r);
+    box-shadow: 0 12px 40px rgba(0,0,0,.18); border: 1px solid var(--line); padding: 12px; display: flex; flex-direction: column; gap: 10px; }
+  .seg { display: grid; grid-template-columns: 1fr 1fr; background: var(--bg); border-radius: 8px; padding: 3px; }
+  .seg button { border: 0; background: none; height: 30px; border-radius: 6px; font-size: 13px; color: var(--ink-2); }
+  .seg button:hover { color: var(--ink); }
+  .seg button.on.like, .seg button.on.take { background: var(--surface); color: var(--like); box-shadow: var(--shadow); font-weight: 600; }
+  .seg button.on.dislike, .seg button.on.avoid { background: var(--surface); color: var(--dislike); box-shadow: var(--shadow); font-weight: 600; }
+  .pop .actions { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+  .pop .actions small { color: var(--ink-3); font-size: 11px; }
+
+  /* direction */
+  .dir { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+  .dir section { margin-bottom: 28px; }
+  .dir h2 { font-size: 16px; margin: 0 0 10px; display: flex; gap: 10px; align-items: center; justify-content: space-between; }
+  .dir h3 { font-size: 12px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; color: var(--ink-3); margin: 18px 0 8px; }
+  .dir textarea.direction { min-height: 110px; font-size: 15px; line-height: 1.5; }
+  .feature { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 10px 12px; display: grid; gap: 6px; margin-bottom: 8px; }
+  .feature:hover { border-color: var(--ink-3); }
+  .feature .top { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .feature input.fname { flex: 1 1 220px; font-weight: 600; }
+  .feature .ctrl { display: flex; gap: 8px; align-items: center; flex: none; }
+  .feature label.fl { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 8px; align-items: center; }
+  .feature label.fl span { font-size: 12px; color: var(--ink-3); padding-left: 6px; }
+  .feature input.fline { width: 100%; }
+  .feature input { border: 1px solid transparent; background: transparent; border-radius: 6px; padding: 4px 6px; height: 30px; min-width: 0; }
+  .feature input:hover { border-color: var(--line); }
+  .feature input:focus { border-color: var(--ink-3); background: var(--surface); outline: none; }
+  .feature select { height: 30px; padding: 0 8px; font-size: 13px; }
+  .feature .seg { width: 150px; }
+  .feature .seg button { height: 24px; font-size: 12px; }
+  .feature .bottom { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+  .srcchip { font-size: 11px; border-radius: 4px; padding: 0 6px; line-height: 20px; border: 1px solid var(--line); background: var(--bg); color: var(--ink-2); }
+  .srcchip:hover { border-color: var(--ink-3); color: var(--ink); }
+  .owned { font-size: 11px; color: var(--ink-3); margin-left: auto; }
+  .cats { background: var(--surface); border-radius: var(--r); box-shadow: var(--shadow); padding: 14px; position: sticky; top: 100px; }
+  .cats ul { list-style: none; margin: 0 0 10px; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+  .cats li { display: flex; gap: 6px; align-items: center; }
+  .cats li input { flex: 1; height: 30px; padding: 0 8px; }
+  .cats .count { font-size: 11px; color: var(--ink-3); min-width: 18px; text-align: right; }
+  .cats form { display: flex; gap: 6px; }
+  .cats form input { flex: 1; height: 30px; padding: 0 8px; }
+  details.dropped summary { cursor: pointer; color: var(--ink-2); font-size: 13px; }
+  details.dropped .feature { opacity: .7; }
+
+  .drop { position: fixed; inset: 0; z-index: 50; background: rgba(37,99,235,.08); border: 3px dashed var(--focus);
+    display: none; place-items: center; font-size: 18px; font-weight: 600; color: var(--focus); }
+  .drop.on { display: grid; }
+  .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 60; background: var(--ink);
+    color: var(--bg); padding: 10px 16px; border-radius: 8px; font-size: 13px; max-width: 90vw; display: none; }
+  .finish { position: fixed; inset: 0; z-index: 70; background: var(--bg); display: none; place-items: center; text-align: center; padding: 24px; }
+  .finish.on { display: grid; }
+  .finish h2 { margin: 0 0 8px; font-size: 22px; }
+  .finish p { color: var(--ink-2); margin: 0; }
+
+  @media (max-width: 900px) {
+    .item, .dir { grid-template-columns: 1fr; }
+    aside, .cats { position: static; max-height: none; }
+    .bar, .tools { padding-left: 16px; padding-right: 16px; }
+    main { padding: 16px; }
+    .cards { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+  }
+  @media (max-width: 600px) {
+    .crumbs { flex-basis: 100%; }
+    .feature .ctrl { width: 100%; }
+    .feature .ctrl select { flex: 1; min-width: 0; }
+    .feature label.fl { grid-template-columns: 1fr; gap: 0; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <nav class="crumbs" id="crumbs" aria-label="Breadcrumb"></nav>
+    <nav class="tabs" id="tabs" aria-label="Topic views" hidden></nav>
+    <span class="chip-wait" id="waitChip" hidden></span>
+    <span class="status" id="status" aria-live="polite"></span>
+    <button class="btn primary" id="doneBtn" type="button" hidden>Done</button>
+  </div>
+  <div class="tools" id="tools" hidden>
+    <form class="add" id="addForm">
+      <input class="text" id="url" type="url" placeholder="Paste a link to a page or an image" aria-label="Link to an inspiration">
+      <button class="btn" id="addBtn" type="submit">Add link</button>
+      <button class="btn" id="fileBtn" type="button" title="Pick images from disk. You can also paste (Cmd/Ctrl+V) or drop files on the window.">Upload image</button>
+      <input id="fileInput" type="file" accept="image/*" multiple hidden>
+    </form>
+    <span class="hint" id="hint"></span>
+  </div>
+</header>
+<main id="main"></main>
+<div class="drop" id="drop">Drop to add an inspiration</div>
+<div class="toast" id="toast" role="status"></div>
+<div class="finish" id="finish"><div><h2>Saved</h2><p>You can close this tab. Your agent is looking at your pins now.</p></div></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const uid = p => p + Math.random().toString(36).slice(2, 9);
+const num = id => Number(String(id).replace(/^i/, '')) || 0;
+const framesOf = item => (item.frames && item.frames.length) ? item.frames : [item.image];
+const isPoint = p => !p.w && !p.h;
+const domain = src => /^https?:/.test(src) ? src.replace(/^https?:\/\/(www\.)?/, '').split('/')[0] : src;
+
+let meta = { mode: 'standalone', session: null, root: '' };
+let route = { view: 'home' };
+let topic = null;          // board of the open topic
+let topics = [];
+let ops = [];              // edits from the Direction tab waiting to be saved
+let saveTimer = null, saving = false, dirty = false, catFilter = null, activePin = null;
+
+function toast(msg, ms = 3200) { const t = $('#toast'); t.textContent = msg; t.style.display = 'block';
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.style.display = 'none', ms); }
+const status = txt => $('#status').textContent = txt;
+
+async function api(path, body, opts = {}) {
+  const r = await fetch(path, { method: body === undefined ? 'GET' : 'POST',
+    headers: opts.headers || { 'Content-Type': 'application/json' },
+    body: body === undefined ? undefined : (opts.raw ? body : JSON.stringify(body)) });
+  return r.json();
+}
+const tapi = (tail, body, opts) => api(`/api/t/${encodeURIComponent(route.slug)}/${tail}`, body, opts);
+const img = src => `/t/${encodeURIComponent(route.slug)}/${src}`;
+const readOnly = () => !!(topic && topic.legacy);
+const liveItems = () => topic ? topic.items.filter(i => !i.removed) : [];
+const waitingFor = itemId => (topic?.waiting || []).filter(w => w.item === itemId);
+const featById = id => topic.features.find(f => f.id === id);
+const catName = id => topic.categories.find(c => c.id === id)?.name || id;
+
+/* ---------- routing ---------- */
+function parseHash() {
+  const h = location.hash.replace(/^#\/?/, '').split('/').map(decodeURIComponent);
+  if (h[0] !== 't' || !h[1]) return { view: 'home' };
+  if (h[2] === 'direction') return { view: 'direction', slug: h[1] };
+  if (h[2] === 'i' && h[3]) return { view: 'item', slug: h[1], item: h[3], pin: h[4] === 'p' ? h[5] : null };
+  return { view: 'grid', slug: h[1] };
+}
+const go = hash => { if (location.hash !== hash) location.hash = hash; else onRoute(); };
+const topicHash = (slug, rest = '') => `#/t/${encodeURIComponent(slug)}${rest}`;
+
+async function onRoute() {
+  closePop();
+  const next = parseHash();
+  const changedTopic = next.slug !== route.slug;
+  if (changedTopic && route.slug) await flush();
+  route = next;
+  if (route.view === 'home') { topic = null; topics = await api('/api/topics'); }
+  else if (changedTopic || !topic) {
+    topic = await tapi('state');
+    if (topic.error) { toast('This topic does not exist any more'); return go('#/'); }
+    catFilter = null;
+  }
+  if (route.pin) activePin = route.pin;
+  render();
+  if (route.view === 'item') scrollTo({ top: 0 });
+}
+addEventListener('hashchange', onRoute);
+
+/* ---------- saving ---------- */
+function queueOp(op) {
+  if (op.op === 'feature.set') ops = ops.filter(o => !(o.op === 'feature.set' && o.id === op.id && o.field === op.field));
+  if (op.op === 'direction.set') ops = ops.filter(o => o.op !== 'direction.set');
+  if (op.op === 'category.rename') ops = ops.filter(o => !(o.op === 'category.rename' && o.id === op.id));
+  ops.push(op);
+  scheduleSave();
+}
+function scheduleSave() {
+  if (readOnly()) return;
+  dirty = true;
+  status('Saving…');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(flush, 600);
+}
+async function flush() {
+  clearTimeout(saveTimer);
+  if (!topic || readOnly() || saving || (!dirty && !ops.length)) return;
+  saving = true; dirty = false;
+  const sent = ops; ops = [];
+  try {
+    const res = await tapi('state', { items: topic.items, ops: sent });
+    if (res.ok) {
+      topic.waiting = res.state.waiting;
+      if (!ops.length) Object.assign(topic, { features: res.state.features, categories: res.state.categories,
+        direction: res.state.direction, rounds: res.state.rounds });
+      status('Saved'); renderHeader();
+      return res.state;
+    }
+    ops = sent.concat(ops); dirty = true; status('Save failed');
+  } catch (e) { ops = sent.concat(ops); dirty = true; status('Offline'); }
+  finally { saving = false; }
+}
+
+/* ---------- header ---------- */
+function renderHeader() {
+  const c = $('#crumbs');
+  const home = `<a href="#/">Inspirations${meta.root ? ' · ' + esc(meta.root) : ''}</a>`;
+  c.innerHTML = route.view === 'home' ? `<h1>Inspirations${meta.root ? ' · ' + esc(meta.root) : ''}</h1>`
+    : `${home}<span class="sep">/</span><h1>${esc(topic?.topic || '')}</h1>`;
+  const tabs = $('#tabs');
+  tabs.hidden = route.view === 'home' || readOnly();
+  if (!tabs.hidden) {
+    const onDir = route.view === 'direction';
+    tabs.innerHTML = `<a href="${topicHash(route.slug)}" ${!onDir ? 'aria-current="page"' : ''}>Inspirations</a>`
+      + `<a href="${topicHash(route.slug, '/direction')}" ${onDir ? 'aria-current="page"' : ''}>Direction</a>`;
+  }
+  const w = topic && !readOnly() ? topic.waiting.length : 0;
+  $('#waitChip').hidden = !w;
+  $('#waitChip').textContent = `${w} waiting to be named`;
+  $('#doneBtn').hidden = !(meta.mode === 'session' && route.slug === meta.session && route.view !== 'home');
+  $('#tools').hidden = !(route.view === 'grid' || route.view === 'item') || readOnly();
+  $('#hint').innerHTML = route.view === 'item'
+    ? 'Click the image to comment on a spot, drag to mark an area. Hold <kbd>Alt</kbd> for “don’t like”. <kbd>←</kbd> <kbd>→</kbd> switch.'
+    : '';
+}
+
+function render() {
+  renderHeader();
+  const m = $('#main');
+  m.innerHTML = '';
+  if (route.view === 'home') return renderHome(m);
+  if (readOnly()) m.appendChild(banner('Old-format board: read only. New rounds go to topic boards.'));
+  else if (meta.mode === 'standalone' && topic.waiting.length && route.view !== 'direction')
+    m.appendChild(banner(`${topic.waiting.length} note${topic.waiting.length === 1 ? '' : 's'} waiting to be named. Your agent names them: ask it to <code>analyze ${esc(route.slug)}</code>.`, true));
+  if (route.view === 'grid') renderGrid(m);
+  if (route.view === 'item') renderItemView(m);
+  if (route.view === 'direction') renderDirection(m);
+}
+
+function banner(html, copyable) {
+  const b = document.createElement('div');
+  b.className = 'banner';
+  b.innerHTML = `<span>${html}</span>` + (copyable ? '<button class="btn small" type="button">Copy request</button>' : '');
+  b.querySelector('button')?.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(`analyze inspiration topic ${route.slug}`); toast('Copied - paste it to your agent'); }
+    catch (e) { toast('Could not copy'); }
+  });
+  return b;
+}
+
+/* ---------- topics screen ---------- */
+function renderHome(m) {
+  const form = document.createElement('form');
+  form.className = 'newtopic';
+  form.innerHTML = `<input class="text" name="t" placeholder="New topic, e.g. Website, Logo, Packaging" aria-label="New topic name" required>
+    <button class="btn primary" type="submit">New topic</button>`;
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const name = form.t.value.trim();
+    if (!name) return;
+    const res = await api('/api/topics', { topic: name });
+    if (!res.ok) return toast(res.error || 'Could not create the topic');
+    if (!res.created) toast('This topic already exists - opening it');
+    go(topicHash(res.slug));
+  });
+  m.appendChild(form);
+  if (!topics.length) {
+    m.insertAdjacentHTML('beforeend', '<div class="empty"><h2>No topics yet</h2>Create one above - one topic per area of the project, for example Website, Logo or Packaging.</div>');
+    return;
+  }
+  const grid = document.createElement('div');
+  grid.className = 'cards';
+  for (const t of topics) {
+    const a = document.createElement('a');
+    a.className = 'card';
+    a.href = topicHash(t.slug);
+    const meta = [`${t.items} inspiration${t.items === 1 ? '' : 's'}`, t.last_round ? 'last round ' + t.last_round : (t.legacy ? t.created : 'not analyzed yet')];
+    a.innerHTML = `<div class="thumb">${t.thumb ? `<img src="/t/${encodeURIComponent(t.slug)}/${esc(t.thumb)}" alt="" loading="lazy">` : ''}
+      <div class="badges">${t.waiting ? `<span class="badge wait">${t.waiting} waiting</span>` : ''}${t.legacy ? '<span class="badge old">Old format</span>' : ''}</div></div>
+      <div class="body"><h3>${esc(t.topic)}</h3><span class="meta">${esc(meta.join(' · '))}</span></div>`;
+    grid.appendChild(a);
+  }
+  m.appendChild(grid);
+}
+
+/* ---------- topic grid ---------- */
+function itemsInCategory(cat) {
+  const ids = new Set();
+  topic.features.filter(f => f.status === 'active' && f.category === cat).forEach(f => f.sources.forEach(s => ids.add(s.item)));
+  return ids;
+}
+
+function renderGrid(m) {
+  const items = liveItems();
+  if (!items.length) {
+    m.insertAdjacentHTML('beforeend', '<div class="empty"><h2>No inspirations yet</h2>Paste a link above, upload an image, paste one with <kbd>Cmd/Ctrl+V</kbd> or drop a file on the window.</div>');
+    return;
+  }
+  const used = topic.categories.filter(c => topic.features.some(f => f.status === 'active' && f.category === c.id));
+  if (used.length) {
+    const bar = document.createElement('div');
+    bar.className = 'filters';
+    bar.setAttribute('role', 'group');
+    bar.setAttribute('aria-label', 'Filter by category');
+    const chip = (id, label) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.className = 'fchip'; b.textContent = label;
+      b.setAttribute('aria-pressed', String(catFilter === id));
+      b.addEventListener('click', () => { catFilter = id; render(); });
+      bar.appendChild(b);
+    };
+    chip(null, 'All');
+    used.forEach(c => chip(c.id, c.name));
+    m.appendChild(bar);
+  }
+  const filter = catFilter ? itemsInCategory(catFilter) : null;
+  const shown = filter ? items.filter(i => filter.has(i.id)) : items;
+  if (!shown.length) {
+    m.insertAdjacentHTML('beforeend', '<div class="empty"><h2>Nothing in this category</h2>No inspiration gives a feature in this category yet.</div>');
+    return;
+  }
+  const grid = document.createElement('div');
+  grid.className = 'cards grid-items';
+  for (const item of shown) {
+    const a = document.createElement('a');
+    a.className = 'card';
+    a.href = topicHash(route.slug, '/i/' + item.id);
+    const w = waitingFor(item.id).length;
+    const isNew = !readOnly() && item.added_round >= topic.pending_round && topic.rounds.length > 0;
+    a.innerHTML = `<div class="thumb"><img src="${img(framesOf(item)[0])}" alt="" loading="lazy">
+      <div class="badges"><span class="badge">#${num(item.id)}</span>${isNew ? '<span class="badge new">New</span>' : ''}${w ? `<span class="badge wait">${w} waiting</span>` : ''}</div></div>
+      <div class="body"><h3>${esc(domain(item.source))}</h3><span class="meta">${item.pins.length} pin${item.pins.length === 1 ? '' : 's'}${item.note ? ' · ' + esc(item.note) : ''}</span></div>`;
+    grid.appendChild(a);
+  }
+  m.appendChild(grid);
+}
+
+/* ---------- single inspiration ---------- */
+function renderItemView(m) {
+  const items = liveItems();
+  const idx = items.findIndex(i => i.id === route.item);
+  if (idx < 0) return go(topicHash(route.slug));
+  const nav = document.createElement('nav');
+  nav.className = 'nav';
+  nav.setAttribute('aria-label', 'Inspirations');
+  nav.innerHTML = `<a class="btn small" href="${topicHash(route.slug)}" style="display:grid;place-items:center;text-decoration:none">← All</a>
+    <button class="btn arrow" type="button" data-d="-1" aria-label="Previous inspiration" ${idx === 0 ? 'disabled' : ''}>‹</button>
+    <div class="strip"></div>
+    <button class="btn arrow" type="button" data-d="1" aria-label="Next inspiration" ${idx === items.length - 1 ? 'disabled' : ''}>›</button>
+    <span class="counter">${idx + 1} / ${items.length}</span>`;
+  const strip = nav.querySelector('.strip');
+  items.forEach((item, i) => {
+    const b = document.createElement('a');
+    b.className = 'sthumb' + (i === idx ? ' on' : '');
+    b.href = topicHash(route.slug, '/i/' + item.id);
+    b.title = item.source;
+    b.setAttribute('aria-label', 'Inspiration ' + num(item.id));
+    if (i === idx) b.setAttribute('aria-current', 'true');
+    b.innerHTML = `<img src="${img(framesOf(item)[0])}" alt="" loading="lazy"><span class="no">#${num(item.id)}</span>`;
+    strip.appendChild(b);
+  });
+  nav.querySelectorAll('[data-d]').forEach(b => b.addEventListener('click', () => step(Number(b.dataset.d))));
+  m.appendChild(nav);
+  m.appendChild(renderItem(items[idx]));
+  requestAnimationFrame(() => {
+    strip.children[idx]?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+    if (activePin) document.querySelector(`.pin[data-pid="${activePin}"]`)?.scrollIntoView({ block: 'center' });
+  });
+}
+
+function step(dir) {
+  const items = liveItems();
+  const idx = items.findIndex(i => i.id === route.item);
+  const next = items[Math.min(Math.max(idx + dir, 0), items.length - 1)];
+  if (next && next.id !== route.item) { activePin = null; go(topicHash(route.slug, '/i/' + next.id)); }
+}
+addEventListener('keydown', e => {
+  if (route.view !== 'item' || e.target.closest('input, textarea, select') || e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
+  if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
+});
+
+function renderItem(item) {
+  const wrap = document.createElement('section');
+  wrap.className = 'item';
+  const col = document.createElement('div');
+  col.className = 'frames';
+  const frames = framesOf(item);
+  frames.forEach((src, f) => {
+    const box = document.createElement('div');
+    if (frames.length > 1) box.innerHTML = `<p class="frame-cap">Screen ${f + 1} / ${frames.length}</p>`;
+    const stage = document.createElement('div');
+    stage.className = 'stage' + (readOnly() ? ' ro' : '');
+    stage.innerHTML = `<img src="${img(src)}" alt="Inspiration ${num(item.id)}${frames.length > 1 ? ', screen ' + (f + 1) : ''}">`;
+    item.pins.forEach((p, i) => { if ((p.frame || 0) === f) stage.appendChild(pinEl(p, i + 1)); });
+    if (!readOnly()) attachDraw(stage, item, f);
+    box.appendChild(stage);
+    col.appendChild(box);
+  });
+
+  const side = document.createElement('aside');
+  const isUrl = /^https?:/.test(item.source);
+  side.innerHTML = `
+    <div class="src"><span class="idx">#${num(item.id)}</span>${isUrl
+      ? `<a href="${encodeURI(item.source)}" target="_blank" rel="noopener" title="${esc(item.source)}">${esc(item.source.replace(/^https?:\/\/(www\.)?/, ''))}</a>`
+      : `<span>${esc(item.source)}</span>`}</div>
+    <div><label class="cap" for="note-${item.id}">Overall - what I like here</label>
+      <textarea id="note-${item.id}" placeholder="e.g. calm, lots of air, warm colors" ${readOnly() ? 'readonly' : ''}></textarea></div>
+    <div><span class="cap">Pins</span><div class="pins"></div></div>
+    ${readOnly() ? '' : '<button class="remove" type="button">Remove this inspiration</button>'}`;
+  const note = side.querySelector('textarea');
+  note.value = item.note || '';
+  note.addEventListener('input', () => { item.note = note.value; scheduleSave(); });
+  side.querySelector('.remove')?.addEventListener('click', () => {
+    const items = liveItems();
+    const i = items.indexOf(item);
+    const neighbour = items[i + 1] || items[i - 1];
+    item.removed = true;
+    scheduleSave(); toast('Inspiration removed');
+    go(neighbour ? topicHash(route.slug, '/i/' + neighbour.id) : topicHash(route.slug));
+  });
+  const pins = side.querySelector('.pins');
+  if (!item.pins.length) pins.innerHTML = `<div class="empty-pins">${readOnly() ? 'No pins.' : 'Click the image (comment on a spot) or drag (area).'}</div>`;
+  item.pins.forEach((p, i) => pins.appendChild(pinRow(item, p, i + 1, frames.length)));
+  wrap.append(col, side);
+  return wrap;
+}
+
+function pinEl(p, n) {
+  const el = document.createElement('div');
+  el.className = 'pin' + (isPoint(p) ? ' point' : '') + (p.kind === 'dislike' ? ' dislike' : '') + (activePin === p.id ? ' active' : '');
+  el.dataset.pid = p.id;
+  Object.assign(el.style, isPoint(p) ? { left: p.x * 100 + '%', top: p.y * 100 + '%' }
+    : { left: p.x * 100 + '%', top: p.y * 100 + '%', width: p.w * 100 + '%', height: p.h * 100 + '%' });
+  el.title = p.note || '';
+  el.innerHTML = `<span class="num">${n}</span>`;
+  el.style.zIndex = isPoint(p) ? '1001' : String(1000 - Math.round(p.w * p.h * 999));
+  return el;
+}
+
+function pinRow(item, p, n, nFrames) {
+  const row = document.createElement('div');
+  row.className = 'row' + (p.kind === 'dislike' ? ' dislike' : '') + (activePin === p.id ? ' active' : '');
+  row.dataset.pid = p.id;
+  const feats = (p.feature_ids || []).map(featById).filter(Boolean);
+  const isWaiting = !readOnly() && (topic.waiting || []).some(w => w.item === item.id && w.pin === p.id);
+  row.innerHTML = `<span><span class="n" title="${p.kind === 'dislike' ? 'Don’t like' : 'Like'}">${n}</span>${nFrames > 1 ? `<span class="fr">scr. ${(p.frame || 0) + 1}</span>` : ''}</span>
+    <textarea rows="2" placeholder="What exactly?" aria-label="Pin ${n} note" ${readOnly() ? 'readonly' : ''}></textarea>
+    <div>${readOnly() ? '' : '<button class="icon flip" type="button" title="Switch like / don’t like" aria-label="Switch like or don’t like">⇄</button><button class="icon del" type="button" title="Delete pin" aria-label="Delete pin">✕</button>'}</div>
+    <div class="feat">${feats.map(f => `<span class="tag">${esc(f.name)}</span>`).join('')}${isWaiting ? '<span class="tag wait">waiting to be named</span>' : ''}</div>`;
+  const ta = row.querySelector('textarea');
+  ta.value = p.note || '';
+  ta.addEventListener('input', () => { p.note = ta.value; scheduleSave(); });
+  ta.addEventListener('focus', () => { highlight(p.id); document.querySelector(`.pin[data-pid="${p.id}"]`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); });
+  row.querySelector('.flip')?.addEventListener('click', () => { p.kind = p.kind === 'dislike' ? 'like' : 'dislike'; scheduleSave(); render(); });
+  row.querySelector('.del')?.addEventListener('click', () => { item.pins = item.pins.filter(x => x !== p); scheduleSave(); render(); });
+  return row;
+}
+
+function highlight(id) {
+  activePin = id;
+  document.querySelectorAll('.pin.active, .row.active').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll(`[data-pid="${id}"]`).forEach(el => el.classList.add('active'));
+}
+
+function attachDraw(stage, item, frame) {
+  stage.addEventListener('mousedown', e => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    closePop();
+    const r = stage.getBoundingClientRect();
+    const sx = e.clientX - r.left, sy = e.clientY - r.top;
+    const draft = document.createElement('div');
+    draft.className = 'draft';
+    stage.appendChild(draft);
+    const clampXY = ev => [Math.max(0, Math.min(ev.clientX - r.left, r.width)), Math.max(0, Math.min(ev.clientY - r.top, r.height))];
+    const move = ev => {
+      const [x, y] = clampXY(ev);
+      Object.assign(draft.style, { left: Math.min(sx, x) + 'px', top: Math.min(sy, y) + 'px', width: Math.abs(x - sx) + 'px', height: Math.abs(y - sy) + 'px' });
+    };
+    const up = ev => {
+      removeEventListener('mousemove', move);
+      removeEventListener('mouseup', up);
+      const [x, y] = clampXY(ev);
+      draft.remove();
+      const alt = ev.altKey || e.altKey;
+      if (Math.abs(x - sx) < 8 || Math.abs(y - sy) < 8) {
+        const fx = x / r.width, fy = y / r.height;
+        const onFrame = item.pins.filter(p => (p.frame || 0) === frame);
+        const point = onFrame.filter(isPoint).map(p => [p, Math.hypot((p.x - fx) * r.width, (p.y - fy) * r.height)])
+          .filter(([, d]) => d <= 16).sort((a, b) => a[1] - b[1])[0]?.[0];
+        const area = onFrame.filter(p => !isPoint(p) && fx >= p.x && fx <= p.x + p.w && fy >= p.y && fy <= p.y + p.h)
+          .sort((a, b) => a.w * a.h - b.w * b.h)[0];
+        const hit = point || (area && !alt ? area : null);
+        if (hit) return openPop(item, hit, ev.clientX, ev.clientY, false);
+        const np = { id: uid('p'), kind: alt ? 'dislike' : 'like', note: '', frame, x: fx, y: fy, w: 0, h: 0 };
+        item.pins.push(np); render(); openPop(item, np, ev.clientX, ev.clientY, true);
+        return;
+      }
+      const p = { id: uid('p'), kind: alt ? 'dislike' : 'like', note: '', frame,
+        x: Math.min(sx, x) / r.width, y: Math.min(sy, y) / r.height, w: Math.abs(x - sx) / r.width, h: Math.abs(y - sy) / r.height };
+      item.pins.push(p); render(); openPop(item, p, ev.clientX, ev.clientY, true);
+    };
+    addEventListener('mousemove', move);
+    addEventListener('mouseup', up);
+  });
+}
+
+function closePop() { document.querySelector('.pop')?.remove(); }
+
+function openPop(item, p, cx, cy, isNew) {
+  closePop();
+  highlight(p.id);
+  const pop = document.createElement('div');
+  pop.className = 'pop';
+  pop.innerHTML = `
+    <div class="seg" role="group" aria-label="Rating"><button type="button" class="like">Like</button><button type="button" class="dislike">Don’t like</button></div>
+    <textarea rows="3" placeholder="What exactly? Can be vague - your agent will ask." aria-label="Pin note"></textarea>
+    <div class="actions"><small>Enter save · Esc ${isNew ? 'cancel' : 'close'}</small>
+      <span><button class="btn small" type="button" data-a="del">Delete</button> <button class="btn small primary" type="button" data-a="ok">Save</button></span></div>`;
+  let kind = p.kind;
+  const ta = pop.querySelector('textarea');
+  const seg = () => pop.querySelectorAll('.seg button').forEach(b => b.classList.toggle('on', b.classList.contains(kind)));
+  pop.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => { kind = b.classList.contains('like') ? 'like' : 'dislike'; seg(); ta.focus(); }));
+  ta.value = p.note || '';
+  const commit = () => { p.kind = kind; p.note = ta.value.trim(); closePop(); scheduleSave(); render(); highlight(p.id); };
+  const cancel = () => { if (isNew && !p.note) { item.pins = item.pins.filter(x => x !== p); render(); } closePop(); };
+  pop.querySelector('[data-a=ok]').addEventListener('click', commit);
+  pop.querySelector('[data-a=del]').addEventListener('click', () => { item.pins = item.pins.filter(x => x !== p); closePop(); scheduleSave(); render(); });
+  ta.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); commit(); }
+    if (e.key === 'Escape') { e.preventDefault(); cancel(); }
+  });
+  seg();
+  document.body.appendChild(pop);
+  pop.style.left = Math.min(cx + 12, innerWidth - pop.offsetWidth - 12) + 'px';
+  pop.style.top = Math.min(cy + 12, innerHeight - pop.offsetHeight - 12) + 'px';
+  ta.focus();
+}
+document.addEventListener('mousedown', e => { if (!e.target.closest('.pop') && !e.target.closest('.stage')) closePop(); });
+
+/* ---------- direction ---------- */
+function setFeature(f, field, value) {
+  f[field] = value;
+  if (!f.user_edited.includes(field)) f.user_edited.push(field);
+  queueOp({ op: 'feature.set', id: f.id, field, value });
+}
+
+function featureEl(f) {
+  const el = document.createElement('div');
+  el.className = 'feature';
+  el.dataset.fid = f.id;
+  const opts = topic.categories.map(c => `<option value="${esc(c.id)}" ${c.id === f.category ? 'selected' : ''}>${esc(c.name)}</option>`).join('');
+  el.innerHTML = `
+    <div class="top">
+      <input class="fname" aria-label="Feature name" placeholder="Feature name">
+      <div class="ctrl">
+        <select aria-label="Category">${opts}</select>
+        <div class="seg" role="group" aria-label="Take or avoid"><button type="button" class="take">Take</button><button type="button" class="avoid">Avoid</button></div>
+        <button class="icon" type="button" data-a="status" title="${f.status === 'active' ? 'Drop this feature' : 'Restore this feature'}" aria-label="${f.status === 'active' ? 'Drop this feature' : 'Restore this feature'}">${f.status === 'active' ? '✕' : '↺'}</button>
+      </div>
+    </div>
+    <label class="fl"><span>In plain words</span><input class="fline" data-f="plain" placeholder="What it is, without jargon"></label>
+    <label class="fl"><span>Where it applies</span><input class="fline" data-f="scope" placeholder="e.g. headings only, hero section"></label>
+    <div class="bottom"></div>`;
+  const name = el.querySelector('.fname');
+  name.value = f.name;
+  name.addEventListener('input', () => setFeature(f, 'name', name.value));
+  el.querySelectorAll('.fline').forEach(inp => { inp.value = f[inp.dataset.f] || ''; inp.addEventListener('input', () => setFeature(f, inp.dataset.f, inp.value)); });
+  el.querySelector('select').addEventListener('change', e => { setFeature(f, 'category', e.target.value); render(); });
+  const segBtns = el.querySelectorAll('.seg button');
+  segBtns.forEach(b => {
+    b.classList.toggle('on', b.classList.contains(f.list));
+    b.setAttribute('aria-pressed', String(b.classList.contains(f.list)));
+    b.addEventListener('click', () => { const v = b.classList.contains('take') ? 'take' : 'avoid'; if (v !== f.list) { setFeature(f, 'list', v); render(); } });
+  });
+  el.querySelector('[data-a=status]').addEventListener('click', () => {
+    setFeature(f, 'status', f.status === 'active' ? 'dropped' : 'active');
+    toast(f.status === 'dropped' ? 'Feature dropped - you can restore it below' : 'Feature restored');
+    render();
+  });
+  const bottom = el.querySelector('.bottom');
+  f.sources.forEach(s => {
+    const item = topic.items.find(i => i.id === s.item);
+    if (!item || item.removed) return;
+    const pinIdx = s.pin ? item.pins.findIndex(p => p.id === s.pin) + 1 : 0;
+    const b = document.createElement('a');
+    b.className = 'srcchip';
+    b.href = topicHash(route.slug, '/i/' + s.item + (s.pin ? '/p/' + s.pin : ''));
+    b.textContent = `#${num(s.item)} · ${pinIdx ? 'pin ' + pinIdx : 'overall'}`;
+    b.title = 'Open the source';
+    bottom.appendChild(b);
+  });
+  if (f.user_edited.length) bottom.insertAdjacentHTML('beforeend', '<span class="owned" title="Your agent will not overwrite what you edited - it will ask first">edited by you</span>');
+  return el;
+}
+
+async function addFeature(list) {
+  const clientId = uid('c');
+  queueOp({ op: 'feature.add', client_id: clientId, feature: { name: '', list, category: catFilter || topic.categories[0].id } });
+  await flush();
+  render();
+  const f = topic.features.find(x => x.client_id === clientId);
+  if (f) document.querySelector(`.feature[data-fid="${f.id}"] .fname`)?.focus();
+}
+
+function renderDirection(m) {
+  const wrap = document.createElement('div');
+  wrap.className = 'dir';
+  const left = document.createElement('div');
+  const dsec = document.createElement('section');
+  dsec.innerHTML = `<h2><label for="dirText">Direction</label>${topic.direction.user_edited ? '<span class="owned">edited by you</span>' : ''}</h2>
+    <textarea id="dirText" class="direction" placeholder="What ties these inspirations together. Your agent drafts it after the first round - you can also write it yourself."></textarea>`;
+  const dt = dsec.querySelector('textarea');
+  dt.value = topic.direction.text || '';
+  dt.addEventListener('input', () => { topic.direction.text = dt.value; topic.direction.user_edited = true; queueOp({ op: 'direction.set', text: dt.value }); });
+  left.appendChild(dsec);
+
+  const active = topic.features.filter(f => f.status === 'active');
+  for (const [list, title] of [['take', 'What I take'], ['avoid', 'What I avoid']]) {
+    const sec = document.createElement('section');
+    sec.innerHTML = `<h2>${title}<button class="btn small" type="button">Add feature</button></h2>`;
+    sec.querySelector('button').addEventListener('click', () => addFeature(list));
+    const feats = active.filter(f => f.list === list);
+    if (!feats.length) sec.insertAdjacentHTML('beforeend', `<p class="hint">${list === 'take' ? 'No features yet. Pin what you like on the inspirations and ask your agent to name it, or add one here.' : 'Nothing to avoid yet. “Don’t like” pins end up here.'}</p>`);
+    for (const c of topic.categories) {
+      const group = feats.filter(f => f.category === c.id);
+      if (!group.length) continue;
+      sec.insertAdjacentHTML('beforeend', `<h3>${esc(c.name)}</h3>`);
+      group.forEach(f => sec.appendChild(featureEl(f)));
+    }
+    left.appendChild(sec);
+  }
+  const dropped = topic.features.filter(f => f.status === 'dropped');
+  if (dropped.length) {
+    const d = document.createElement('details');
+    d.className = 'dropped';
+    d.innerHTML = `<summary>Dropped (${dropped.length})</summary>`;
+    dropped.forEach(f => d.appendChild(featureEl(f)));
+    left.appendChild(d);
+  }
+  if (topic.rounds.length) {
+    const h = document.createElement('section');
+    h.innerHTML = '<h2>Round history</h2>' + [...topic.rounds].reverse().map(r =>
+      `<p class="hint">${esc(r.date)} · round ${r.n}${r.focus ? ' · ' + esc(r.focus) : ''} · +${r.features_added} new, ${r.features_changed} changed${r.summary ? ' - ' + esc(r.summary) : ''}</p>`).join('');
+    left.appendChild(h);
+  }
+
+  const right = document.createElement('div');
+  right.className = 'cats';
+  const counts = id => topic.features.filter(f => f.category === id).length;
+  right.innerHTML = `<span class="cap">Categories</span><ul></ul>
+    <form><input class="text" name="c" placeholder="New category" aria-label="New category name"><button class="btn small" type="submit">Add</button></form>`;
+  const ul = right.querySelector('ul');
+  topic.categories.forEach(c => {
+    const li = document.createElement('li');
+    const n = counts(c.id);
+    li.innerHTML = `<input class="text" aria-label="Category name"><span class="count" title="Features in this category">${n || ''}</span>
+      <button class="icon" type="button" ${n ? 'disabled title="Move its features first"' : 'title="Delete category"'} aria-label="Delete category ${esc(c.name)}">✕</button>`;
+    const inp = li.querySelector('input');
+    inp.value = c.name;
+    inp.addEventListener('input', () => { if (inp.value.trim()) { c.name = inp.value; queueOp({ op: 'category.rename', id: c.id, name: inp.value }); } });
+    inp.addEventListener('change', () => render());
+    li.querySelector('button').addEventListener('click', async () => {
+      if (n) return;
+      topic.categories = topic.categories.filter(x => x.id !== c.id);
+      queueOp({ op: 'category.delete', id: c.id }); await flush(); render();
+    });
+    ul.appendChild(li);
+  });
+  right.querySelector('form').addEventListener('submit', async e => {
+    e.preventDefault();
+    const name = e.target.c.value.trim();
+    if (!name) return;
+    queueOp({ op: 'category.add', name }); await flush(); render();
+  });
+  wrap.append(left, right);
+  m.appendChild(wrap);
+}
+
+/* ---------- adding ---------- */
+$('#addForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const url = $('#url').value.trim();
+  if (!url) return;
+  const btn = $('#addBtn');
+  btn.disabled = true; btn.textContent = 'Capturing…';
+  toast('Taking screenshots of the page - this takes up to ~30 s', 30000);
+  try {
+    await flush();
+    const res = await tapi('add-url', { url });
+    if (res.ok) { $('#url').value = ''; await reload(); toast(res.frames > 1 ? `Added - ${res.frames} screens` : 'Added'); }
+    else toast(res.blocked ? 'This site blocks automatic screenshots. Take a screenshot yourself and drop it here, or ask your agent.' : 'Could not add it: ' + res.error, 7000);
+  } catch (err) { toast('Could not fetch the link'); }
+  btn.disabled = false; btn.textContent = 'Add link';
+});
+
+async function uploadFiles(list) {
+  if (!route.slug || readOnly()) return;
+  const files = [...(list || [])].filter(f => f.type.startsWith('image/'));
+  if (!files.length) return toast('That is not an image - add PNG, JPG, WebP or GIF');
+  status('Adding…');
+  try {
+    await flush();
+    for (const f of files) {
+      const ext = (f.type.split('/')[1] || 'png').replace('jpeg', 'jpg');
+      const stamp = new Date().toISOString().slice(0, 16).replace('T', ' ').replace(':', '.');
+      const name = f.name && f.name !== 'image.png' ? f.name : `pasted ${stamp}.${ext}`;
+      const res = await tapi('upload', await f.arrayBuffer(), { raw: true, headers: { 'X-Filename': encodeURIComponent(name) } });
+      if (!res.ok) throw new Error(res.error || 'upload');
+    }
+    await reload();
+    toast(files.length === 1 ? 'Image added' : `${files.length} images added`);
+  } catch (err) { status(''); toast('Could not add the image: ' + err.message, 7000); }
+}
+
+let dragDepth = 0;
+const canDrop = () => route.slug && !readOnly() && route.view !== 'direction';
+addEventListener('dragenter', e => { if (canDrop() && e.dataTransfer?.types.includes('Files')) { dragDepth++; $('#drop').classList.add('on'); } });
+addEventListener('dragleave', () => { if (--dragDepth <= 0) { dragDepth = 0; $('#drop').classList.remove('on'); } });
+addEventListener('dragover', e => e.preventDefault());
+addEventListener('drop', e => { e.preventDefault(); dragDepth = 0; $('#drop').classList.remove('on'); if (canDrop()) uploadFiles(e.dataTransfer?.files); });
+$('#fileBtn').addEventListener('click', () => $('#fileInput').click());
+$('#fileInput').addEventListener('change', e => { uploadFiles(e.target.files); e.target.value = ''; });
+addEventListener('paste', e => {
+  if (!canDrop()) return;
+  const cd = e.clipboardData;
+  if (!cd) return;
+  const imgs = [...cd.items].filter(i => i.kind === 'file' && i.type.startsWith('image/')).map(i => i.getAsFile()).filter(Boolean);
+  const text = (cd.getData('text/plain') || '').trim();
+  if (imgs.length) { e.preventDefault(); return uploadFiles(imgs); }
+  if (e.target.closest?.('input, textarea')) return;
+  if (/^https?:\/\/\S+$/.test(text)) { e.preventDefault(); $('#url').value = text; $('#addForm').requestSubmit(); return; }
+  if (cd.types.includes('Files') || /\.(png|jpe?g|webp|gif|heic|tiff?)$/i.test(text))
+    return toast('A file copied in your file manager does not paste into a browser - only its name does. Use “Upload image” or drop the file.', 7000);
+  toast('No image on the clipboard. Copy an image (a screenshot or “Copy image” in a browser) and paste again.', 6000);
+});
+
+/* ---------- done / sync ---------- */
+$('#doneBtn').addEventListener('click', async () => {
+  const empty = liveItems().filter(i => !i.pins.length && !(i.note || '').trim()).length;
+  if (empty && !$('#doneBtn').dataset.confirm) {
+    $('#doneBtn').dataset.confirm = '1';
+    $('#doneBtn').textContent = 'Sure?';
+    toast(`${empty} inspiration${empty === 1 ? ' has' : 's have'} no pins and no note. Click again to finish.`, 5000);
+    return;
+  }
+  clearTimeout(saveTimer);
+  await tapi('done', { items: topic.items, ops });
+  ops = [];
+  $('#finish').classList.add('on');
+});
+
+async function reload() {
+  const remote = await tapi('state');
+  if (!remote.error) { topic = remote; render(); }
+}
+
+async function poll() {
+  if (route.view === 'home') { const t = await api('/api/topics'); if (JSON.stringify(t) !== JSON.stringify(topics)) { topics = t; render(); } return; }
+  if (!topic || saving || ops.length || document.querySelector('.pop') || document.activeElement?.matches('input, textarea, select')) return;
+  const remote = await tapi('state');
+  if (remote.error) return;
+  const known = new Set(topic.items.map(i => i.id));
+  const fresh = remote.items.filter(i => !known.has(i.id));
+  const reframed = remote.items.some(r => { const l = topic.items.find(i => i.id === r.id); return l && JSON.stringify(framesOf(l)) !== JSON.stringify(framesOf(r)); });
+  const newRound = (remote.rounds || []).length !== (topic.rounds || []).length;
+  if (fresh.length || reframed || newRound) {
+    topic = remote; render();
+    toast(newRound ? 'Your agent finished a round - Direction updated' : fresh.length ? 'New inspirations arrived from chat' : 'Screenshots updated');
+  }
+}
+
+async function boot() {
+  meta = await api('/api/meta');
+  if (!location.hash && meta.session) history.replaceState(null, '', topicHash(meta.session));
+  await onRoute();
+  setInterval(() => poll().catch(() => status('Offline')), 4000);
+  if (meta.mode === 'standalone') {
+    const beat = () => api('/api/heartbeat', {}).catch(() => status('Board stopped - reopen it'));
+    beat(); setInterval(beat, 15000);
+  }
+}
+addEventListener('pagehide', () => { if (ops.length || saveTimer) flush(); });
+boot();
+</script>
+</body>
+</html>

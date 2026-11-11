@@ -15,8 +15,9 @@
     "typecheck": "astro check",
     "lint": "eslint .",
     "test": "vitest run --coverage",
+    "test:skills": "sh -c 'for d in skills/*/tests; do [ -d \"$d\" ] || continue; python3 -m unittest discover -q -s \"$d\" || exit 1; done'",
     "test:e2e": "playwright test",
-    "check": "pnpm build && pnpm typecheck && pnpm lint && pnpm test && pnpm build-storybook && pnpm test:e2e",
+    "check": "pnpm build && pnpm typecheck && pnpm lint && pnpm test && pnpm test:skills && pnpm build-storybook && pnpm test:e2e",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build -o storybook-static --quiet"
   },
