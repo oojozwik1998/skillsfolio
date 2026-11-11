@@ -40,6 +40,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 BOARD_HTML = os.path.join(HERE, "..", "assets", "board.html")
+FONTS_DIR = os.path.join(HERE, "..", "assets", "fonts")  # Poppins + Mona Sans, SIL Open Font License
 sys.path.insert(0, HERE)
 import capture  # noqa: E402
 import model  # noqa: E402
@@ -220,6 +221,12 @@ def make_handler(app):
             if path in ("/", "/index.html"):
                 with open(BOARD_HTML, "rb") as f:
                     return self._send(200, f.read(), "text/html; charset=utf-8")
+            m = re.match(r"^/fonts/([a-z0-9-]+\.woff2)$", path)
+            if m:
+                font = os.path.join(FONTS_DIR, m.group(1))
+                if os.path.isfile(font):
+                    with open(font, "rb") as f:
+                        return self._send(200, f.read(), "font/woff2")
             if path == "/api/meta":
                 return self._send(200, {"mode": app.mode, "session": app.session_slug,
                                         "root": os.path.basename(os.path.dirname(app.root)) or app.root})
