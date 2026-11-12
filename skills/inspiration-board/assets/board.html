@@ -61,36 +61,38 @@
   }
 
   * { box-sizing: border-box; }
-  html, body { margin: 0; background: var(--surface-canvas); color: var(--text-default);
+  /* Root stays at the browser default (16px) so every rem matches design.md. */
+  html { font-size: 100%; background: var(--surface-canvas); }
+  body { margin: 0; background: var(--surface-canvas); color: var(--text-default);
     font: 400 0.875rem/1.5 var(--font-body); -webkit-font-smoothing: antialiased; }
   button, input, textarea, select { font: inherit; color: inherit; }
   button { cursor: pointer; }
   a { color: inherit; }
   ::placeholder { color: var(--text-placeholder); }
   :focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+  /* fields: one 2px focus edge instead of border + offset ring */
+  :is(input.text, textarea, select):focus-visible { outline: none; border-color: var(--border-focus); box-shadow: 0 0 0 1px var(--border-focus); }
   [hidden] { display: none !important; }
   .wrap { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
 
   /* page header */
   header.wrap { padding-top: 1.5rem; padding-bottom: 2.5rem; }
-  .topline { display: flex; align-items: center; gap: 1rem; min-height: 2.75rem; }
-  .crumbs { flex: 1; min-width: 0; display: flex; gap: 0.5rem; align-items: center; color: var(--text-subtle); }
-  .crumbs a { text-decoration: none; white-space: nowrap; }
+  .topline { display: flex; align-items: center; gap: 1rem; min-height: 2.75rem; flex-wrap: wrap; }
+  .crumbs { flex: 1 1 12rem; min-width: 0; display: flex; gap: 0.5rem; align-items: center; color: var(--text-subtle); }
+  .crumbs a, .crumbs span { text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .crumbs a.topic { color: var(--text-default); font-size: 1.125rem; }
+  .actions { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
   .crumbs a:hover { color: var(--text-default); text-decoration: underline; text-underline-offset: 3px; }
   .titleline { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; margin-top: 2rem; }
   h1.title { margin: 0; font: 500 2.75rem/1 var(--font-display); letter-spacing: -0.05em; min-width: 0; overflow-wrap: anywhere; }
   .subtitle { margin: 0.75rem 0 0; color: var(--text-subtle); font-size: 1.125rem; line-height: 1.5; }
-  .tabs { display: flex; gap: 0.25rem; background: var(--surface-subtle); border-radius: 0.75rem; padding: 0.25rem; }
-  .tabs a { display: grid; place-items: center; height: 2.25rem; padding: 0 1rem; border-radius: 0.5rem; text-decoration: none; color: var(--text-subtle); }
-  .tabs a:hover { color: var(--text-default); background: var(--surface-hovered); }
-  .tabs a[aria-current="page"] { background: var(--surface-default); color: var(--text-default); }
-  .chip-wait { border-radius: 0.375rem; padding: 0.25rem 0.625rem; background: var(--warning-background); color: var(--warning-text); font-size: 0.75rem; white-space: nowrap; }
-  .status { font-size: 0.75rem; color: var(--text-subtlest); min-width: 4rem; text-align: right; }
-  .tools { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; margin-top: 2rem; }
-  .add { display: flex; gap: 0.5rem; flex: 1 1 28rem; }
+  .chip-wait { display: inline-flex; align-items: center; height: 2rem; border-radius: 0.5rem; padding: 0 0.75rem; background: var(--warning-background); color: var(--warning-text); font-size: 0.875rem; white-space: nowrap; }
+  .status { font-size: 0.75rem; color: var(--text-subtlest); white-space: nowrap; }
+  .tools { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 2rem; }
+  .add { display: flex; gap: 0.5rem; }
   .add input { flex: 1; }
   .hint { color: var(--text-subtlest); font-size: 0.75rem; }
-  kbd { font: 0.6875rem var(--font-code); border: 1px solid var(--border-subtle); border-radius: 0.25rem; padding: 0 0.25rem; background: var(--surface-default); }
+  kbd { font: 0.75rem var(--font-code); border: 1px solid var(--border-subtle); border-radius: 0.25rem; padding: 0 0.25rem; background: var(--surface-default); }
 
   /* controls */
   .btn { height: 2.75rem; padding: 0 1.25rem; border-radius: 0.75rem; border: 1px solid var(--action-secondary-border);
@@ -99,14 +101,17 @@
   .btn:active { background: var(--action-secondary-pressed); }
   .btn.primary { background: var(--surface-inverted); border-color: var(--surface-inverted); color: var(--text-inverted); }
   .btn.primary:hover { opacity: .88; }
-  .btn.small { height: 2.25rem; padding: 0 0.875rem; border-radius: 0.625rem; }
+  .btn.danger { color: var(--danger-text); }
+  .btn.small { height: 2.25rem; padding: 0 0.875rem; border-radius: 0.75rem; }
   .btn:disabled { opacity: .5; cursor: progress; }
   input.text, select { height: 2.75rem; padding: 0 0.75rem; border: 1px solid var(--border-default); border-radius: 0.75rem;
     background: var(--surface-default); color: var(--text-default); min-width: 0; }
+  select { appearance: none; -webkit-appearance: none; padding-right: 2.5rem; line-height: 1.5;
+    background: var(--surface-default) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23889399' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E") no-repeat right 0.75rem center; }
   input.text:hover, select:hover, textarea:hover { border-color: var(--text-subtlest); }
-  textarea { width: 100%; resize: vertical; min-height: 4.5rem; padding: 0.625rem 0.75rem; border: 1px solid var(--border-default);
+  textarea { width: 100%; resize: none; min-height: 4.5rem; padding: 0.625rem 0.75rem; border: 1px solid var(--border-default);
     border-radius: 0.75rem; background: var(--surface-default); color: var(--text-default); line-height: 1.5; }
-  .icon { border: 0; background: none; color: var(--text-subtlest); width: 2.25rem; height: 2.25rem; border-radius: 0.5rem; display: inline-grid; place-items: center; font-size: 0.875rem; }
+  .icon { border: 0; background: none; color: var(--text-subtle); width: 2.75rem; height: 2.75rem; border-radius: 0.75rem; display: inline-grid; place-items: center; font-size: 1rem; flex: none; }
   .icon:hover { color: var(--text-default); background: var(--surface-hovered); }
   .icon:disabled { opacity: .35; cursor: not-allowed; }
   .icon:disabled:hover { background: none; color: var(--text-subtlest); }
@@ -122,49 +127,51 @@
   .empty h2 { color: var(--text-default); font: 400 1.5rem/1.2 var(--font-body); letter-spacing: -0.005em; margin: 0 0 0.5rem; }
 
   /* topics screen + grid */
-  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 1rem; }
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17.5rem), 1fr)); gap: 1rem; }
   .card { display: flex; flex-direction: column; background: var(--surface-default); border: 1px solid transparent; border-radius: 1rem;
     overflow: hidden; text-decoration: none; transition: border-color .15s ease; }
   .card:hover { border-color: var(--border-default); }
-  .card .thumb { position: relative; aspect-ratio: 16 / 10; background: var(--surface-subtle); }
-  .card .thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .card .thumb { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--surface-subtle); }
+  .card .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
   .card .body { padding: 1.25rem 1.5rem 1.5rem; display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
   .card h3 { margin: 0; font: 400 1.125rem/1.3 var(--font-body); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .card .meta { color: var(--text-subtle); font-size: 0.75rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .card .meta { color: var(--text-subtle); font-size: 0.875rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .badges { position: absolute; left: 0.75rem; top: 0.75rem; display: flex; gap: 0.25rem; flex-wrap: wrap; }
-  .badge { font-size: 0.75rem; line-height: 1.333; border-radius: 0.375rem; padding: 0.125rem 0.5rem; background: var(--surface-default); color: var(--text-default); }
+  .badge { font-size: 0.75rem; line-height: 1.25rem; border-radius: 0.375rem; padding: 0 0.5rem; background: var(--surface-default); color: var(--text-default); box-shadow: 0 0 0 1px var(--border-subtle); }
   .badge.new { background: var(--info-background); color: var(--info-text); }
   .badge.wait { background: var(--warning-background); color: var(--warning-text); }
   .badge.old { background: var(--surface-subtlest); color: var(--text-subtle); }
-  .grid-items { grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr)); }
   .grid-items .body { padding: 1rem 1.25rem 1.25rem; }
   .grid-items h3 { font-size: 0.875rem; line-height: 1.5; }
+  .grid-items .meta { font-size: 0.75rem; }
   .newtopic { display: flex; gap: 0.5rem; margin-bottom: 2.5rem; max-width: 36rem; }
   .newtopic input { flex: 1; }
-  .filters { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
-  .fchip { height: 2.25rem; padding: 0 1rem; border-radius: 0.625rem; border: 1px solid var(--action-secondary-border); background: var(--action-secondary-background); color: var(--text-subtle); }
+  .fchip { height: 2.5rem; padding: 0 1rem; border-radius: 0.75rem; font-size: 0.875rem; border: 1px solid var(--action-secondary-border); background: var(--action-secondary-background); color: var(--text-subtle); }
   .fchip:hover { background: var(--action-secondary-hovered); color: var(--text-default); }
   .fchip[aria-pressed="true"] { background: var(--surface-inverted); border-color: var(--surface-inverted); color: var(--text-inverted); }
 
   /* single inspiration */
-  .nav { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1.5rem; }
-  .nav .arrow { width: 2.75rem; padding: 0; font-size: 1.125rem; flex: none; }
-  .strip { display: flex; gap: 0.5rem; overflow-x: auto; flex: 1; padding: 2px; scrollbar-width: thin; }
-  .sthumb { position: relative; flex: none; width: 6rem; height: 3.75rem; border-radius: 0.5rem; overflow: hidden;
+  .nav { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1.5rem; min-width: 0; }
+  .nav .arrow { width: 2.75rem; padding: 0; flex: none; }
+  .nav .arrow svg { width: 1.25rem; height: 1.25rem; }
+  .strip { display: flex; gap: 0.375rem; overflow-x: auto; flex: 0 1 auto; min-width: 0; padding: 2px; scrollbar-width: none; }
+  .sthumb { position: relative; flex: none; width: 4.5rem; height: 2.75rem; border-radius: 0.5rem; overflow: hidden;
     border: 2px solid transparent; background: var(--surface-default); }
   .sthumb:hover { border-color: var(--border-default); }
   .sthumb img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
   .sthumb.on { border-color: var(--border-selected); }
-  .sthumb .no { position: absolute; left: 0.25rem; top: 0.25rem; background: var(--surface-default); color: var(--text-default);
-    font-size: 0.6875rem; border-radius: 0.25rem; padding: 0 0.3rem; line-height: 1.125rem; }
-  .counter { font-size: 0.75rem; color: var(--text-subtle); min-width: 2.75rem; text-align: right; flex: none; }
+  .counter { font-size: 0.875rem; color: var(--text-subtle); flex: none; padding-left: 0.25rem; }
   .item { display: grid; grid-template-columns: minmax(0, 1fr) 22rem; gap: 1.5rem; align-items: start; }
-  .frames { display: flex; flex-direction: column; gap: 1.5rem; min-width: 0; }
-  .frame-cap { font-size: 0.75rem; color: var(--text-subtlest); margin: 0 0 0.5rem; }
-  .stage { position: relative; background: var(--surface-default); border-radius: 1rem; overflow: hidden; user-select: none; cursor: crosshair; }
+  /* one website capture reads as one long page: screens joined, number as an overlay */
+  .frames { display: flex; flex-direction: column; min-width: 0; border-radius: 1rem; overflow: hidden; background: var(--surface-default); }
+  .frame { position: relative; }
+  .frame + .frame { border-top: 1px solid var(--border-subtle); }
+  .frame-cap { position: absolute; left: 0.75rem; top: 0.75rem; z-index: 1100; margin: 0; pointer-events: none;
+    font-size: 0.75rem; line-height: 1.25rem; padding: 0 0.5rem; border-radius: 0.375rem; background: var(--surface-default); color: var(--text-subtle); box-shadow: 0 0 0 1px var(--border-subtle); }
+  .stage { position: relative; background: var(--surface-default); overflow: hidden; user-select: none; cursor: crosshair; }
   .stage.ro { cursor: default; }
   .stage img { display: block; width: 100%; height: auto; pointer-events: none; }
-  .pin { position: absolute; border: 2px solid var(--pin-like); background: color-mix(in srgb, var(--pin-like) 14%, transparent); border-radius: 0.25rem; cursor: pointer; }
+  .pin { position: absolute; border: 2px solid var(--pin-like); background: color-mix(in srgb, var(--pin-like) 14%, transparent); border-radius: 0.25rem; cursor: pointer; box-shadow: 0 0 0 1px rgba(0,0,0,.25); }
   .pin.dislike { border-color: var(--pin-dislike); background: color-mix(in srgb, var(--pin-dislike) 14%, transparent); }
   .pin.active { outline: 2px solid var(--border-focus); outline-offset: 2px; }
   .pin .num { position: absolute; top: -2px; left: -2px; min-width: 1.375rem; height: 1.375rem; padding: 0 0.375rem;
@@ -177,77 +184,68 @@
   .draft { position: absolute; border: 2px dashed var(--border-focus); background: color-mix(in srgb, var(--border-focus) 10%, transparent); pointer-events: none; }
   aside { position: sticky; top: 1.5rem; background: var(--surface-default); border-radius: 1rem; padding: 1.5rem;
     display: flex; flex-direction: column; gap: 1.5rem; max-height: calc(100vh - 3rem); overflow: auto; }
-  .src { display: flex; justify-content: space-between; gap: 0.5rem; align-items: baseline; }
-  .src a, .src span { color: var(--text-subtle); font-size: 0.75rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .idx { font: 500 1.75rem/1 var(--font-display); letter-spacing: -0.05em; color: var(--text-default) !important; font-size: 1.75rem !important; }
-  label.cap, .cap { display: block; font-size: 0.75rem; color: var(--text-subtle); margin-bottom: 0.5rem; }
+  .src { display: flex; gap: 0.75rem; align-items: baseline; min-width: 0; }
+  .src .idx { flex: none; font: 500 1.75rem/1 var(--font-display); letter-spacing: -0.05em; color: var(--text-default); }
+  .src .from { flex: 1; min-width: 0; text-align: right; color: var(--text-subtle); font-size: 0.875rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .src a.from:hover { color: var(--text-default); }
+  label.cap, .cap { display: block; font-size: 0.875rem; color: var(--text-subtle); margin-bottom: 0.5rem; }
   .pins { display: flex; flex-direction: column; gap: 0.5rem; }
-  .row { display: grid; grid-template-columns: 1.75rem 1fr auto; gap: 0.5rem; align-items: start; padding: 0.625rem; background: var(--surface-subtle); border: 1px solid transparent; border-radius: 0.75rem; }
+  .row { display: grid; grid-template-columns: 1.5rem minmax(0, 1fr) auto; column-gap: 0.75rem; align-items: start; padding: 0.75rem 0.5rem 0.75rem 0.75rem;
+    background: var(--surface-subtle); border: 1px solid transparent; border-radius: 0.75rem; }
   .row.active { border-color: var(--border-selected); }
-  .row .fr { display: block; font-size: 0.625rem; color: var(--text-subtlest); text-align: center; margin-top: 0.125rem; }
-  .row .n { width: 1.5rem; height: 1.5rem; border-radius: 0.375rem; background: var(--pin-like); color: #fff; font-size: 0.75rem; display: grid; place-items: center; }
+  .row .n { width: 1.5rem; height: 1.5rem; margin-top: 0.125rem; border-radius: 0.375rem; background: var(--pin-like); color: #fff; font-size: 0.75rem; display: grid; place-items: center; }
   .row.dislike .n { background: var(--pin-dislike); }
-  .row textarea { min-height: 2.25rem; padding: 0.125rem 0.25rem; border: 0; background: transparent; border-radius: 0.375rem; }
-  .row textarea:focus { outline: 1px solid var(--border-default); background: var(--surface-default); }
-  .row .feat { grid-column: 2 / 4; display: flex; gap: 0.25rem; flex-wrap: wrap; }
-  .row .feat:empty { display: none; }
-  .row > div:not(.feat) { display: flex; }
-  .tag { font-size: 0.75rem; line-height: 1.333; border-radius: 0.375rem; padding: 0.125rem 0.5rem; background: var(--surface-default); color: var(--text-subtle); }
+  .row .body { min-width: 0; display: grid; gap: 0.125rem; }
+  .row .title { color: var(--text-default); line-height: 1.5; padding-top: 0.125rem; }
+  .row .title .tag { margin-right: 0.25rem; }
+  .row .fr { color: var(--text-subtlest); font-size: 0.75rem; white-space: nowrap; }
+  .row textarea { min-height: 0; height: auto; padding: 0.25rem 0.5rem; margin-left: -0.5rem; border: 1px solid transparent; background: transparent; color: var(--text-subtle); border-radius: 0.5rem; field-sizing: content; }
+  .row textarea:hover { border-color: var(--border-subtle); }
+  .row textarea:focus-visible { background: var(--surface-default); }
+  .row .tools-r { display: flex; opacity: 0; transition: opacity .12s ease; }
+  .row:hover .tools-r, .row:focus-within .tools-r { opacity: 1; }
+  .tag { display: inline-block; font-size: 0.75rem; line-height: 1.25rem; border-radius: 0.375rem; padding: 0 0.5rem; background: var(--surface-default); color: var(--text-subtle); }
   .tag.wait { color: var(--warning-text); background: var(--warning-background); }
-  .empty-pins { color: var(--text-subtlest); font-size: 0.75rem; }
-  .remove { align-self: flex-start; border: 0; background: none; color: var(--text-subtlest); font-size: 0.75rem; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+  .empty-pins { color: var(--text-subtlest); font-size: 0.875rem; }
+  .remove { align-self: flex-start; border: 0; background: none; color: var(--text-subtlest); font-size: 0.875rem; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
   .remove:hover { color: var(--danger-text); }
-  .pop { position: fixed; z-index: 40; width: 20rem; background: var(--surface-default); border-radius: 1rem;
+  .pop { position: fixed; z-index: 40; width: 22rem; background: var(--surface-default); border-radius: 1rem;
     box-shadow: var(--shadow-5); border: 1px solid var(--border-subtle); padding: 0.75rem; display: flex; flex-direction: column; gap: 0.75rem; }
   .seg { display: grid; grid-template-columns: 1fr 1fr; background: var(--surface-subtle); border-radius: 0.75rem; padding: 0.25rem; }
-  .seg button { border: 0; background: none; height: 2.25rem; border-radius: 0.5rem; color: var(--text-subtle); }
+  .seg button { border: 0; background: none; height: 2.5rem; border-radius: 0.5rem; color: var(--text-subtle); }
   .seg button:hover { color: var(--text-default); }
   .seg button.on.like, .seg button.on.take { background: var(--success-background); color: var(--success-text); }
   .seg button.on.dislike, .seg button.on.avoid { background: var(--danger-background); color: var(--danger-text); }
   .pop .actions { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
-  .pop .actions small { color: var(--text-subtlest); font-size: 0.6875rem; }
+  .pop .actions small { color: var(--text-subtlest); font-size: 0.75rem; }
+  .pop .actions span { display: flex; gap: 0.5rem; }
+  .pop textarea { min-height: 5.5rem; }
 
-  /* direction */
-  .dir { display: grid; grid-template-columns: minmax(0, 1fr) 20rem; gap: 2rem; align-items: start; }
-  .dir section { margin-bottom: 3rem; }
-  .dir h2 .btn { font-size: 0.875rem; letter-spacing: 0; }
-  .dir h2 { font: 400 1.5rem/1.2 var(--font-body); letter-spacing: -0.005em; margin: 0 0 1rem; display: flex; gap: 1rem; align-items: center; justify-content: space-between; }
-  .dir h3 { font: 400 0.875rem/1.5 var(--font-body); color: var(--text-subtle); margin: 1.5rem 0 0.75rem; }
-  .dir textarea.direction { min-height: 8rem; padding: 1.25rem 1.5rem; font-size: 1.125rem; line-height: 1.5; border: 1px solid transparent; border-radius: 1rem; background: var(--surface-default); }
-  .dir textarea.direction:hover { border-color: var(--border-default); }
-  .feature { background: var(--surface-default); border: 1px solid transparent; border-radius: 1rem; padding: 1rem 1.25rem; display: grid; grid-template-columns: minmax(0, 1fr); gap: 0.25rem; margin-bottom: 0.5rem; }
-  .feature:hover { border-color: var(--border-subtle); }
-  .feature:focus-within { border-color: var(--border-default); }
-  .feature .top { display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
-  .feature input { border: 1px solid transparent; background: transparent; border-radius: 0.5rem; padding: 0 0.5rem; height: 2.25rem; min-width: 0; color: var(--text-default); }
-  .feature input:hover { border-color: var(--border-subtle); }
-  .feature input:focus { border-color: var(--border-default); outline: none; }
-  .feature input.fname { flex: 1 1 14rem; font-size: 1.125rem; }
-  .feature .ctrl { display: flex; gap: 0.5rem; align-items: center; flex: none; }
-  .feature select { height: 2.25rem; border-radius: 0.625rem; padding: 0 0.5rem; }
-  .feature .seg { width: 9.5rem; }
-  .feature .seg button { height: 1.75rem; font-size: 0.75rem; }
-  .feature label.fl { display: grid; grid-template-columns: 8rem minmax(0, 1fr); gap: 0.5rem; align-items: center; }
-  .feature label.fl span { font-size: 0.75rem; color: var(--text-subtlest); padding-left: 0.5rem; }
-  .feature label.fl input { color: var(--text-subtle); }
-  .feature .bottom { display: flex; gap: 0.375rem; align-items: center; flex-wrap: wrap; padding: 0.5rem 0.5rem 0; }
-  .feature .bottom:empty { display: none; }
-  .srcchip { font-size: 0.75rem; line-height: 1.333; border-radius: 0.375rem; padding: 0.25rem 0.5rem; background: var(--surface-subtle); color: var(--text-subtle); text-decoration: none; }
-  .srcchip:hover { background: var(--surface-subtlest); color: var(--text-default); }
-  .owned { font-size: 0.75rem; color: var(--text-subtlest); margin-left: auto; }
-  .cats { background: var(--surface-default); border-radius: 1rem; padding: 1.5rem; position: sticky; top: 1.5rem; }
-  .cats ul { list-style: none; margin: 0 0 1rem; padding: 0; display: flex; flex-direction: column; gap: 0.25rem; }
-  .cats li { display: flex; gap: 0.25rem; align-items: center; }
-  .cats li input { flex: 1; height: 2.25rem; padding: 0 0.5rem; border-color: transparent; border-radius: 0.5rem; }
-  .cats li input:hover { border-color: var(--border-subtle); }
-  .cats li input:focus { border-color: var(--border-default); outline: none; }
-  .cats .count { font-size: 0.75rem; color: var(--text-subtlest); min-width: 1.25rem; text-align: right; }
-  .cats form { display: flex; gap: 0.5rem; }
-  .cats form input { flex: 1; height: 2.25rem; border-radius: 0.625rem; }
-  details.dropped { margin-bottom: 3rem; }
-  details.dropped summary { cursor: pointer; color: var(--text-subtle); margin-bottom: 0.75rem; }
-  details.dropped .feature { opacity: .65; }
-  .history p { margin: 0 0 0.375rem; }
+  /* sections */
+  .section { margin-bottom: 3rem; border-radius: 1rem; transition: background .15s ease, outline-color .15s ease; outline: 2px solid transparent; outline-offset: 0.75rem; }
+  .section.over { background: var(--surface-selected); outline-color: var(--border-selected); }
+  .section.only-drag { display: none; }
+  body.dragging .section.only-drag { display: block; }
+  .sechead { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; min-height: 2.75rem; }
+  .sechead h2, .sechead .secname { margin: 0; font: 400 1.5rem/1.2 var(--font-body); letter-spacing: -0.005em; color: var(--text-default); }
+  .sechead .secname { border: 1px solid transparent; background: transparent; border-radius: 0.5rem; padding: 0.25rem 0.5rem; margin: 0 -0.25rem 0 -0.5rem; max-width: 100%; field-sizing: content; min-width: 3ch; }
+  .sechead .secname:hover { border-color: var(--border-subtle); }
+  .sechead .secname:focus { border-color: var(--border-default); background: var(--surface-default); outline: none; }
+  .sechead .count { color: var(--text-subtlest); font-size: 0.875rem; align-self: center; }
+  .sechead .icon { opacity: 0; transition: opacity .12s ease; }
+  .sechead:hover .icon, .sechead:focus-within .icon { opacity: 1; }
+  @media (hover: none) { .sechead .icon, .row .tools-r { opacity: 1; } }
+  .dropzone { grid-column: 1 / -1; display: grid; place-items: center; min-height: 8rem; border: 1px dashed var(--border-default); border-radius: 1rem; color: var(--text-subtlest); }
+  .slot { display: none; place-items: center; border: 1px dashed var(--border-default); border-radius: 1rem; color: var(--text-subtlest); min-height: 10rem; }
+  body.dragging .slot { display: grid; }
+  .card[draggable="true"] { cursor: grab; }
+  .card.dragging { opacity: .4; }
+  .addsection { margin-top: 1rem; padding-top: 2rem; border-top: 1px solid var(--border-subtle); display: grid; gap: 1rem; }
+  .addsection form { display: flex; gap: 0.5rem; max-width: 36rem; }
+  .addsection form input { flex: 1; }
+  .suggest { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+  .suggest span { color: var(--text-subtlest); margin-right: 0.25rem; }
+  select.secpick { width: 100%; }
 
   .drop { position: fixed; inset: 0; z-index: 50; background: color-mix(in srgb, var(--border-focus) 8%, transparent); border: 3px dashed var(--border-focus);
     display: none; place-items: center; font: 500 1.75rem/1 var(--font-display); letter-spacing: -0.03em; color: var(--text-default); }
@@ -259,26 +257,25 @@
   .finish h2 { margin: 0 0 0.75rem; font: 500 2.75rem/1 var(--font-display); letter-spacing: -0.05em; }
   .finish p { color: var(--text-subtle); margin: 0; font-size: 1.125rem; }
 
+  @media (prefers-color-scheme: dark) {
+    .btn.primary { background: var(--action-secondary-hovered); border-color: var(--border-default); color: var(--text-default); }
+  }
   @media (max-width: 900px) {
-    .item, .dir { grid-template-columns: minmax(0, 1fr); }
-    aside, .cats { position: static; max-height: none; }
+    .item { grid-template-columns: minmax(0, 1fr); }
+    aside { position: static; max-height: none; order: -1; }
     .wrap { padding: 0 1rem; }
     h1.title { font-size: 2.25rem; }
     .titleline { margin-top: 1.25rem; }
-    .cards { grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr)); gap: 0.75rem; }
     .card .body { padding: 0.875rem 1rem 1rem; }
   }
   @media (max-width: 600px) {
-    .feature .ctrl { width: 100%; }
-    .feature .ctrl select { flex: 1; min-width: 0; }
-    .feature label.fl { grid-template-columns: 1fr; gap: 0; }
-    .tabs { width: 100%; }
-    .tabs a { flex: 1; }
     .add { flex-wrap: wrap; }
     .add input { flex-basis: 100%; }
     .add .btn { flex: 1; }
     .newtopic { flex-wrap: wrap; }
     .newtopic input { flex-basis: 100%; }
+    .suggest { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+    .suggest .fchip { flex: none; }
   }
 </style>
 </head>
@@ -286,13 +283,14 @@
 <header class="wrap">
   <div class="topline">
     <nav class="crumbs" id="crumbs" aria-label="Breadcrumb"></nav>
-    <span class="chip-wait" id="waitChip" hidden></span>
-    <span class="status" id="status" aria-live="polite"></span>
-    <button class="btn primary" id="doneBtn" type="button" hidden>Done</button>
+    <div class="actions">
+      <span class="status" id="status" aria-live="polite"></span>
+      <span class="chip-wait" id="waitChip" hidden></span>
+      <button class="btn primary" id="doneBtn" type="button" hidden>Done</button>
+    </div>
   </div>
   <div class="titleline">
     <div><h1 class="title" id="title">Inspirations</h1><p class="subtitle" id="subtitle" hidden></p></div>
-    <nav class="tabs" id="tabs" aria-label="Topic views" hidden></nav>
   </div>
   <div class="tools" id="tools" hidden>
     <form class="add" id="addForm">
@@ -322,8 +320,8 @@ let meta = { mode: 'standalone', session: null, root: '' };
 let route = { view: 'home' };
 let topic = null;          // board of the open topic
 let topics = [];
-let ops = [];              // edits from the Direction tab waiting to be saved
-let saveTimer = null, saving = false, dirty = false, catFilter = null, activePin = null;
+let ops = [];              // section edits waiting to be saved
+let saveTimer = null, saving = false, dirty = false, activePin = null, dragId = null, scrollToPin = null;
 
 function toast(msg, ms = 3200) { const t = $('#toast'); t.textContent = msg; t.style.display = 'block';
   clearTimeout(toast.t); toast.t = setTimeout(() => t.style.display = 'none', ms); }
@@ -341,13 +339,11 @@ const readOnly = () => !!(topic && topic.legacy);
 const liveItems = () => topic ? topic.items.filter(i => !i.removed) : [];
 const waitingFor = itemId => (topic?.waiting || []).filter(w => w.item === itemId);
 const featById = id => topic.features.find(f => f.id === id);
-const catName = id => topic.categories.find(c => c.id === id)?.name || id;
 
 /* ---------- routing ---------- */
 function parseHash() {
   const h = location.hash.replace(/^#\/?/, '').split('/').map(decodeURIComponent);
   if (h[0] !== 't' || !h[1]) return { view: 'home' };
-  if (h[2] === 'direction') return { view: 'direction', slug: h[1] };
   if (h[2] === 'i' && h[3]) return { view: 'item', slug: h[1], item: h[3], pin: h[4] === 'p' ? h[5] : null };
   return { view: 'grid', slug: h[1] };
 }
@@ -364,9 +360,8 @@ async function onRoute() {
   else if (changedTopic || !topic) {
     topic = await tapi('state');
     if (topic.error) { toast('This topic does not exist any more'); return go('#/'); }
-    catFilter = null;
   }
-  if (route.pin) activePin = route.pin;
+  if (route.pin) { activePin = route.pin; scrollToPin = route.pin; }
   render();
   if (route.view === 'item') scrollTo({ top: 0 });
 }
@@ -374,8 +369,6 @@ addEventListener('hashchange', onRoute);
 
 /* ---------- saving ---------- */
 function queueOp(op) {
-  if (op.op === 'feature.set') ops = ops.filter(o => !(o.op === 'feature.set' && o.id === op.id && o.field === op.field));
-  if (op.op === 'direction.set') ops = ops.filter(o => o.op !== 'direction.set');
   if (op.op === 'category.rename') ops = ops.filter(o => !(o.op === 'category.rename' && o.id === op.id));
   ops.push(op);
   scheduleSave();
@@ -396,8 +389,7 @@ async function flush() {
     const res = await tapi('state', { items: topic.items, ops: sent });
     if (res.ok) {
       topic.waiting = res.state.waiting;
-      if (!ops.length) Object.assign(topic, { features: res.state.features, categories: res.state.categories,
-        direction: res.state.direction, rounds: res.state.rounds });
+      if (!ops.length) Object.assign(topic, { features: res.state.features, categories: res.state.categories, rounds: res.state.rounds });
       status('Saved'); renderHeader();
       return res.state;
     }
@@ -410,39 +402,35 @@ async function flush() {
 function renderHeader() {
   const rootLabel = meta.root ? 'Inspirations · ' + esc(meta.root) : 'Inspirations';
   const home = route.view === 'home';
-  $('#crumbs').innerHTML = home ? `<span>${rootLabel}</span>` : `<a href="#/">← ${rootLabel}</a>`;
+  $('#crumbs').innerHTML = home ? `<span>${rootLabel}</span>`
+    : route.view === 'item' ? `<a href="#/">${rootLabel}</a><span aria-hidden="true">/</span><a class="topic" href="${topicHash(route.slug)}">${esc(topic?.topic || '')}</a>`
+    : `<a href="#/">← ${rootLabel}</a>`;
+  document.querySelector('.titleline').hidden = route.view === 'item';
   $('#title').textContent = home ? 'Inspirations' : (topic?.topic || '');
   const sub = $('#subtitle');
   sub.hidden = !home;
   sub.textContent = home ? 'One board per topic. Pin what you like, and your agent names it.' : '';
-  const tabs = $('#tabs');
-  tabs.hidden = route.view === 'home' || readOnly();
-  if (!tabs.hidden) {
-    const onDir = route.view === 'direction';
-    tabs.innerHTML = `<a href="${topicHash(route.slug)}" ${!onDir ? 'aria-current="page"' : ''}>Inspirations</a>`
-      + `<a href="${topicHash(route.slug, '/direction')}" ${onDir ? 'aria-current="page"' : ''}>Direction</a>`;
-  }
   const w = topic && !readOnly() ? topic.waiting.length : 0;
   $('#waitChip').hidden = !w;
   $('#waitChip').textContent = `${w} waiting to be named`;
   $('#doneBtn').hidden = !(meta.mode === 'session' && route.slug === meta.session && route.view !== 'home');
-  $('#tools').hidden = !(route.view === 'grid' || route.view === 'item') || readOnly();
-  $('#hint').innerHTML = route.view === 'item'
-    ? 'Click the image to comment on a spot, drag to mark an area. Hold <kbd>Alt</kbd> for “don’t like”. <kbd>←</kbd> <kbd>→</kbd> switch.'
-    : '';
+  $('#tools').hidden = route.view !== 'grid' || readOnly();
+  $('#hint').textContent = topic?.categories?.length ? 'Drag inspirations between sections. Open one to pin what you like.' : 'Open an inspiration to pin what you like. Add sections below to sort them.';
+  $('header').style.paddingBottom = route.view === 'item' ? '1rem' : '';
 }
 
 function render() {
+  const y = scrollY;  // rebuilding the view must not move the page
   renderHeader();
   const m = $('#main');
   m.innerHTML = '';
+  requestAnimationFrame(() => { if (Math.abs(scrollY - y) > 1) scrollTo(0, y); });
   if (route.view === 'home') return renderHome(m);
   if (readOnly()) m.appendChild(banner('Old-format board: read only. New rounds go to topic boards.'));
-  else if (meta.mode === 'standalone' && topic.waiting.length && route.view !== 'direction')
+  else if (meta.mode === 'standalone' && topic.waiting.length)
     m.appendChild(banner(`${topic.waiting.length} note${topic.waiting.length === 1 ? '' : 's'} waiting to be named. Your agent names them: ask it to <code>analyze ${esc(route.slug)}</code>.`, true));
   if (route.view === 'grid') renderGrid(m);
   if (route.view === 'item') renderItemView(m);
-  if (route.view === 'direction') renderDirection(m);
 }
 
 function banner(html, copyable) {
@@ -491,56 +479,104 @@ function renderHome(m) {
   m.appendChild(grid);
 }
 
-/* ---------- topic grid ---------- */
-function itemsInCategory(cat) {
-  const ids = new Set();
-  topic.features.filter(f => f.status === 'active' && f.category === cat).forEach(f => f.sources.forEach(s => ids.add(s.item)));
-  return ids;
+/* ---------- topic board: sections ---------- */
+function moveItem(id, cat) {
+  const item = topic.items.find(i => i.id === id);
+  if (!item || (item.category || '') === cat) return;
+  item.category = cat;
+  scheduleSave();
+  render();
+}
+
+function itemCard(item) {
+  const a = document.createElement('a');
+  a.className = 'card';
+  a.href = topicHash(route.slug, '/i/' + item.id);
+  const w = waitingFor(item.id).length;
+  const isNew = !readOnly() && item.added_round >= topic.pending_round && topic.rounds.length > 0;
+  const title = /^https?:/.test(item.source) ? domain(item.source) : 'Uploaded image';
+  const badges = (isNew ? '<span class="badge new">New</span>' : '') + (w ? `<span class="badge wait">${w} waiting</span>` : '');
+  a.innerHTML = `<div class="thumb"><img src="${img(framesOf(item)[0])}" alt="" loading="lazy" draggable="false">
+    ${badges ? `<div class="badges">${badges}</div>` : ''}</div>
+    <div class="body"><h3>${esc(title)}</h3><span class="meta">#${num(item.id)} · ${item.pins.length} pin${item.pins.length === 1 ? '' : 's'}${item.note ? ' · ' + esc(item.note) : ''}</span></div>`;
+  if (!readOnly()) {
+    a.draggable = true;
+    a.addEventListener('dragstart', e => { dragId = item.id; document.body.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', item.id); a.classList.add('dragging'); });
+    a.addEventListener('dragend', () => { dragId = null; document.body.classList.remove('dragging'); a.classList.remove('dragging'); document.querySelectorAll('.section.over').forEach(x => x.classList.remove('over')); });
+  }
+  return a;
+}
+
+function sectionEl(sec, group) {
+  const el = document.createElement('section');
+  el.className = 'section';
+  const head = document.createElement('div');
+  head.className = 'sechead';
+  if (sec.id && !readOnly()) {
+    head.innerHTML = `<input class="secname" aria-label="Section name"><span class="count">${group.length}</span>
+      <button class="icon" type="button" title="Delete section - its inspirations go to Unsorted" aria-label="Delete section ${esc(sec.name)}">✕</button>`;
+    const inp = head.querySelector('input');
+    inp.value = sec.name;
+    inp.addEventListener('input', () => { if (inp.value.trim()) { sec.name = inp.value; queueOp({ op: 'category.rename', id: sec.id, name: inp.value }); } });
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') inp.blur(); });
+    head.querySelector('button').addEventListener('click', async () => {
+      group.forEach(i => { i.category = ''; });
+      topic.categories = topic.categories.filter(c => c.id !== sec.id);
+      queueOp({ op: 'category.delete', id: sec.id }); await flush(); render();
+      toast(group.length ? `Section deleted - ${group.length} moved to Unsorted` : 'Section deleted');
+    });
+  } else {
+    head.innerHTML = `<h2>${esc(sec.name)}</h2><span class="count">${group.length}</span>`;
+  }
+  el.appendChild(head);
+  const grid = document.createElement('div');
+  grid.className = 'cards grid-items';
+  group.forEach(item => grid.appendChild(itemCard(item)));
+  if (!group.length) grid.innerHTML = '<div class="dropzone">Drag inspirations here</div>';
+  else if (!readOnly()) grid.insertAdjacentHTML('beforeend', '<div class="slot">Drop here</div>');
+  el.appendChild(grid);
+  if (!readOnly()) {
+    el.addEventListener('dragover', e => { if (!dragId) return; e.preventDefault(); e.dataTransfer.dropEffect = 'move'; el.classList.add('over'); });
+    el.addEventListener('dragleave', e => { if (!el.contains(e.relatedTarget)) el.classList.remove('over'); });
+    el.addEventListener('drop', e => { if (!dragId) return; e.preventDefault(); e.stopPropagation(); el.classList.remove('over'); moveItem(dragId, sec.id); });
+  }
+  return el;
+}
+
+function addSectionEl() {
+  const wrap = document.createElement('div');
+  wrap.className = 'addsection';
+  const used = new Set(topic.categories.map(c => c.id));
+  const sugg = (topic.suggested || []).filter(c => !used.has(c.id));
+  wrap.innerHTML = `<form><input class="text" name="n" placeholder="New section, e.g. Typography, Hero, Patterns" aria-label="New section name">
+    <button class="btn" type="submit">Add section</button></form>
+    ${sugg.length ? `<div class="suggest"><span>Suggestions</span>${sugg.map(c => `<button type="button" class="fchip" data-id="${esc(c.id)}">+ ${esc(c.name)}</button>`).join('')}</div>` : ''}`;
+  const add = async op => { queueOp({ op: 'category.add', ...op }); await flush(); render(); };
+  wrap.querySelector('form').addEventListener('submit', e => { e.preventDefault(); const n = e.target.n.value.trim(); if (n) add({ name: n }); });
+  wrap.querySelectorAll('.suggest button').forEach(b => b.addEventListener('click', () => add({ id: b.dataset.id, name: b.textContent.slice(2) })));
+  return wrap;
 }
 
 function renderGrid(m) {
   const items = liveItems();
-  if (!items.length) {
+  if (!items.length && !topic.categories.length) {
     m.insertAdjacentHTML('beforeend', '<div class="empty"><h2>No inspirations yet</h2>Paste a link above, upload an image, paste one with <kbd>Cmd/Ctrl+V</kbd> or drop a file on the window.</div>');
+    if (!readOnly()) m.appendChild(addSectionEl());
     return;
   }
-  const used = topic.categories.filter(c => topic.features.some(f => f.status === 'active' && f.category === c.id));
-  if (used.length) {
-    const bar = document.createElement('div');
-    bar.className = 'filters';
-    bar.setAttribute('role', 'group');
-    bar.setAttribute('aria-label', 'Filter by category');
-    const chip = (id, label) => {
-      const b = document.createElement('button');
-      b.type = 'button'; b.className = 'fchip'; b.textContent = label;
-      b.setAttribute('aria-pressed', String(catFilter === id));
-      b.addEventListener('click', () => { catFilter = id; render(); });
-      bar.appendChild(b);
-    };
-    chip(null, 'All');
-    used.forEach(c => chip(c.id, c.name));
-    m.appendChild(bar);
+  const unsorted = items.filter(i => !topic.categories.some(c => c.id === i.category));
+  if (!topic.categories.length) {
+    const grid = document.createElement('div');
+    grid.className = 'cards grid-items';
+    items.forEach(item => grid.appendChild(itemCard(item)));
+    m.appendChild(grid);
+  } else {
+    topic.categories.forEach(c => m.appendChild(sectionEl(c, items.filter(i => i.category === c.id))));
+    const un = sectionEl({ id: '', name: 'Unsorted' }, unsorted);
+    if (!unsorted.length) un.classList.add('only-drag');
+    m.appendChild(un);
   }
-  const filter = catFilter ? itemsInCategory(catFilter) : null;
-  const shown = filter ? items.filter(i => filter.has(i.id)) : items;
-  if (!shown.length) {
-    m.insertAdjacentHTML('beforeend', '<div class="empty"><h2>Nothing in this category</h2>No inspiration gives a feature in this category yet.</div>');
-    return;
-  }
-  const grid = document.createElement('div');
-  grid.className = 'cards grid-items';
-  for (const item of shown) {
-    const a = document.createElement('a');
-    a.className = 'card';
-    a.href = topicHash(route.slug, '/i/' + item.id);
-    const w = waitingFor(item.id).length;
-    const isNew = !readOnly() && item.added_round >= topic.pending_round && topic.rounds.length > 0;
-    a.innerHTML = `<div class="thumb"><img src="${img(framesOf(item)[0])}" alt="" loading="lazy">
-      <div class="badges"><span class="badge">#${num(item.id)}</span>${isNew ? '<span class="badge new">New</span>' : ''}${w ? `<span class="badge wait">${w} waiting</span>` : ''}</div></div>
-      <div class="body"><h3>${esc(domain(item.source))}</h3><span class="meta">${item.pins.length} pin${item.pins.length === 1 ? '' : 's'}${item.note ? ' · ' + esc(item.note) : ''}</span></div>`;
-    grid.appendChild(a);
-  }
-  m.appendChild(grid);
+  if (!readOnly()) m.appendChild(addSectionEl());
 }
 
 /* ---------- single inspiration ---------- */
@@ -551,10 +587,10 @@ function renderItemView(m) {
   const nav = document.createElement('nav');
   nav.className = 'nav';
   nav.setAttribute('aria-label', 'Inspirations');
-  nav.innerHTML = `<a class="btn" href="${topicHash(route.slug)}">← All</a>
-    <button class="btn arrow" type="button" data-d="-1" aria-label="Previous inspiration" ${idx === 0 ? 'disabled' : ''}>‹</button>
+  const chev = d => `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
+  nav.innerHTML = `<button class="btn arrow" type="button" data-d="-1" aria-label="Previous inspiration" ${idx === 0 ? 'disabled' : ''}>${chev('M12 5l-5 5 5 5')}</button>
     <div class="strip"></div>
-    <button class="btn arrow" type="button" data-d="1" aria-label="Next inspiration" ${idx === items.length - 1 ? 'disabled' : ''}>›</button>
+    <button class="btn arrow" type="button" data-d="1" aria-label="Next inspiration" ${idx === items.length - 1 ? 'disabled' : ''}>${chev('M8 5l5 5-5 5')}</button>
     <span class="counter">${idx + 1} / ${items.length}</span>`;
   const strip = nav.querySelector('.strip');
   items.forEach((item, i) => {
@@ -564,15 +600,16 @@ function renderItemView(m) {
     b.title = item.source;
     b.setAttribute('aria-label', 'Inspiration ' + num(item.id));
     if (i === idx) b.setAttribute('aria-current', 'true');
-    b.innerHTML = `<img src="${img(framesOf(item)[0])}" alt="" loading="lazy"><span class="no">#${num(item.id)}</span>`;
+    b.innerHTML = `<img src="${img(framesOf(item)[0])}" alt="" loading="lazy">`;
     strip.appendChild(b);
   });
   nav.querySelectorAll('[data-d]').forEach(b => b.addEventListener('click', () => step(Number(b.dataset.d))));
   m.appendChild(nav);
   m.appendChild(renderItem(items[idx]));
   requestAnimationFrame(() => {
-    strip.children[idx]?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
-    if (activePin) document.querySelector(`.pin[data-pid="${activePin}"]`)?.scrollIntoView({ block: 'center' });
+    const t = strip.children[idx];  // scroll only the strip; scrollIntoView would move the page too
+    if (t) strip.scrollLeft = t.offsetLeft - strip.offsetLeft - (strip.clientWidth - t.clientWidth) / 2;
+    if (scrollToPin) { document.querySelector(`.pin[data-pid="${scrollToPin}"]`)?.scrollIntoView({ block: 'center' }); scrollToPin = null; }
   });
 }
 
@@ -596,7 +633,8 @@ function renderItem(item) {
   const frames = framesOf(item);
   frames.forEach((src, f) => {
     const box = document.createElement('div');
-    if (frames.length > 1) box.innerHTML = `<p class="frame-cap">Screen ${f + 1} / ${frames.length}</p>`;
+    box.className = 'frame';
+    if (frames.length > 1) box.innerHTML = `<p class="frame-cap">${f + 1} / ${frames.length}</p>`;
     const stage = document.createElement('div');
     stage.className = 'stage' + (readOnly() ? ' ro' : '');
     stage.innerHTML = `<img src="${img(src)}" alt="Inspiration ${num(item.id)}${frames.length > 1 ? ', screen ' + (f + 1) : ''}">`;
@@ -610,12 +648,14 @@ function renderItem(item) {
   const isUrl = /^https?:/.test(item.source);
   side.innerHTML = `
     <div class="src"><span class="idx">#${num(item.id)}</span>${isUrl
-      ? `<a href="${encodeURI(item.source)}" target="_blank" rel="noopener" title="${esc(item.source)}">${esc(item.source.replace(/^https?:\/\/(www\.)?/, ''))}</a>`
-      : `<span>${esc(item.source)}</span>`}</div>
+      ? `<a class="from" href="${encodeURI(item.source)}" target="_blank" rel="noopener" title="${esc(item.source)}">${esc(domain(item.source))} ↗</a>`
+      : `<span class="from">Uploaded image</span>`}</div>
+    ${readOnly() ? '' : `<div><label class="cap" for="sec-${item.id}">Section</label><select id="sec-${item.id}" class="secpick"><option value="">Unsorted</option>${topic.categories.map(c => `<option value="${esc(c.id)}" ${c.id === item.category ? 'selected' : ''}>${esc(c.name)}</option>`).join('')}</select></div>`}
     <div><label class="cap" for="note-${item.id}">Overall - what I like here</label>
       <textarea id="note-${item.id}" placeholder="e.g. calm, lots of air, warm colors" ${readOnly() ? 'readonly' : ''}></textarea></div>
-    <div><span class="cap">Pins</span><div class="pins"></div></div>
+    <div><span class="cap pins-cap">Pins</span><div class="pins"></div></div>
     ${readOnly() ? '' : '<button class="remove" type="button">Remove this inspiration</button>'}`;
+  side.querySelector('.secpick')?.addEventListener('change', e => { item.category = e.target.value; scheduleSave(); toast('Moved to ' + (e.target.selectedOptions[0]?.text || 'Unsorted')); });
   const note = side.querySelector('textarea');
   note.value = item.note || '';
   note.addEventListener('input', () => { item.note = note.value; scheduleSave(); });
@@ -628,7 +668,8 @@ function renderItem(item) {
     go(neighbour ? topicHash(route.slug, '/i/' + neighbour.id) : topicHash(route.slug));
   });
   const pins = side.querySelector('.pins');
-  if (!item.pins.length) pins.innerHTML = `<div class="empty-pins">${readOnly() ? 'No pins.' : 'Click the image (comment on a spot) or drag (area).'}</div>`;
+  if (!item.pins.length) pins.innerHTML = `<div class="empty-pins">${readOnly() ? 'No pins.' : 'Click the image to comment on a spot, or drag to mark an area. Hold <kbd>Alt</kbd> for “don’t like”. <kbd>←</kbd> <kbd>→</kbd> switch inspirations.'}</div>`;
+  side.querySelector('.cap.pins-cap').textContent = item.pins.length ? `Pins (${item.pins.length})` : 'Pins';
   item.pins.forEach((p, i) => pins.appendChild(pinRow(item, p, i + 1, frames.length)));
   wrap.append(col, side);
   return wrap;
@@ -652,10 +693,11 @@ function pinRow(item, p, n, nFrames) {
   row.dataset.pid = p.id;
   const feats = (p.feature_ids || []).map(featById).filter(Boolean);
   const isWaiting = !readOnly() && (topic.waiting || []).some(w => w.item === item.id && w.pin === p.id);
-  row.innerHTML = `<span><span class="n" title="${p.kind === 'dislike' ? 'Don’t like' : 'Like'}">${n}</span>${nFrames > 1 ? `<span class="fr">scr. ${(p.frame || 0) + 1}</span>` : ''}</span>
-    <textarea rows="2" placeholder="What exactly?" aria-label="Pin ${n} note" ${readOnly() ? 'readonly' : ''}></textarea>
-    <div>${readOnly() ? '' : '<button class="icon flip" type="button" title="Switch like / don’t like" aria-label="Switch like or don’t like">⇄</button><button class="icon del" type="button" title="Delete pin" aria-label="Delete pin">✕</button>'}</div>
-    <div class="feat">${feats.map(f => `<span class="tag">${esc(f.name)}</span>`).join('')}${isWaiting ? '<span class="tag wait">waiting to be named</span>' : ''}</div>`;
+  const title = feats.length ? esc(feats.map(f => f.name).join(', ')) : (isWaiting ? '<span class="tag wait">Waiting to be named</span>' : '');
+  row.innerHTML = `<span class="n" title="${p.kind === 'dislike' ? 'Don’t like' : 'Like'}">${n}</span>
+    <div class="body">${title ? `<div class="title">${title}${nFrames > 1 ? ` <span class="fr">· screen ${(p.frame || 0) + 1}</span>` : ''}</div>` : ''}
+      <textarea rows="1" placeholder="What exactly?" aria-label="Pin ${n} note" ${readOnly() ? 'readonly' : ''}></textarea></div>
+    <div class="tools-r">${readOnly() ? '' : '<button class="icon flip" type="button" title="Switch like / don’t like" aria-label="Switch like or don’t like">⇄</button><button class="icon del" type="button" title="Delete pin" aria-label="Delete pin">✕</button>'}</div>`;
   const ta = row.querySelector('textarea');
   ta.value = p.note || '';
   ta.addEventListener('input', () => { p.note = ta.value; scheduleSave(); });
@@ -725,7 +767,7 @@ function openPop(item, p, cx, cy, isNew) {
     <div class="seg" role="group" aria-label="Rating"><button type="button" class="like">Like</button><button type="button" class="dislike">Don’t like</button></div>
     <textarea rows="3" placeholder="What exactly? Can be vague - your agent will ask." aria-label="Pin note"></textarea>
     <div class="actions"><small>Enter save · Esc ${isNew ? 'cancel' : 'close'}</small>
-      <span><button class="btn small" type="button" data-a="del">Delete</button> <button class="btn small primary" type="button" data-a="ok">Save</button></span></div>`;
+      <span>${isNew ? '<button class="btn" type="button" data-a="cancel">Cancel</button>' : '<button class="btn danger" type="button" data-a="del">Delete</button>'}<button class="btn primary" type="button" data-a="ok">Save</button></span></div>`;
   let kind = p.kind;
   const ta = pop.querySelector('textarea');
   const seg = () => pop.querySelectorAll('.seg button').forEach(b => b.classList.toggle('on', b.classList.contains(kind)));
@@ -734,158 +776,23 @@ function openPop(item, p, cx, cy, isNew) {
   const commit = () => { p.kind = kind; p.note = ta.value.trim(); closePop(); scheduleSave(); render(); highlight(p.id); };
   const cancel = () => { if (isNew && !p.note) { item.pins = item.pins.filter(x => x !== p); render(); } closePop(); };
   pop.querySelector('[data-a=ok]').addEventListener('click', commit);
-  pop.querySelector('[data-a=del]').addEventListener('click', () => { item.pins = item.pins.filter(x => x !== p); closePop(); scheduleSave(); render(); });
+  pop.querySelector('[data-a=del]')?.addEventListener('click', () => { item.pins = item.pins.filter(x => x !== p); closePop(); scheduleSave(); render(); });
+  pop.querySelector('[data-a=cancel]')?.addEventListener('click', cancel);
   ta.addEventListener('keydown', e => {
     if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); commit(); }
     if (e.key === 'Escape') { e.preventDefault(); cancel(); }
   });
   seg();
   document.body.appendChild(pop);
-  pop.style.left = Math.min(cx + 12, innerWidth - pop.offsetWidth - 12) + 'px';
-  pop.style.top = Math.min(cy + 12, innerHeight - pop.offsetHeight - 12) + 'px';
-  ta.focus();
+  // anchor to the pin itself (the page may have moved since the click)
+  const pinRect = document.querySelector(`.pin[data-pid="${p.id}"]`)?.getBoundingClientRect();
+  if (pinRect) { cx = pinRect.right; cy = isPoint(p) ? pinRect.top : pinRect.top; }
+  const left = cx + 12 + pop.offsetWidth > innerWidth - 12 ? Math.max(12, (pinRect ? pinRect.left : cx) - pop.offsetWidth - 12) : cx + 12;
+  pop.style.left = left + 'px';
+  pop.style.top = Math.max(12, Math.min(cy, innerHeight - pop.offsetHeight - 12)) + 'px';
+  ta.focus({ preventScroll: true });
 }
 document.addEventListener('mousedown', e => { if (!e.target.closest('.pop') && !e.target.closest('.stage')) closePop(); });
-
-/* ---------- direction ---------- */
-function setFeature(f, field, value) {
-  f[field] = value;
-  if (!f.user_edited.includes(field)) f.user_edited.push(field);
-  queueOp({ op: 'feature.set', id: f.id, field, value });
-}
-
-function featureEl(f) {
-  const el = document.createElement('div');
-  el.className = 'feature';
-  el.dataset.fid = f.id;
-  const opts = topic.categories.map(c => `<option value="${esc(c.id)}" ${c.id === f.category ? 'selected' : ''}>${esc(c.name)}</option>`).join('');
-  el.innerHTML = `
-    <div class="top">
-      <input class="fname" aria-label="Feature name" placeholder="Feature name">
-      <div class="ctrl">
-        <select aria-label="Category">${opts}</select>
-        <div class="seg" role="group" aria-label="Take or avoid"><button type="button" class="take">Take</button><button type="button" class="avoid">Avoid</button></div>
-        <button class="icon" type="button" data-a="status" title="${f.status === 'active' ? 'Drop this feature' : 'Restore this feature'}" aria-label="${f.status === 'active' ? 'Drop this feature' : 'Restore this feature'}">${f.status === 'active' ? '✕' : '↺'}</button>
-      </div>
-    </div>
-    <label class="fl"><span>In plain words</span><input class="fline" data-f="plain" placeholder="What it is, without jargon"></label>
-    <label class="fl"><span>Where it applies</span><input class="fline" data-f="scope" placeholder="e.g. headings only, hero section"></label>
-    <div class="bottom"></div>`;
-  const name = el.querySelector('.fname');
-  name.value = f.name;
-  name.addEventListener('input', () => setFeature(f, 'name', name.value));
-  el.querySelectorAll('.fline').forEach(inp => { inp.value = f[inp.dataset.f] || ''; inp.addEventListener('input', () => setFeature(f, inp.dataset.f, inp.value)); });
-  el.querySelector('select').addEventListener('change', e => { setFeature(f, 'category', e.target.value); render(); });
-  const segBtns = el.querySelectorAll('.seg button');
-  segBtns.forEach(b => {
-    b.classList.toggle('on', b.classList.contains(f.list));
-    b.setAttribute('aria-pressed', String(b.classList.contains(f.list)));
-    b.addEventListener('click', () => { const v = b.classList.contains('take') ? 'take' : 'avoid'; if (v !== f.list) { setFeature(f, 'list', v); render(); } });
-  });
-  el.querySelector('[data-a=status]').addEventListener('click', () => {
-    setFeature(f, 'status', f.status === 'active' ? 'dropped' : 'active');
-    toast(f.status === 'dropped' ? 'Feature dropped - you can restore it below' : 'Feature restored');
-    render();
-  });
-  const bottom = el.querySelector('.bottom');
-  f.sources.forEach(s => {
-    const item = topic.items.find(i => i.id === s.item);
-    if (!item || item.removed) return;
-    const pinIdx = s.pin ? item.pins.findIndex(p => p.id === s.pin) + 1 : 0;
-    const b = document.createElement('a');
-    b.className = 'srcchip';
-    b.href = topicHash(route.slug, '/i/' + s.item + (s.pin ? '/p/' + s.pin : ''));
-    b.textContent = `#${num(s.item)} · ${pinIdx ? 'pin ' + pinIdx : 'overall'}`;
-    b.title = 'Open the source';
-    bottom.appendChild(b);
-  });
-  if (f.user_edited.length) bottom.insertAdjacentHTML('beforeend', '<span class="owned" title="Your agent will not overwrite what you edited - it will ask first">edited by you</span>');
-  return el;
-}
-
-async function addFeature(list) {
-  const clientId = uid('c');
-  queueOp({ op: 'feature.add', client_id: clientId, feature: { name: '', list, category: catFilter || topic.categories[0].id } });
-  await flush();
-  render();
-  const f = topic.features.find(x => x.client_id === clientId);
-  if (f) document.querySelector(`.feature[data-fid="${f.id}"] .fname`)?.focus();
-}
-
-function renderDirection(m) {
-  const wrap = document.createElement('div');
-  wrap.className = 'dir';
-  const left = document.createElement('div');
-  const dsec = document.createElement('section');
-  dsec.innerHTML = `<h2><label for="dirText">Direction</label>${topic.direction.user_edited ? '<span class="owned">edited by you</span>' : ''}</h2>
-    <textarea id="dirText" class="direction" placeholder="What ties these inspirations together. Your agent drafts it after the first round - you can also write it yourself."></textarea>`;
-  const dt = dsec.querySelector('textarea');
-  dt.value = topic.direction.text || '';
-  dt.addEventListener('input', () => { topic.direction.text = dt.value; topic.direction.user_edited = true; queueOp({ op: 'direction.set', text: dt.value }); });
-  left.appendChild(dsec);
-
-  const active = topic.features.filter(f => f.status === 'active');
-  for (const [list, title] of [['take', 'What I take'], ['avoid', 'What I avoid']]) {
-    const sec = document.createElement('section');
-    sec.innerHTML = `<h2>${title}<button class="btn small" type="button">Add feature</button></h2>`;
-    sec.querySelector('button').addEventListener('click', () => addFeature(list));
-    const feats = active.filter(f => f.list === list);
-    if (!feats.length) sec.insertAdjacentHTML('beforeend', `<p class="hint">${list === 'take' ? 'No features yet. Pin what you like on the inspirations and ask your agent to name it, or add one here.' : 'Nothing to avoid yet. “Don’t like” pins end up here.'}</p>`);
-    for (const c of topic.categories) {
-      const group = feats.filter(f => f.category === c.id);
-      if (!group.length) continue;
-      sec.insertAdjacentHTML('beforeend', `<h3>${esc(c.name)}</h3>`);
-      group.forEach(f => sec.appendChild(featureEl(f)));
-    }
-    left.appendChild(sec);
-  }
-  const dropped = topic.features.filter(f => f.status === 'dropped');
-  if (dropped.length) {
-    const d = document.createElement('details');
-    d.className = 'dropped';
-    d.innerHTML = `<summary>Dropped (${dropped.length})</summary>`;
-    dropped.forEach(f => d.appendChild(featureEl(f)));
-    left.appendChild(d);
-  }
-  if (topic.rounds.length) {
-    const h = document.createElement('section');
-    h.className = 'history';
-    h.innerHTML = '<h2>Round history</h2>' + [...topic.rounds].reverse().map(r =>
-      `<p class="hint">${esc(r.date)} · round ${r.n}${r.focus ? ' · ' + esc(r.focus) : ''} · +${r.features_added} new, ${r.features_changed} changed${r.summary ? ' - ' + esc(r.summary) : ''}</p>`).join('');
-    left.appendChild(h);
-  }
-
-  const right = document.createElement('div');
-  right.className = 'cats';
-  const counts = id => topic.features.filter(f => f.category === id).length;
-  right.innerHTML = `<span class="cap">Categories</span><ul></ul>
-    <form><input class="text" name="c" placeholder="New category" aria-label="New category name"><button class="btn small" type="submit">Add</button></form>`;
-  const ul = right.querySelector('ul');
-  topic.categories.forEach(c => {
-    const li = document.createElement('li');
-    const n = counts(c.id);
-    li.innerHTML = `<input class="text" aria-label="Category name"><span class="count" title="Features in this category">${n || ''}</span>
-      <button class="icon" type="button" ${n ? 'disabled title="Move its features first"' : 'title="Delete category"'} aria-label="Delete category ${esc(c.name)}">✕</button>`;
-    const inp = li.querySelector('input');
-    inp.value = c.name;
-    inp.addEventListener('input', () => { if (inp.value.trim()) { c.name = inp.value; queueOp({ op: 'category.rename', id: c.id, name: inp.value }); } });
-    inp.addEventListener('change', () => render());
-    li.querySelector('button').addEventListener('click', async () => {
-      if (n) return;
-      topic.categories = topic.categories.filter(x => x.id !== c.id);
-      queueOp({ op: 'category.delete', id: c.id }); await flush(); render();
-    });
-    ul.appendChild(li);
-  });
-  right.querySelector('form').addEventListener('submit', async e => {
-    e.preventDefault();
-    const name = e.target.c.value.trim();
-    if (!name) return;
-    queueOp({ op: 'category.add', name }); await flush(); render();
-  });
-  wrap.append(left, right);
-  m.appendChild(wrap);
-}
 
 /* ---------- adding ---------- */
 $('#addForm').addEventListener('submit', async e => {
@@ -924,11 +831,11 @@ async function uploadFiles(list) {
 }
 
 let dragDepth = 0;
-const canDrop = () => route.slug && !readOnly() && route.view !== 'direction';
+const canDrop = () => route.slug && !readOnly();
 addEventListener('dragenter', e => { if (canDrop() && e.dataTransfer?.types.includes('Files')) { dragDepth++; $('#drop').classList.add('on'); } });
 addEventListener('dragleave', () => { if (--dragDepth <= 0) { dragDepth = 0; $('#drop').classList.remove('on'); } });
 addEventListener('dragover', e => e.preventDefault());
-addEventListener('drop', e => { e.preventDefault(); dragDepth = 0; $('#drop').classList.remove('on'); if (canDrop()) uploadFiles(e.dataTransfer?.files); });
+addEventListener('drop', e => { e.preventDefault(); dragDepth = 0; $('#drop').classList.remove('on'); if (canDrop() && !dragId && e.dataTransfer?.files?.length) uploadFiles(e.dataTransfer.files); });
 $('#fileBtn').addEventListener('click', () => $('#fileInput').click());
 $('#fileInput').addEventListener('change', e => { uploadFiles(e.target.files); e.target.value = ''; });
 addEventListener('paste', e => {
@@ -976,7 +883,7 @@ async function poll() {
   const newRound = (remote.rounds || []).length !== (topic.rounds || []).length;
   if (fresh.length || reframed || newRound) {
     topic = remote; render();
-    toast(newRound ? 'Your agent finished a round - Direction updated' : fresh.length ? 'New inspirations arrived from chat' : 'Screenshots updated');
+    toast(newRound ? 'Your agent finished a round' : fresh.length ? 'New inspirations arrived from chat' : 'Screenshots updated');
   }
 }
 

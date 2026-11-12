@@ -1,6 +1,6 @@
 # Inspiration board: a permanent home for inspirations
 
-Status: built, waiting for the owner to run the test scenarios
+Status: approved by the owner for the public catalog on 2026-11-12. The analysis round (test scenario 6) has not yet run on real pins.
 
 ## Goal
 
@@ -24,16 +24,16 @@ Turn `inspiration-board` from a one-off session tool into a permanent place for 
 | 5 | Public skill: English instructions, the agent speaks the user's language, no personal names, paths or private-tool integrations. Other skills are optional ("if available"). | It ships in this public catalog. |
 | 6 | Start without the agent: a double-click launcher file in `inspirations/` (macOS) plus one terminal command (all systems). The server stops when the tab closes. | A file to click is the lowest bar; a system service is too heavy to explain. |
 | 7 | The launcher opens a topics screen: cards with thumbnail, item count, pins waiting, last round date, and "New topic". | Several topics per project need one entry point. |
-| 8 | Features and direction live in the board data. The board has a "Direction" tab; the markdown file is generated from the same data. | One source of truth; markdown stays for agents and pasting elsewhere. |
-| 9 | Full editing on the Direction tab: rename features, move between take/avoid, change category, edit direction text, drop/restore. | Owner choice. |
-| 10 | User edits win. Any field the user edited is marked; a later round never overwrites it silently, but proposes "was / proposed / why" for approval. Untouched fields update automatically and are listed in the round summary. | Full editing must not be undone by the agent. |
+| 8 | ~~Direction tab on the board~~ Revised 11.11 after the first test: no Direction tab. Features and direction live in the board data and are read in `inspirations.md`. | The owner found the tab hard to understand: an abstract form with text-only features. |
+| 9 | ~~Full editing of features on the board~~ Revised 11.11: features are not edited on the board. Corrections go through the agent. | Follows from 8. |
+| 10 | ~~User-owned fields and conflicts~~ Revised 11.11: dropped together with board editing; the agent updates features directly and lists the changes in the round summary. | Nothing left to protect once the board does not edit features. |
 | 11 | Pins made without the agent show as a "N pins waiting to be named" counter. The "Done" button is hidden in standalone mode. Analysis runs when the user asks the agent. | Nobody listens for "Done" without a session. |
 | 12 | The existing dated session stays in the old format. No migration. | Owner choice; only one old session exists. |
 | 13 | Topics outside any project go to a library folder, default `~/Inspirations/`. The skill asks once and remembers the choice in a small settings file. | No hard-coded personal path, sensible default. |
 | 14 | Nothing from `inspirations/` goes into git. The skill asks once per repo to add it to `.gitignore`, recommending yes. | Screenshots are third-party material, heavy, and risky in client or public repos. |
-| 15 | A topic opens as a grid of all items with "new" and "waiting" badges; a click opens the current single-item pinning view. | A permanent board grows to 30-40 items. |
-| 16 | Areas of a project are separate topics. Inside a topic, every feature has a category, assigned by the agent and editable. Direction is grouped by category; the grid filters by category. | One inspiration often gives features from several areas. |
-| 17 | Categories start from the skill vocabulary (typography, color, layout and composition, logo and mark, image and illustration, web/UI, motion, material and print). Users add and rename categories on the board. Empty categories are hidden. | Consistent default, room for project-specific areas. |
+| 15 | A topic opens as a board split into **sections**, one per category, plus "Unsorted". Each card has "new" and "waiting" badges; a click opens the single-item pinning view. | Revised 11.11: sections replace the category filter. |
+| 16 | Areas of a project are separate topics. Inside a topic, **each inspiration belongs to one section** (category). The user drags inspirations between sections or picks the section in the pinning view. New inspirations land in "Unsorted"; the agent may sort unsorted ones during analysis. Features still carry a category for the markdown, by default the section of their source. | Revised 11.11: the owner wants to categorize on the board itself. |
+| 17 | A new topic starts with no sections. "Add section" offers the skill vocabulary as one-click suggestions (typography, color, layout and composition, logo and mark, image and illustration, web/UI, motion, material and print) and accepts custom names. Sections can be renamed; deleting a section moves its inspirations to "Unsorted". | Revised 11.11: empty default sections cluttered the board. |
 | 18 | Build everything in one pass, test once at the end against the scenarios below. | Owner choice. |
 | 19 | Board UI in English only. The agent still talks in the user's language and writes feature names and direction in that language. | Simplest public version. |
 | 20 | Source lives in `skills/inspiration-board/`. `~/.claude/skills/inspiration-board` becomes a symlink to it, after a backup of the current folder. | One version for the owner and everyone else. |
@@ -62,29 +62,29 @@ Turn `inspiration-board` from a one-off session tool into a permanent place for 
 
 - `topic`, `slug`, `created`, `language`
 - `categories[]`: `id`, `name`, `custom`
-- `direction`: `text`, `user_edited`, `updated_round`
-- `features[]`: `id`, `name`, `plain` (plain-language explanation), `scope`, `category`, `list` (`take` | `avoid`), `sources[]` (item + pin), `status` (`active` | `dropped`), `user_edited[]` (field names), `added_round`, `updated_round`
+- `direction`: `text`, `updated_round`
+- `features[]`: `id`, `name`, `plain` (plain-language explanation), `scope`, `category`, `list` (`take` | `avoid`), `sources[]` (item + pin), `status` (`active` | `dropped`), `added_round`, `updated_round`
 - `rounds[]`: `n`, `date`, `focus`, `summary`, counts of items added, pins named, features added, changed, dropped
-- `items[]`: as today (`id`, `source`, `frames`, `w`, `h`, `note`, `removed`, `pins[]`) plus `added_round`
+- `items[]`: as today (`id`, `source`, `frames`, `w`, `h`, `note`, `removed`, `pins[]`) plus `added_round` and `category` (section id, empty = Unsorted)
 - `pins[]`: as today plus `feature_ids[]` and `named_note`. A pin is waiting when it has no features or `note != named_note`.
 
-All logic that reads or changes this model (waiting pins, merge of client edits, user-edit protection, markdown generation) lives in plain functions in one module, separate from the HTTP server, so it can be unit-tested.
+All logic that reads or changes this model (waiting pins, merge of client edits, sections, markdown generation) lives in plain functions in one module, separate from the HTTP server, so it can be unit-tested.
 
 ## Server and board
 
 - `board.py open <inspirations_dir>`: topics screen, all topics in the folder, standalone mode.
 - `board.py serve <topic_dir>`: session mode started by the agent, with the "Done" button; exits on "Done" and prints `BOARD_DONE`.
 - Standalone mode exits after about a minute without a heartbeat from any open tab.
-- Board views: topics screen → topic grid (category filter, badges, add by link / upload / paste / drop) → single-item pinning view (as today) and the Direction tab (grouped by category, full editing, category management).
-- Every interactive element has hover and focus states; empty states for no topics, no items, no features; works at phone width for reading.
+- Board views: topics screen → topic board with sections (drag between sections, add / rename / delete sections, badges, add by link / upload / paste / drop) → single-item pinning view with a section picker.
+- Every interactive element has hover and focus states; empty states for no topics, no items, empty sections; works at phone width for reading.
 
 ## Agent flow (SKILL.md)
 
 1. Resolve topic: match existing topic or create one. Resolve location: project `inspirations/`, or library folder from settings (ask once).
 2. Quick add: `board.py add` only, report what was added and how many pins wait. No board, no analysis.
 3. Session: add items, start `serve`, wait for `BOARD_DONE`.
-4. Analyze only waiting pins (crops, overviews), ask at most one question per unclear pin, assign category.
-5. Merge: new features in; untouched fields update; user-edited fields get a "was / proposed / why" question; propose the updated direction for approval.
+4. Analyze only waiting pins (crops, overviews), ask at most one question per unclear pin, assign category (default: the section of the source inspiration); optionally sort unsorted inspirations into sections.
+5. Merge: new features in, existing ones updated; propose the updated direction for approval.
 6. Write `board.json`, regenerate `inspirations.md`, append the round, report: file path, direction, 5-8 key features, one next step.
 
 ## Portability work
@@ -102,8 +102,8 @@ All logic that reads or changes this model (waiting pins, merge of client edits,
 4. Launcher double-click: topics screen lists topics plus the legacy Alpine folder (read-only).
 5. Standalone pinning: counter shows waiting pins, no "Done" button, server stops after closing the tab.
 6. Analysis round: only waiting pins are asked about; features get categories; markdown regenerates with round history.
-7. Edit a feature name and direction on the board, run another round that touches that feature: agent proposes, does not overwrite.
-8. Add, rename and filter by a custom category.
+7. Add sections (suggested and custom), drag inspirations between them, rename a section, delete one (its inspirations go to Unsorted).
+8. Pick a section from the pinning view; the markdown groups inspirations by section.
 9. Grid with 30+ items stays usable; phone-width reading works.
 
 ## Resolved questions

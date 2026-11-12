@@ -23,3 +23,15 @@ Goal: build the spec `.ai/specs/2026-11-11-inspiration-board-persistent.md` in o
 ## Result
 
 Built. Waiting for the owner to walk through the manual test scenarios in the spec on a real topic.
+
+## Revision after the first owner test (same day)
+
+- Restyled the board with the catalog's design tokens and bundled fonts.
+- Removed the Direction tab, feature editing on the board and the conflict mechanism (spec decisions 8-10 revised).
+- Added sections: the topic board is split into sections that the user creates and drags inspirations into; the pinning view has a section picker; the agent can sort unsorted inspirations; the markdown groups inspirations by section.
+- Checks: `pnpm check` passed (75 unit tests, 24 skill tests, 22 browser tests); sections driven in a browser (add from suggestions, add custom, drag, rename, delete, pick in pinning view, phone width, dark mode).
+
+## Approval for the catalog (2026-11-12)
+
+- The owner used the revised board on a test topic and approved the skill for the public catalog.
+- Checks before publishing: `pnpm check` passed (build, types, lint, unit and skill tests, 22 browser tests). A scan of the skill folder found no personal names, paths or private-tool references.

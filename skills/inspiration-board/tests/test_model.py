@@ -1,4 +1,4 @@
-"""Unit tests for the board data model. Run: python3 -m unittest discover -s skills -p 'test_*.py'"""
+"""Unit tests for the board data model. Run: pnpm test:skills"""
 import json
 import os
 import sys
@@ -9,8 +9,8 @@ sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."
 import model  # noqa: E402
 
 
-def board_with_pins():
-    b = model.new_board("Website", "en")
+def board_with_pins(language="en"):
+    b = model.new_board("Website", language)
     item = model.add_item(b, "https://example.com/", ["images/01-a.png", "images/01-b.png"])
     item["pins"] = [{"id": "p1", "kind": "like", "note": "tight headings", "frame": 0, "x": .1, "y": .1, "w": .2, "h": .1,
                      "named_note": None, "feature_ids": []},
@@ -35,20 +35,21 @@ class Basics(unittest.TestCase):
         self.assertEqual(model.slugify("Łódź żółć"), "lodz-zolc")
         self.assertEqual(model.slugify("!!!"), "topic")
 
-    def test_new_board_defaults(self):
+    def test_new_board_starts_without_sections(self):
         b = model.new_board("Logo", None)
-        self.assertEqual(b["language"], "en")
-        self.assertEqual(len(b["categories"]), len(model.DEFAULT_CATEGORIES))
+        self.assertEqual((b["language"], b["categories"]), ("en", []))
         self.assertEqual(model.pending_round(b), 1)
-        self.assertEqual(b["categories"][1]["name"], "Color")
-        self.assertEqual(model.new_board("Logo", "pl")["categories"][1]["name"], "Kolor")
+
+    def test_suggestions_follow_language(self):
+        self.assertEqual(model.suggested_categories("en")[1], {"id": "color", "name": "Color"})
+        self.assertEqual(model.suggested_categories("pl")[1], {"id": "color", "name": "Kolor"})
 
     def test_item_ids_and_frames(self):
         b = model.new_board("X")
         a = model.add_item(b, "s", ["images/a.png"])
         a["removed"] = True
         c = model.add_item(b, "s", ["images/c.png"])
-        self.assertEqual((a["id"], c["id"]), ("i1", "i2"))
+        self.assertEqual((a["id"], c["id"], c["category"]), ("i1", "i2", model.UNSORTED))
         self.assertEqual(model.live_items(b), [c])
         self.assertEqual(model.frames_of({"image": "x.png"}), ["x.png"])
         self.assertEqual(model.item_number("i12"), 12)
@@ -75,171 +76,158 @@ class Waiting(unittest.TestCase):
         self.assertEqual(model.waiting(b), [])
 
 
-class MergeItems(unittest.TestCase):
-    def test_keeps_server_fields_and_unknown_items(self):
+class Sections(unittest.TestCase):
+    def test_add_uses_vocabulary_ids_and_dedupes(self):
+        b = model.new_board("X", "pl")
+        self.assertEqual(model.add_category(b, "Kolor"), "color")
+        self.assertEqual(model.add_category(b, "", "typography"), "typography")
+        self.assertEqual(model.add_category(b, "Patterns"), "patterns")
+        self.assertEqual(model.add_category(b, "patterns"), "patterns")
+        self.assertEqual([c["name"] for c in b["categories"]], ["Kolor", "Typografia", "Patterns"])
+
+    def test_ops_add_rename_delete(self):
+        b, item = board_with_pins()
+        n = model.apply_ops(b, [{"op": "category.add", "name": "Hero"}, {"op": "category.add", "name": " "},
+                                {"op": "category.rename", "id": "hero", "name": "Hero section"},
+                                {"op": "category.rename", "id": "nope", "name": "x"},
+                                {"op": "category.delete", "id": "nope"}, {"op": "unknown"}])
+        self.assertEqual(n, 2)
+        self.assertEqual(b["categories"], [{"id": "hero", "name": "Hero section"}])
+        item["category"] = "hero"
+        model.apply_ops(b, [{"op": "category.delete", "id": "hero"}])
+        self.assertEqual((b["categories"], item["category"]), ([], model.UNSORTED))
+
+    def test_category_name_falls_back(self):
+        b = model.new_board("X", "pl")
+        model.add_category(b, "Mine")
+        self.assertEqual(model.category_name(b, "mine"), "Mine")
+        self.assertEqual(model.category_name(b, "color"), "Kolor")
+        self.assertEqual(model.category_name(b, "weird"), "weird")
+
+
+class MergeClient(unittest.TestCase):
+    def test_keeps_server_fields_unknown_items_and_moves_sections(self):
         b, item = board_with_pins()
         first_round(b)
         model.add_item(b, "added from chat", ["images/02.png"])
-        incoming = {"items": [{"id": "i1", "note": "hi", "removed": False, "pins": [
-            {"id": "p1", "kind": "like", "note": "tight headings", "frame": 9, "x": .1, "y": .1, "w": .2, "h": .1},
-            {"id": "p3", "kind": "weird", "note": "new", "frame": 0, "x": .3, "y": .3},
-            {"id": "bad"}]}, {"id": "nope"}]}
-        model.merge_client(b, incoming)
-        pins = b["items"][0]["pins"]
-        self.assertEqual([p["id"] for p in pins], ["p1", "p3"])
-        self.assertEqual(pins[0]["frame"], 1)                      # clamped to the last frame
-        self.assertEqual(pins[0]["feature_ids"], ["f1"])            # server-only field kept
-        self.assertEqual(pins[0]["named_note"], "tight headings")
-        self.assertEqual(pins[1]["kind"], "like")
-        self.assertIsNone(pins[1]["named_note"])
-        self.assertEqual(len(b["items"]), 2)
+        incoming = {"ops": [{"op": "category.add", "name": "Hero"}],
+                    "items": [{"id": "i1", "note": "hi", "removed": False, "category": "hero", "pins": [
+                        {"id": "p1", "kind": "like", "note": "tight headings", "frame": 9, "x": .1, "y": .1, "w": .2, "h": .1},
+                        {"id": "p3", "kind": "weird", "note": "new", "frame": 0, "x": .3, "y": .3},
+                        {"id": "bad"}]},
+                              {"id": "i2", "category": "missing", "pins": []}, {"id": "nope"}]}
+        self.assertEqual(model.merge_client(b, incoming), 1)
+        i1, i2 = b["items"]
+        self.assertEqual(i1["category"], "hero")              # section created in the same save
+        self.assertEqual(i2["category"], model.UNSORTED)      # unknown section ignored
+        self.assertEqual([p["id"] for p in i1["pins"]], ["p1", "p3"])
+        self.assertEqual(i1["pins"][0]["frame"], 1)           # clamped to the last frame
+        self.assertEqual(i1["pins"][0]["feature_ids"], ["f1"])
+        self.assertEqual(i1["pins"][0]["named_note"], "tight headings")
+        self.assertEqual(i1["pins"][1]["kind"], "like")
+        self.assertIsNone(i1["pins"][1]["named_note"])
 
-
-class UserEdits(unittest.TestCase):
-    def test_feature_set_marks_user_owned(self):
-        b, _ = board_with_pins()
-        first_round(b)
-        n = model.apply_ops(b, [{"op": "feature.set", "id": "f1", "field": "name", "value": "Display tracking"},
-                                {"op": "feature.set", "id": "f1", "field": "name", "value": "Display tracking!"},
-                                {"op": "feature.set", "id": "f1", "field": "list", "value": "nope"},
-                                {"op": "feature.set", "id": "f1", "field": "category", "value": "missing"},
-                                {"op": "feature.set", "id": "zz", "field": "name", "value": "x"},
-                                {"op": "feature.set", "id": "f1", "field": "sources", "value": []}])
-        f = b["features"][0]
-        self.assertEqual(n, 2)
-        self.assertEqual(f["name"], "Display tracking!")
-        self.assertEqual(f["user_edited"], ["name"])
-
-    def test_feature_add_and_direction(self):
-        b = model.new_board("X")
-        model.apply_ops(b, [{"op": "feature.add", "client_id": "c1", "feature": {"name": "Grain", "category": "bad", "list": "x"}},
-                            {"op": "feature.add", "feature": {"name": "Dots", "category": "color", "list": "avoid"}},
-                            {"op": "direction.set", "text": "Mine"},
-                            {"op": "direction.set", "text": 3}])
-        f1, f2 = b["features"]
-        self.assertEqual((f1["id"], f1["category"], f1["list"], f1["client_id"]), ("f1", "typography", "take", "c1"))
-        self.assertEqual((f2["id"], f2["category"], f2["list"]), ("f2", "color", "avoid"))
-        self.assertEqual(set(f1["user_edited"]), set(model.FEATURE_FIELDS))
-        self.assertEqual(b["direction"], {"text": "Mine", "user_edited": True, "updated_round": 0})
-
-    def test_categories(self):
-        b = model.new_board("X")
-        model.apply_ops(b, [{"op": "category.add", "name": "Patterns"}, {"op": "category.add", "name": "Patterns"},
-                            {"op": "category.add", "name": "  "}, {"op": "category.rename", "id": "patterns", "name": "Dot patterns"},
-                            {"op": "feature.add", "feature": {"name": "a", "category": "color"}},
-                            {"op": "category.delete", "id": "color"}, {"op": "category.delete", "id": "patterns-2"}])
-        ids = [c["id"] for c in b["categories"]]
-        self.assertIn("color", ids)                    # used -> not deleted
-        self.assertIn("patterns", ids)
-        self.assertNotIn("patterns-2", ids)
-        self.assertEqual(next(c for c in b["categories"] if c["id"] == "patterns")["name"], "Dot patterns")
-
-    def test_last_category_is_not_deleted(self):
-        b = model.new_board("X")
-        b["categories"] = b["categories"][:1]
-        self.assertEqual(model.apply_ops(b, [{"op": "category.delete", "id": "typography"}]), 0)
+    def test_item_without_category_field_keeps_its_section(self):
+        b, item = board_with_pins()
+        model.add_category(b, "Hero")
+        item["category"] = "hero"
+        model.merge_items(b, [{"id": "i1", "pins": []}])
+        self.assertEqual(item["category"], "hero")
 
 
 class Rounds(unittest.TestCase):
-    def test_first_round_creates_features_and_links_pins(self):
+    def test_first_round_creates_features_section_and_links_pins(self):
         b, item = board_with_pins()
         res = first_round(b)
         self.assertEqual(res["added"], ["f1"])
+        self.assertEqual([c["id"] for c in b["categories"]], ["typography"])   # created from the vocabulary
         self.assertEqual(item["pins"][0]["feature_ids"], ["f1"])
         self.assertEqual(item["pins"][1]["feature_ids"], [])
         self.assertEqual(b["direction"]["text"], "Calm editorial site.")
         r = b["rounds"][0]
         self.assertEqual((r["n"], r["focus"], r["named"], r["features_added"], r["items_added"]), (1, "typography", 2, 1, 1))
 
-    def test_user_edits_win_and_become_conflicts(self):
+    def test_updates_existing_feature_directly(self):
         b, _ = board_with_pins()
         first_round(b)
-        model.apply_ops(b, [{"op": "feature.set", "id": "f1", "field": "name", "value": "Mine"},
-                            {"op": "direction.set", "text": "My direction"}])
-        res = model.apply_round(b, {
-            "features": [{"id": "f1", "name": "Agent name", "scope": "display only", "category": "unknown",
-                          "sources": [{"item": "i1", "pin": "p1"}, {"item": "i1", "pin": None}], "why": "new pin"}],
-            "direction": "Agent direction", "direction_why": "more pins"})
+        res = model.apply_round(b, {"features": [{"id": "f1", "name": "Display tracking", "list": "nope", "status": "x",
+                                                  "category": "custom-area",
+                                                  "sources": [{"item": "i1", "pin": "p1"}, {"item": "i1", "pin": None}]},
+                                                 {"id": "f1", "scope": "headings"}],
+                                    "direction": "New direction"})
         f = b["features"][0]
-        self.assertEqual(f["name"], "Mine")                 # user-owned, not overwritten
-        self.assertEqual(f["scope"], "display only")        # untouched field updated
-        self.assertEqual(f["category"], "typography")       # invalid value ignored
+        self.assertEqual((f["name"], f["list"], f["status"], f["category"]), ("Display tracking", "take", "active", "custom-area"))
         self.assertEqual(len(f["sources"]), 2)
         self.assertEqual(res["changed"], ["f1"])
-        self.assertEqual(b["direction"]["text"], "My direction")
-        self.assertEqual([(c["field"], c["proposed"], c["why"]) for c in res["conflicts"]],
-                         [("name", "Agent name", "new pin"), ("direction", "Agent direction", "more pins")])
-        self.assertEqual(b["rounds"][-1]["conflicts"], 2)
+        self.assertEqual(b["direction"], {"text": "New direction", "updated_round": 2})
 
-    def test_new_feature_with_new_category_and_reviewed_note(self):
+    def test_feature_category_defaults_to_source_section(self):
+        b, item = board_with_pins()
+        model.add_category(b, "Hero")
+        item["category"] = "hero"
+        model.apply_round(b, {"features": [{"name": "A", "sources": [{"item": "i1", "pin": "p1"}]},
+                                           {"name": "B", "list": "avoid", "status": "dropped"}]})
+        self.assertEqual(b["features"][0]["category"], "hero")
+        self.assertEqual((b["features"][1]["category"], b["features"][1]["list"], b["features"][1]["status"]),
+                         (model.UNSORTED, "avoid", "dropped"))
+
+    def test_sort_only_unsorted_items_and_reviewed_note(self):
         b, item = board_with_pins()
         item["note"] = "vibe"
-        model.apply_round(b, {"categories": [{"id": "patterns", "name": "Patterns"}, {"id": "color"}],
-                              "features": [{"name": "Dots", "category": "patterns", "sources": [{"item": "i1", "pin": None}]},
-                                           {"name": "Bad cat", "category": "nope"}],
-                              "reviewed": [{"item": "i1", "pin": None}, {"item": "zz", "pin": None}]})
-        self.assertEqual(b["features"][0]["category"], "patterns")
-        self.assertEqual(b["features"][1]["category"], "typography")
+        other = model.add_item(b, "x", ["images/x.png"])
+        model.add_category(b, "Hero")
+        other["category"] = "hero"
+        res = model.apply_round(b, {"categories": [{"name": "Patterns"}, {}],
+                                    "sort": [{"item": "i1", "category": "color"}, {"item": "i2", "category": "color"},
+                                             {"item": "zz", "category": "color"}, {"item": "i1"}],
+                                    "reviewed": [{"item": "i1", "pin": None}, {"item": "zz", "pin": None}]})
+        self.assertEqual(res["sorted"], ["i1"])
+        self.assertEqual((item["category"], other["category"]), ("color", "hero"))
+        self.assertEqual([c["id"] for c in b["categories"]], ["hero", "patterns", "color"])
         self.assertEqual(item["named_note"], "vibe")
-        self.assertEqual(sum(1 for c in b["categories"] if c["id"] == "color"), 1)
 
-    def test_unchanged_direction_is_no_conflict(self):
+    def test_unchanged_direction_keeps_round(self):
         b, _ = board_with_pins()
         first_round(b)
-        model.apply_ops(b, [{"op": "direction.set", "text": "Calm editorial site."}])
-        res = model.apply_round(b, {"direction": "Calm editorial site."})
-        self.assertEqual(res["conflicts"], [])
-
-    def test_accept_returns_field_to_agent(self):
-        b, _ = board_with_pins()
-        first_round(b)
-        model.apply_ops(b, [{"op": "feature.set", "id": "f1", "field": "name", "value": "Mine"},
-                            {"op": "direction.set", "text": "Mine"}])
-        done = model.apply_accept(b, [{"feature": "f1", "field": "name", "value": "Agent"},
-                                      {"field": "direction", "value": "Agent dir"},
-                                      {"feature": "f1", "field": "list", "value": "bad"},
-                                      {"feature": "zz", "field": "name", "value": "x"}])
-        self.assertEqual(done, 2)
-        self.assertEqual(b["features"][0]["name"], "Agent")
-        self.assertEqual(b["features"][0]["user_edited"], [])
-        self.assertEqual(b["direction"], {"text": "Agent dir", "user_edited": False, "updated_round": 1})
-
-    def test_accept_field_not_user_owned(self):
-        b, _ = board_with_pins()
-        first_round(b)
-        self.assertEqual(model.apply_accept(b, [{"feature": "f1", "field": "scope", "value": "all"}]), 1)
+        model.apply_round(b, {"direction": "Calm editorial site."})
+        self.assertEqual(b["direction"]["updated_round"], 1)
 
 
 class Markdown(unittest.TestCase):
-    def test_render_full(self):
-        b, item = board_with_pins()
-        b["language"] = "pl"
+    def test_render_with_sections(self):
+        b, item = board_with_pins("pl")
         item["note"] = "spokój"
         first_round(b)
-        model.apply_ops(b, [{"op": "feature.add", "feature": {"name": "Gone", "category": "color"}},
-                            {"op": "feature.set", "id": "f2", "field": "status", "value": "dropped"}])
+        model.add_item(b, "file: b.png", ["images/b.png"])
+        item["category"] = "typography"
+        model.apply_round(b, {"features": [{"name": "Gone", "category": "color", "status": "dropped"},
+                                           {"name": "Loose", "sources": [{"item": "i2", "pin": None}]}]})
         item["pins"][1]["note"] = "too busy | loud"
         md = model.render_markdown(b, exists=lambda rel: rel in ("images/overview/i1-1-1.jpg", "images/crops/i1-p1.png"))
         self.assertIn("# Inspiracje · Website", md)
         self.assertIn("## Kierunek\nCalm editorial site.", md)
-        self.assertIn("### Typography", md)  # board created in en, language switched later
+        self.assertIn("### Typografia", md)
         self.assertIn("| Tight tracking | letters close | headings | #1 pin 1 |", md)
+        self.assertIn("### Inne", md)                                   # feature without a section
         self.assertIn("## Czego unikam\nJeszcze nic.", md)
+        self.assertIn("### Bez sekcji\n\n#### #2 · file: b.png", md)
+        self.assertIn("#### #1 · example.com", md)
         self.assertIn("![](images/overview/i1-1-1.jpg)", md)
         self.assertIn("1. 👍 **Tight tracking** - tight headings", md)
         self.assertIn("   ![](images/crops/i1-p1.png)", md)
         self.assertIn("2. 👎 too busy | loud", md)
         self.assertIn("Ogólnie: spokój", md)
-        self.assertIn("## Odrzucone\n- Gone (Color)", md)
+        self.assertIn("## Odrzucone\n- Gone (Kolor)", md)
         self.assertIn("runda 1 · typography · +1 nowe, 0 zmienione - first", md)
         self.assertIn("2 czeka na nazwanie", md)  # overall note + edited pin 2
 
-    def test_render_empty_and_file_source(self):
+    def test_render_without_sections(self):
         b = model.new_board("Empty", "xx")
         model.add_item(b, "file: a.png", ["images/a.png"])
         md = model.render_markdown(b)
         self.assertIn("## Direction\nNothing yet.", md)
         self.assertIn("### #1 · file: a.png", md)
+        self.assertNotIn("Unsorted", md)
         self.assertNotIn("Round history", md)
 
     def test_source_labels(self):

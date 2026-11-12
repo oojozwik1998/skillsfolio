@@ -18,7 +18,6 @@ Commands (all print JSON unless noted):
   recapture <topic_dir> <item_id> [...]
   status    <topic_dir>                     items, rounds, waiting pins
   round     <topic_dir> <payload.json>      apply an analysis round, regenerate markdown
-  accept    <topic_dir> <accepted.json>     apply proposals the user accepted
   render    <topic_dir>                     regenerate inspirations.md
   serve     <topic_dir>                     board for an agent session; exits on "Done"
   open      <inspirations>                  board without the agent; exits when the tab closes
@@ -190,6 +189,7 @@ class App:
         board = model.load_board(d)
         board["waiting"] = model.waiting(board)
         board["pending_round"] = model.pending_round(board)
+        board["suggested"] = model.suggested_categories(board.get("language"))
         return board
 
 
@@ -380,10 +380,9 @@ def main():
     for name in ("status", "render"):
         s = sub.add_parser(name)
         s.add_argument("dir")
-    for name in ("round", "accept"):
-        s = sub.add_parser(name)
-        s.add_argument("dir")
-        s.add_argument("payload")
+    s = sub.add_parser("round")
+    s.add_argument("dir")
+    s.add_argument("payload")
     s = sub.add_parser("serve")
     s.add_argument("dir")
     s.add_argument("--port", type=int, default=4777)
@@ -474,14 +473,11 @@ def main():
                     "waiting": model.waiting(board)})
     if a.cmd == "render":
         return out({"ok": True, "file": render(d)})
-    if a.cmd in ("round", "accept"):
+    if a.cmd == "round":
         payload = model.load_json(a.payload, {})
         with LOCK:
             board = model.load_board(d)
-            if a.cmd == "round":
-                res = model.apply_round(board, payload)
-            else:
-                res = {"accepted": model.apply_accept(board, payload.get("accept", []))}
+            res = model.apply_round(board, payload)
             model.save_board(d, board)
         res["file"] = render(d)
         return out(res)

@@ -2,13 +2,10 @@
 Stdlib only, Python 3.9+. No Pillow, no HTTP - so it can be unit-tested.
 
 A topic lives in <inspirations_dir>/<slug>/board.json. A board holds the
-inspirations (items with frames and pins), the named features, the direction
-text, categories and the round history.
-
-Ownership rule: fields the user edited on the board are listed in
-feature["user_edited"] (or direction["user_edited"]). An analysis round never
-overwrites them; it returns a conflict ("was / proposed / why") that the agent
-shows to the user, and only `apply_accept` writes it.
+inspirations (items with frames and pins), sections (categories) that the
+user sorts inspirations into, the features the agent named, the direction
+text and the round history. The user edits items, pins and sections on the
+board; features and the direction are written only by analysis rounds.
 """
 import datetime
 import json
@@ -35,6 +32,7 @@ CATEGORY_NAMES = {  # default category names per board language; the board UI it
            "image": "Obraz i ilustracja", "ui": "Web / UI", "motion": "Ruch", "material": "Materiał i druk"},
 }
 FEATURE_FIELDS = ("name", "plain", "scope", "category", "list", "status")
+UNSORTED = ""  # item["category"] for inspirations not in any section
 LISTS = ("take", "avoid")
 STATUSES = ("active", "dropped")
 
@@ -59,13 +57,18 @@ def new_board(topic, language="en"):
         "topic": topic,
         "language": language or "en",
         "created": today(),
-        "categories": [{"id": cid, "name": CATEGORY_NAMES.get(language, {}).get(cid, name), "custom": False}
-                       for cid, name in DEFAULT_CATEGORIES],
-        "direction": {"text": "", "user_edited": False, "updated_round": 0},
+        "categories": [],
+        "direction": {"text": "", "updated_round": 0},
         "features": [],
         "rounds": [],
         "items": [],
     }
+
+
+def suggested_categories(language):
+    """The skill vocabulary, offered as one-click sections on the board."""
+    names = CATEGORY_NAMES.get(language, {})
+    return [{"id": cid, "name": names.get(cid, name)} for cid, name in DEFAULT_CATEGORIES]
 
 
 def frames_of(item):
@@ -222,7 +225,7 @@ def next_item_id(board):
 
 def add_item(board, source, frames, w=0, h=0):
     item = {"id": next_item_id(board), "source": source, "image": frames[0], "frames": list(frames),
-            "w": w, "h": h, "note": "", "named_note": "", "removed": False,
+            "w": w, "h": h, "note": "", "named_note": "", "removed": False, "category": UNSORTED,
             "added_round": pending_round(board), "pins": []}
     board["items"].append(item)
     return item
@@ -248,6 +251,8 @@ def merge_items(board, incoming_items):
             continue
         cur["note"] = str(inc.get("note", ""))
         cur["removed"] = bool(inc.get("removed", False))
+        cat = inc.get("category", cur.get("category", UNSORTED))
+        cur["category"] = cat if cat in _category_ids(board) else UNSORTED
         old_pins = {p["id"]: p for p in cur.get("pins", [])}
         pins = []
         for p in inc.get("pins", []):
@@ -281,89 +286,67 @@ def waiting(board):
     return out
 
 
-# ---------------- user edits from the board (Direction tab) ----------------
+# ---------------- sections (categories) ----------------
 def _category_ids(board):
     return {c["id"] for c in board["categories"]}
 
 
-def next_feature_id(board):
-    nums = [int(f["id"][1:]) for f in board["features"] if re.match(r"^f\d+$", f["id"])]
-    return "f%d" % (max(nums or [0]) + 1)
+def category_name(board, cid):
+    for c in board["categories"]:
+        if c["id"] == cid:
+            return c["name"]
+    return next((c["name"] for c in suggested_categories(board.get("language")) if c["id"] == cid), cid)
 
 
-def _valid_value(board, field, value):
-    if field == "list":
-        return value in LISTS
-    if field == "status":
-        return value in STATUSES
-    if field == "category":
-        return value in _category_ids(board)
-    return isinstance(value, str)
+def add_category(board, name, cid=None):
+    """Add a section. A name or id from the vocabulary reuses its id. Returns the id."""
+    name = str(name or "").strip()
+    for sug in suggested_categories(board.get("language")):
+        if cid == sug["id"] or slugify(name, 32) in (sug["id"], slugify(sug["name"], 32)):
+            cid, name = sug["id"], name or sug["name"]
+            break
+    cid = cid or slugify(name, 32)
+    if cid in _category_ids(board):
+        return cid
+    base, k = cid, 2
+    while cid in _category_ids(board):
+        cid, k = "%s-%d" % (base, k), k + 1
+    board["categories"].append({"id": cid, "name": name or cid})
+    return cid
 
 
 def apply_ops(board, ops):
-    """Edits made by the user on the board. Each changed field becomes user-owned.
-    Returns the number of ops applied; invalid ops are skipped."""
+    """Section edits from the board. Returns the number of ops applied; invalid ops are skipped."""
     applied = 0
-    feats = {f["id"]: f for f in board["features"]}
     for op in ops or []:
         kind = op.get("op")
-        if kind == "feature.set":
-            f, field, value = feats.get(op.get("id")), op.get("field"), op.get("value")
-            if not f or field not in FEATURE_FIELDS or not _valid_value(board, field, value):
-                continue
-            f[field] = value
-            if field not in f["user_edited"]:
-                f["user_edited"].append(field)
-            applied += 1
-        elif kind == "feature.add":
-            src = op.get("feature") or {}
-            f = {"id": next_feature_id(board), "name": str(src.get("name", "")), "plain": str(src.get("plain", "")),
-                 "scope": str(src.get("scope", "")),
-                 "category": src.get("category") if src.get("category") in _category_ids(board) else board["categories"][0]["id"],
-                 "list": src.get("list") if src.get("list") in LISTS else "take", "status": "active",
-                 "sources": [], "user_edited": list(FEATURE_FIELDS),
-                 "added_round": len(board["rounds"]), "updated_round": len(board["rounds"])}
-            board["features"].append(f)
-            feats[f["id"]] = f
-            if op.get("client_id"):
-                f["client_id"] = str(op["client_id"])
-            applied += 1
-        elif kind == "direction.set" and isinstance(op.get("text"), str):
-            board["direction"]["text"] = op["text"]
-            board["direction"]["user_edited"] = True
-            applied += 1
-        elif kind == "category.add" and str(op.get("name", "")).strip():
-            cid = slugify(op["name"], 32)
-            base, k = cid, 2
-            while cid in _category_ids(board):
-                cid, k = "%s-%d" % (base, k), k + 1
-            board["categories"].append({"id": cid, "name": op["name"].strip(), "custom": True})
+        if kind == "category.add" and (str(op.get("name", "")).strip() or op.get("id")):
+            add_category(board, op.get("name"), op.get("id"))
             applied += 1
         elif kind == "category.rename" and str(op.get("name", "")).strip():
             for c in board["categories"]:
                 if c["id"] == op.get("id"):
                     c["name"] = op["name"].strip()
                     applied += 1
-        elif kind == "category.delete":
-            used = any(f["category"] == op.get("id") for f in board["features"])
-            before = len(board["categories"])
-            if not used and before > 1:
-                board["categories"] = [c for c in board["categories"] if c["id"] != op.get("id")]
-                applied += before - len(board["categories"])
+        elif kind == "category.delete" and op.get("id") in _category_ids(board):
+            board["categories"] = [c for c in board["categories"] if c["id"] != op["id"]]
+            for item in board["items"]:
+                if item.get("category") == op["id"]:
+                    item["category"] = UNSORTED
+            applied += 1
     return applied
 
 
 def merge_client(board, incoming):
+    applied = apply_ops(board, incoming.get("ops"))  # sections first, so items can move into new ones
     merge_items(board, incoming.get("items"))
-    return apply_ops(board, incoming.get("ops"))
+    return applied
 
 
 # ---------------- analysis round (written by the agent) ----------------
-def _ensure_categories(board, cats):
-    for c in cats or []:
-        if c.get("id") and c["id"] not in _category_ids(board):
-            board["categories"].append({"id": c["id"], "name": c.get("name") or c["id"], "custom": True})
+def next_feature_id(board):
+    nums = [int(f["id"][1:]) for f in board["features"] if re.match(r"^f\d+$", f["id"])]
+    return "f%d" % (max(nums or [0]) + 1)
 
 
 def _merge_sources(old, new):
@@ -376,29 +359,49 @@ def _merge_sources(old, new):
     return old
 
 
+def _feature_category(board, pf):
+    """Agent's category, else the section of the first source inspiration."""
+    cat = pf.get("category")
+    if not cat:
+        by_item = {i["id"]: i for i in board["items"]}
+        cat = next((by_item[s["item"]].get("category") for s in pf.get("sources", [])
+                    if s["item"] in by_item and by_item[s["item"]].get("category")), UNSORTED)
+    if cat and cat not in _category_ids(board):
+        cat = add_category(board, category_name(board, cat), cat)
+    return cat
+
+
 def apply_round(board, payload):
     """Apply the agent's analysis. Payload:
       focus, summary            - round description
-      categories: [{id, name}]  - new categories, optional
-      features: [{id? , name, plain, scope, category, list, status?, sources: [{item, pin|null}], why?}]
+      categories: [{id, name}]  - new sections, optional
+      sort: [{item, category}]  - put unsorted inspirations into sections (sorted ones are left alone)
+      features: [{id?, name, plain, scope, category?, list, status?, sources: [{item, pin|null}]}]
       reviewed: [{item, pin|null}] - pins / overall notes named this round (also those giving no feature)
-      direction, direction_why  - proposed direction text, optional
-    Returns {"round": n, "conflicts": [...], "added": [...], "changed": [...]}.
+      direction                 - direction text, optional
+    Returns {"round": n, "added": [...], "changed": [...], "sorted": [...]}.
     """
     n = len(board["rounds"]) + 1
-    _ensure_categories(board, payload.get("categories"))
+    for c in payload.get("categories") or []:
+        if c.get("id") or c.get("name"):
+            add_category(board, c.get("name"), c.get("id"))
+    by_item = {i["id"]: i for i in board["items"]}
+    sorted_items = []
+    for srt in payload.get("sort") or []:
+        item = by_item.get(srt.get("item"))
+        if item and not item.get("category") and srt.get("category"):
+            item["category"] = add_category(board, category_name(board, srt["category"]), srt["category"])
+            sorted_items.append(item["id"])
     feats = {f["id"]: f for f in board["features"]}
-    conflicts, added, changed = [], [], []
+    added, changed = [], []
     for pf in payload.get("features", []):
         cur = feats.get(pf.get("id"))
         if cur is None:
             f = {"id": next_feature_id(board), "name": pf.get("name", ""), "plain": pf.get("plain", ""),
-                 "scope": pf.get("scope", ""), "category": pf.get("category", board["categories"][0]["id"]),
-                 "list": pf.get("list", "take"), "status": pf.get("status", "active"),
-                 "sources": _merge_sources([], pf.get("sources")), "user_edited": [],
-                 "added_round": n, "updated_round": n}
-            if f["category"] not in _category_ids(board):
-                f["category"] = board["categories"][0]["id"]
+                 "scope": pf.get("scope", ""), "category": _feature_category(board, pf),
+                 "list": pf.get("list") if pf.get("list") in LISTS else "take",
+                 "status": pf.get("status") if pf.get("status") in STATUSES else "active",
+                 "sources": _merge_sources([], pf.get("sources")), "added_round": n, "updated_round": n}
             board["features"].append(f)
             feats[f["id"]] = f
             added.append(f["id"])
@@ -406,26 +409,21 @@ def apply_round(board, payload):
         _merge_sources(cur["sources"], pf.get("sources"))
         touched = False
         for field in FEATURE_FIELDS:
-            if field not in pf or pf[field] == cur.get(field) or not _valid_value(board, field, pf[field]):
+            if field not in pf or pf[field] == cur.get(field):
                 continue
-            if field in cur["user_edited"]:
-                conflicts.append({"feature": cur["id"], "field": field, "was": cur.get(field),
-                                  "proposed": pf[field], "why": pf.get("why", "")})
-            else:
-                cur[field] = pf[field]
-                touched = True
+            value = pf[field]
+            if field == "category":
+                value = _feature_category(board, {"category": value})
+            elif (field == "list" and value not in LISTS) or (field == "status" and value not in STATUSES):
+                continue
+            cur[field] = value
+            touched = True
         if touched:
             cur["updated_round"] = n
             changed.append(cur["id"])
     if payload.get("direction") is not None and payload["direction"] != board["direction"]["text"]:
-        if board["direction"]["user_edited"]:
-            conflicts.append({"feature": None, "field": "direction", "was": board["direction"]["text"],
-                              "proposed": payload["direction"], "why": payload.get("direction_why", "")})
-        else:
-            board["direction"]["text"] = payload["direction"]
-            board["direction"]["updated_round"] = n
-    # mark what was named, and link pins to their features
-    by_item = {i["id"]: i for i in board["items"]}
+        board["direction"]["text"] = payload["direction"]
+        board["direction"]["updated_round"] = n
     for r in payload.get("reviewed", []):
         item = by_item.get(r.get("item"))
         if not item:
@@ -439,31 +437,11 @@ def apply_round(board, payload):
                 p["feature_ids"] = [f["id"] for f in board["features"]
                                     if {"item": item["id"], "pin": p["id"]} in f["sources"]]
     board["rounds"].append({"n": n, "date": payload.get("date") or today(), "focus": payload.get("focus", ""),
-                            "summary": payload.get("summary", ""), "items_added":
-                            sum(1 for i in live_items(board) if i.get("added_round") == n),
+                            "summary": payload.get("summary", ""),
+                            "items_added": sum(1 for i in live_items(board) if i.get("added_round") == n),
                             "named": len(payload.get("reviewed", [])), "features_added": len(added),
-                            "features_changed": len(changed), "conflicts": len(conflicts)})
-    return {"round": n, "conflicts": conflicts, "added": added, "changed": changed}
-
-
-def apply_accept(board, accepted):
-    """Write proposals the user accepted. The field goes back to the agent (no longer user-owned)."""
-    feats = {f["id"]: f for f in board["features"]}
-    done = 0
-    for a in accepted or []:
-        if a.get("field") == "direction":
-            board["direction"]["text"] = a.get("value", "")
-            board["direction"]["user_edited"] = False
-            done += 1
-            continue
-        f = feats.get(a.get("feature"))
-        if not f or a.get("field") not in FEATURE_FIELDS or not _valid_value(board, a["field"], a.get("value")):
-            continue
-        f[a["field"]] = a["value"]
-        if a["field"] in f["user_edited"]:
-            f["user_edited"].remove(a["field"])
-        done += 1
-    return done
+                            "features_changed": len(changed)})
+    return {"round": n, "added": added, "changed": changed, "sorted": sorted_items}
 
 
 # ---------------- markdown ----------------
@@ -472,12 +450,14 @@ LABELS = {
            "items": "Inspirations", "history": "Round history", "dropped": "Dropped", "feature": "Feature",
            "plain": "In plain words", "scope": "Where / scope", "source": "Source", "overall": "Overall",
            "inspirations": "inspirations", "pins": "pins", "waiting": "waiting to be named", "round": "round",
-           "none": "Nothing yet.", "pin": "pin", "added": "added", "changed": "changed"},
+           "none": "Nothing yet.", "pin": "pin", "added": "added", "changed": "changed", "unsorted": "Unsorted",
+           "other": "Other"},
     "pl": {"title": "Inspiracje", "direction": "Kierunek", "take": "Co biorę", "avoid": "Czego unikam",
            "items": "Inspiracje", "history": "Historia rund", "dropped": "Odrzucone", "feature": "Cecha",
            "plain": "Po ludzku", "scope": "Gdzie / zakres użycia", "source": "Źródło", "overall": "Ogólnie",
            "inspirations": "inspiracji", "pins": "zaznaczeń", "waiting": "czeka na nazwanie", "round": "runda",
-           "none": "Jeszcze nic.", "pin": "pin", "added": "nowe", "changed": "zmienione"},
+           "none": "Jeszcze nic.", "pin": "pin", "added": "nowe", "changed": "zmienione", "unsorted": "Bez sekcji",
+           "other": "Inne"},
 }
 
 
@@ -496,8 +476,12 @@ def source_label(board, src, lab):
 
 def render_markdown(board, exists=lambda rel: False):
     lab = LABELS.get(board.get("language"), LABELS["en"])
-    cats = {c["id"]: c["name"] for c in board["categories"]}
     order = [c["id"] for c in board["categories"]]
+    order += sorted({f["category"] for f in board["features"]} - set(order) - {UNSORTED}) + [UNSORTED]
+
+    def cname(cid, empty):
+        return category_name(board, cid) if cid else empty
+
     items = live_items(board)
     n_pins = sum(len(i["pins"]) for i in items)
     out = ["# %s · %s" % (lab["title"], board["topic"]), ""]
@@ -519,7 +503,7 @@ def render_markdown(board, exists=lambda rel: False):
             group = [f for f in feats if f["category"] == cid]
             if not group:
                 continue
-            out += ["### " + cats[cid], "",
+            out += ["### " + cname(cid, lab["other"]), "",
                     "| %s | %s | %s | %s |" % (lab["feature"], lab["plain"], lab["scope"], lab["source"]),
                     "|---|---|---|---|"]
             for f in group:
@@ -529,11 +513,24 @@ def render_markdown(board, exists=lambda rel: False):
 
     out.append("## " + lab["items"])
     names = {f["id"]: f["name"] for f in board["features"]}
-    for item in items:
+    sections = [c["id"] for c in board["categories"]] + [UNSORTED]
+    grouped = [(cid, [i for i in items if (i.get("category") or UNSORTED) == cid]) for cid in sections]
+    show_sections = bool(board["categories"])
+    for cid, group in grouped:
+        if not group:
+            continue
+        if show_sections:
+            out += ["", "### " + cname(cid, lab["unsorted"])]
+        _render_items(out, group, names, lab, exists, "####" if show_sections else "###")
+    return _render_tail(out, board, lab, cname)
+
+
+def _render_items(out, group, names, lab, exists, h):
+    for item in group:
         num = item_number(item["id"])
         src = item["source"]
         title = re.sub(r"^https?://(www\.)?", "", src).split("/")[0] if src.startswith("http") else src
-        out += ["", "### #%d · %s" % (num, title)]
+        out += ["", "%s #%d · %s" % (h, num, title)]
         if src.startswith("http"):
             out.append(src)
         if (item.get("note") or "").strip():
@@ -551,10 +548,13 @@ def render_markdown(board, exists=lambda rel: False):
             if exists(crop):
                 out.append("   ![](%s)" % crop)
 
+
+
+def _render_tail(out, board, lab, cname):
     dropped = [f for f in board["features"] if f["status"] == "dropped"]
     if dropped:
         out += ["", "## " + lab["dropped"]]
-        out += ["- %s (%s)" % (f["name"], cats.get(f["category"], f["category"])) for f in dropped]
+        out += ["- %s (%s)" % (f["name"], cname(f["category"], lab["other"])) for f in dropped]
     if board["rounds"]:
         out += ["", "## " + lab["history"]]
         for r in reversed(board["rounds"]):

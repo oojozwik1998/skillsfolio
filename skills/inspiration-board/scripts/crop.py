@@ -10,7 +10,7 @@ By default only what waits to be named (new or edited pins and overall notes).
 Writes  images/crops/<item>-<pin>.png        (pin + margin, upscaled if tiny)
         images/overview/<item>-<frame>.jpg   (one tile per screen, pins drawn)
 Prints a JSON manifest: waiting pins with notes and crop paths, overviews,
-and the existing features (with the fields the user owns) for the merge step.
+the sections, and the existing features for the merge step.
 """
 import json
 import os
@@ -67,8 +67,8 @@ def main(d, everything=False):
     wait = {(w["item"], w["pin"]) for w in model.waiting(board)}
     manifest = {"topic": board["topic"], "language": board["language"], "round": model.pending_round(board),
                 "categories": board["categories"], "direction": board["direction"],
-                "features": [{k: f[k] for k in ("id", "name", "plain", "scope", "category", "list", "status",
-                                                "user_edited")} for f in board["features"]],
+                "features": [{k: f[k] for k in ("id", "name", "plain", "scope", "category", "list", "status")}
+                             for f in board["features"]],
                 "items": []}
     for item in model.live_items(board):
         todo = [p for p in item["pins"] if everything or (item["id"], p["id"]) in wait]
@@ -80,6 +80,7 @@ def main(d, everything=False):
         ovs = [im.copy() for im in ims]
         draws = [ImageDraw.Draw(o) for o in ovs]
         entry = {"id": item["id"], "number": model.item_number(item["id"]), "source": item["source"],
+                 "section": item.get("category") or None,
                  "frames": len(frames), "note": item.get("note", ""), "note_waiting": note_todo, "pins": []}
         for n, p in enumerate(item["pins"], 1):
             k = min(max(int(p.get("frame", 0)), 0), len(ims) - 1)
