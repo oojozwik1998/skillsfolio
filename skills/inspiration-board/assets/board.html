@@ -1,0 +1,904 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inspiration boards</title>
+<style>
+  /* Fonts ship with the skill (SIL Open Font License) so the board works offline. */
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url(/fonts/poppins-latin-400-normal.woff2) format('woff2');
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: 'Poppins'; font-style: normal; font-weight: 400; font-display: swap;
+    src: url(/fonts/poppins-latin-ext-400-normal.woff2) format('woff2');
+    unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+  @font-face { font-family: 'Mona Sans'; font-style: normal; font-weight: 200 900; font-display: swap;
+    src: url(/fonts/mona-sans-latin-wght-normal.woff2) format('woff2-variations');
+    unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+  @font-face { font-family: 'Mona Sans'; font-style: normal; font-weight: 200 900; font-display: swap;
+    src: url(/fonts/mona-sans-latin-ext-wght-normal.woff2) format('woff2-variations');
+    unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+
+  /* designskills tokens (design.md), light and dark defined together */
+  :root {
+    --surface-canvas: oklch(0.987 0.002 197.1); --surface-default: oklch(1 0 0); --surface-subtle: oklch(0.963 0.002 197.1);
+    --surface-subtlest: oklch(0.925 0.005 214.3); --surface-hovered: oklch(0.963 0.002 197.1); --surface-selected: oklch(0.98 0.013 234);
+    --surface-inverted: oklch(0.218 0.008 223.9);
+    --text-default: oklch(0.148 0.004 228.8); --text-subtle: oklch(0.45 0.017 213.2); --text-subtlest: oklch(0.56 0.021 213.5);
+    --text-placeholder: oklch(0.723 0.014 214.4); --text-inverted: oklch(1 0 0);
+    --border-default: color-mix(in srgb, oklch(0.148 0.004 228.8) 20%, transparent);
+    --border-subtle: color-mix(in srgb, oklch(0.148 0.004 228.8) 7%, transparent);
+    --border-selected: oklch(0.6 0.183 255); --border-focus: oklch(0.55 0.179 257);
+    --action-secondary-background: oklch(0.987 0.002 197.1); --action-secondary-hovered: oklch(0.963 0.002 197.1);
+    --action-secondary-pressed: oklch(0.925 0.005 214.3); --action-secondary-border: oklch(0.925 0.005 214.3); --action-secondary-text: oklch(0.148 0.004 228.8);
+    --warning-background: oklch(0.901 0.076 70.697); --warning-border: oklch(0.75 0.183 55.934); --warning-text: oklch(0.266 0.079 36.259);
+    --info-background: oklch(0.882 0.059 254.128); --info-text: oklch(0.282 0.091 267.935);
+    --success-background: oklch(0.925 0.084 155.995); --success-text: oklch(0.266 0.065 152.934);
+    --danger-background: oklch(0.885 0.062 18.334); --danger-text: oklch(0.258 0.092 26.042);
+    /* Pins sit on top of images, so they keep one strong color in both themes. */
+    --pin-like: oklch(0.527 0.154 150.069); --pin-dislike: oklch(0.505 0.213 27.518);
+    --shadow-5: 0px 20px 25px -5px color-mix(in srgb, oklch(0.148 0.004 228.8) 10%, transparent), 0px 8px 10px -6px color-mix(in srgb, oklch(0.148 0.004 228.8) 10%, transparent);
+    --font-body: 'Poppins', ui-sans-serif, system-ui, sans-serif; --font-display: 'Mona Sans', 'Poppins', sans-serif;
+    --font-code: ui-monospace, 'SF Mono', Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --surface-canvas: oklch(0.148 0.004 228.8); --surface-default: oklch(0.218 0.008 223.9); --surface-subtle: oklch(0.275 0.011 216.9);
+      --surface-subtlest: oklch(0.378 0.015 216); --surface-hovered: oklch(0.275 0.011 216.9); --surface-selected: oklch(0.31 0.072 258);
+      --surface-inverted: oklch(1 0 0);
+      --text-default: oklch(1 0 0); --text-subtle: oklch(0.872 0.007 219.6); --text-subtlest: oklch(0.723 0.014 214.4);
+      --text-placeholder: oklch(0.723 0.014 214.4); --text-inverted: oklch(0.148 0.004 228.8);
+      --border-default: color-mix(in srgb, oklch(0.987 0.002 197.1) 25%, transparent);
+      --border-subtle: color-mix(in srgb, oklch(0.987 0.002 197.1) 12%, transparent);
+      --border-selected: oklch(0.85 0.087 234); --border-focus: oklch(0.85 0.087 234);
+      --action-secondary-background: oklch(0.218 0.008 223.9); --action-secondary-hovered: oklch(0.275 0.011 216.9);
+      --action-secondary-pressed: oklch(0.148 0.004 228.8); --action-secondary-border: oklch(0.378 0.015 216); --action-secondary-text: oklch(1 0 0);
+      --warning-background: oklch(0.266 0.079 36.259); --warning-border: oklch(0.553 0.195 38.402); --warning-text: oklch(0.901 0.076 70.697);
+      --info-background: oklch(0.282 0.091 267.935); --info-text: oklch(0.882 0.059 254.128);
+      --success-background: oklch(0.266 0.065 152.934); --success-text: oklch(0.925 0.084 155.995);
+      --danger-background: oklch(0.258 0.092 26.042); --danger-text: oklch(0.885 0.062 18.334);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  /* Root stays at the browser default (16px) so every rem matches design.md. */
+  html { font-size: 100%; background: var(--surface-canvas); }
+  body { margin: 0; background: var(--surface-canvas); color: var(--text-default);
+    font: 400 0.875rem/1.5 var(--font-body); -webkit-font-smoothing: antialiased; }
+  button, input, textarea, select { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  a { color: inherit; }
+  ::placeholder { color: var(--text-placeholder); }
+  :focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+  /* fields: one 2px focus edge instead of border + offset ring */
+  :is(input.text, textarea, select):focus-visible { outline: none; border-color: var(--border-focus); box-shadow: 0 0 0 1px var(--border-focus); }
+  [hidden] { display: none !important; }
+  .wrap { max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
+
+  /* page header */
+  header.wrap { padding-top: 1.5rem; padding-bottom: 2.5rem; }
+  .topline { display: flex; align-items: center; gap: 1rem; min-height: 2.75rem; flex-wrap: wrap; }
+  .crumbs { flex: 1 1 12rem; min-width: 0; display: flex; gap: 0.5rem; align-items: center; color: var(--text-subtle); }
+  .crumbs a, .crumbs span { text-decoration: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+  .crumbs a.topic { color: var(--text-default); font-size: 1.125rem; }
+  .actions { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
+  .crumbs a:hover { color: var(--text-default); text-decoration: underline; text-underline-offset: 3px; }
+  .titleline { display: flex; align-items: flex-end; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; margin-top: 2rem; }
+  h1.title { margin: 0; font: 500 2.75rem/1 var(--font-display); letter-spacing: -0.05em; min-width: 0; overflow-wrap: anywhere; }
+  .subtitle { margin: 0.75rem 0 0; color: var(--text-subtle); font-size: 1.125rem; line-height: 1.5; }
+  .chip-wait { display: inline-flex; align-items: center; height: 2rem; border-radius: 0.5rem; padding: 0 0.75rem; background: var(--warning-background); color: var(--warning-text); font-size: 0.875rem; white-space: nowrap; }
+  .status { font-size: 0.75rem; color: var(--text-subtlest); white-space: nowrap; }
+  .tools { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 2rem; }
+  .add { display: flex; gap: 0.5rem; }
+  .add input { flex: 1; }
+  .hint { color: var(--text-subtlest); font-size: 0.75rem; }
+  kbd { font: 0.75rem var(--font-code); border: 1px solid var(--border-subtle); border-radius: 0.25rem; padding: 0 0.25rem; background: var(--surface-default); }
+
+  /* controls */
+  .btn { height: 2.75rem; padding: 0 1.25rem; border-radius: 0.75rem; border: 1px solid var(--action-secondary-border);
+    background: var(--action-secondary-background); color: var(--action-secondary-text); white-space: nowrap; display: inline-grid; place-items: center; text-decoration: none; }
+  .btn:hover { background: var(--action-secondary-hovered); }
+  .btn:active { background: var(--action-secondary-pressed); }
+  .btn.primary { background: var(--surface-inverted); border-color: var(--surface-inverted); color: var(--text-inverted); }
+  .btn.primary:hover { opacity: .88; }
+  .btn.danger { color: var(--danger-text); }
+  .btn.small { height: 2.25rem; padding: 0 0.875rem; border-radius: 0.75rem; }
+  .btn:disabled { opacity: .5; cursor: progress; }
+  input.text, select { height: 2.75rem; padding: 0 0.75rem; border: 1px solid var(--border-default); border-radius: 0.75rem;
+    background: var(--surface-default); color: var(--text-default); min-width: 0; }
+  select { appearance: none; -webkit-appearance: none; padding-right: 2.5rem; line-height: 1.5;
+    background: var(--surface-default) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23889399' stroke-width='1.75' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E") no-repeat right 0.75rem center; }
+  input.text:hover, select:hover, textarea:hover { border-color: var(--text-subtlest); }
+  textarea { width: 100%; resize: none; min-height: 4.5rem; padding: 0.625rem 0.75rem; border: 1px solid var(--border-default);
+    border-radius: 0.75rem; background: var(--surface-default); color: var(--text-default); line-height: 1.5; }
+  .icon { border: 0; background: none; color: var(--text-subtle); width: 2.75rem; height: 2.75rem; border-radius: 0.75rem; display: inline-grid; place-items: center; font-size: 1rem; flex: none; }
+  .icon:hover { color: var(--text-default); background: var(--surface-hovered); }
+  .icon:disabled { opacity: .35; cursor: not-allowed; }
+  .icon:disabled:hover { background: none; color: var(--text-subtlest); }
+  .link { border: 0; background: none; padding: 0; color: var(--text-subtle); text-decoration: underline; text-underline-offset: 3px; }
+  .link:hover { color: var(--text-default); }
+
+  main { padding-bottom: 6rem; }
+  .banner { display: flex; gap: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap;
+    background: var(--warning-background); color: var(--warning-text); border-radius: 1rem; padding: 0.75rem 0.75rem 0.75rem 1.25rem; margin-bottom: 1.5rem; }
+  .banner code { font: 0.8125rem var(--font-code); }
+  .banner .btn { border-color: transparent; }
+  .empty { text-align: center; padding: 5rem 1.5rem; color: var(--text-subtle); background: var(--surface-default); border-radius: 1rem; }
+  .empty h2 { color: var(--text-default); font: 400 1.5rem/1.2 var(--font-body); letter-spacing: -0.005em; margin: 0 0 0.5rem; }
+
+  /* topics screen + grid */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 17.5rem), 1fr)); gap: 1rem; }
+  .card { display: flex; flex-direction: column; background: var(--surface-default); border: 1px solid transparent; border-radius: 1rem;
+    overflow: hidden; text-decoration: none; transition: border-color .15s ease; }
+  .card:hover { border-color: var(--border-default); }
+  .card .thumb { position: relative; aspect-ratio: 16 / 10; overflow: hidden; background: var(--surface-subtle); }
+  .card .thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .card .body { padding: 1.25rem 1.5rem 1.5rem; display: flex; flex-direction: column; gap: 0.25rem; min-width: 0; }
+  .card h3 { margin: 0; font: 400 1.125rem/1.3 var(--font-body); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .card .meta { color: var(--text-subtle); font-size: 0.875rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .badges { position: absolute; left: 0.75rem; top: 0.75rem; display: flex; gap: 0.25rem; flex-wrap: wrap; }
+  .badge { font-size: 0.75rem; line-height: 1.25rem; border-radius: 0.375rem; padding: 0 0.5rem; background: var(--surface-default); color: var(--text-default); box-shadow: 0 0 0 1px var(--border-subtle); }
+  .badge.new { background: var(--info-background); color: var(--info-text); }
+  .badge.wait { background: var(--warning-background); color: var(--warning-text); }
+  .badge.old { background: var(--surface-subtlest); color: var(--text-subtle); }
+  .grid-items .body { padding: 1rem 1.25rem 1.25rem; }
+  .grid-items h3 { font-size: 0.875rem; line-height: 1.5; }
+  .grid-items .meta { font-size: 0.75rem; }
+  .newtopic { display: flex; gap: 0.5rem; margin-bottom: 2.5rem; max-width: 36rem; }
+  .newtopic input { flex: 1; }
+  .fchip { height: 2.5rem; padding: 0 1rem; border-radius: 0.75rem; font-size: 0.875rem; border: 1px solid var(--action-secondary-border); background: var(--action-secondary-background); color: var(--text-subtle); }
+  .fchip:hover { background: var(--action-secondary-hovered); color: var(--text-default); }
+  .fchip[aria-pressed="true"] { background: var(--surface-inverted); border-color: var(--surface-inverted); color: var(--text-inverted); }
+
+  /* single inspiration */
+  .nav { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1.5rem; min-width: 0; }
+  .nav .arrow { width: 2.75rem; padding: 0; flex: none; }
+  .nav .arrow svg { width: 1.25rem; height: 1.25rem; }
+  .strip { display: flex; gap: 0.375rem; overflow-x: auto; flex: 0 1 auto; min-width: 0; padding: 2px; scrollbar-width: none; }
+  .sthumb { position: relative; flex: none; width: 4.5rem; height: 2.75rem; border-radius: 0.5rem; overflow: hidden;
+    border: 2px solid transparent; background: var(--surface-default); }
+  .sthumb:hover { border-color: var(--border-default); }
+  .sthumb img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; }
+  .sthumb.on { border-color: var(--border-selected); }
+  .counter { font-size: 0.875rem; color: var(--text-subtle); flex: none; padding-left: 0.25rem; }
+  .item { display: grid; grid-template-columns: minmax(0, 1fr) 22rem; gap: 1.5rem; align-items: start; }
+  /* one website capture reads as one long page: screens joined, number as an overlay */
+  .frames { display: flex; flex-direction: column; min-width: 0; border-radius: 1rem; overflow: hidden; background: var(--surface-default); }
+  .frame { position: relative; }
+  .frame + .frame { border-top: 1px solid var(--border-subtle); }
+  .frame-cap { position: absolute; left: 0.75rem; top: 0.75rem; z-index: 1100; margin: 0; pointer-events: none;
+    font-size: 0.75rem; line-height: 1.25rem; padding: 0 0.5rem; border-radius: 0.375rem; background: var(--surface-default); color: var(--text-subtle); box-shadow: 0 0 0 1px var(--border-subtle); }
+  .stage { position: relative; background: var(--surface-default); overflow: hidden; user-select: none; cursor: crosshair; }
+  .stage.ro { cursor: default; }
+  .stage img { display: block; width: 100%; height: auto; pointer-events: none; }
+  .pin { position: absolute; border: 2px solid var(--pin-like); background: color-mix(in srgb, var(--pin-like) 14%, transparent); border-radius: 0.25rem; cursor: pointer; box-shadow: 0 0 0 1px rgba(0,0,0,.25); }
+  .pin.dislike { border-color: var(--pin-dislike); background: color-mix(in srgb, var(--pin-dislike) 14%, transparent); }
+  .pin.active { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+  .pin .num { position: absolute; top: -2px; left: -2px; min-width: 1.375rem; height: 1.375rem; padding: 0 0.375rem;
+    border-radius: 0.25rem 0 0.375rem 0; background: var(--pin-like); color: #fff; font-size: 0.75rem; display: grid; place-items: center; }
+  .pin.dislike .num { background: var(--pin-dislike); }
+  .pin.point { width: 1.625rem; height: 1.625rem; margin: -0.8125rem 0 0 -0.8125rem; border: 2px solid #fff; border-radius: 50%;
+    background: var(--pin-like); box-shadow: 0 2px 8px rgba(0,0,0,.35); display: grid; place-items: center; }
+  .pin.point.dislike { background: var(--pin-dislike); }
+  .pin.point .num { position: static; min-width: 0; height: auto; padding: 0; background: none; border-radius: 0; }
+  .draft { position: absolute; border: 2px dashed var(--border-focus); background: color-mix(in srgb, var(--border-focus) 10%, transparent); pointer-events: none; }
+  aside { position: sticky; top: 1.5rem; background: var(--surface-default); border-radius: 1rem; padding: 1.5rem;
+    display: flex; flex-direction: column; gap: 1.5rem; max-height: calc(100vh - 3rem); overflow: auto; }
+  .src { display: flex; gap: 0.75rem; align-items: baseline; min-width: 0; }
+  .src .idx { flex: none; font: 500 1.75rem/1 var(--font-display); letter-spacing: -0.05em; color: var(--text-default); }
+  .src .from { flex: 1; min-width: 0; text-align: right; color: var(--text-subtle); font-size: 0.875rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .src a.from:hover { color: var(--text-default); }
+  label.cap, .cap { display: block; font-size: 0.875rem; color: var(--text-subtle); margin-bottom: 0.5rem; }
+  .pins { display: flex; flex-direction: column; gap: 0.5rem; }
+  .row { display: grid; grid-template-columns: 1.5rem minmax(0, 1fr) auto; column-gap: 0.75rem; align-items: start; padding: 0.75rem 0.5rem 0.75rem 0.75rem;
+    background: var(--surface-subtle); border: 1px solid transparent; border-radius: 0.75rem; }
+  .row.active { border-color: var(--border-selected); }
+  .row .n { width: 1.5rem; height: 1.5rem; margin-top: 0.125rem; border-radius: 0.375rem; background: var(--pin-like); color: #fff; font-size: 0.75rem; display: grid; place-items: center; }
+  .row.dislike .n { background: var(--pin-dislike); }
+  .row .body { min-width: 0; display: grid; gap: 0.125rem; }
+  .row .title { color: var(--text-default); line-height: 1.5; padding-top: 0.125rem; }
+  .row .title .tag { margin-right: 0.25rem; }
+  .row .fr { color: var(--text-subtlest); font-size: 0.75rem; white-space: nowrap; }
+  .row textarea { min-height: 0; height: auto; padding: 0.25rem 0.5rem; margin-left: -0.5rem; border: 1px solid transparent; background: transparent; color: var(--text-subtle); border-radius: 0.5rem; field-sizing: content; }
+  .row textarea:hover { border-color: var(--border-subtle); }
+  .row textarea:focus-visible { background: var(--surface-default); }
+  .row .tools-r { display: flex; opacity: 0; transition: opacity .12s ease; }
+  .row:hover .tools-r, .row:focus-within .tools-r { opacity: 1; }
+  .tag { display: inline-block; font-size: 0.75rem; line-height: 1.25rem; border-radius: 0.375rem; padding: 0 0.5rem; background: var(--surface-default); color: var(--text-subtle); }
+  .tag.wait { color: var(--warning-text); background: var(--warning-background); }
+  .empty-pins { color: var(--text-subtlest); font-size: 0.875rem; }
+  .remove { align-self: flex-start; border: 0; background: none; color: var(--text-subtlest); font-size: 0.875rem; padding: 0; text-decoration: underline; text-underline-offset: 3px; }
+  .remove:hover { color: var(--danger-text); }
+  .pop { position: fixed; z-index: 40; width: 22rem; background: var(--surface-default); border-radius: 1rem;
+    box-shadow: var(--shadow-5); border: 1px solid var(--border-subtle); padding: 0.75rem; display: flex; flex-direction: column; gap: 0.75rem; }
+  .seg { display: grid; grid-template-columns: 1fr 1fr; background: var(--surface-subtle); border-radius: 0.75rem; padding: 0.25rem; }
+  .seg button { border: 0; background: none; height: 2.5rem; border-radius: 0.5rem; color: var(--text-subtle); }
+  .seg button:hover { color: var(--text-default); }
+  .seg button.on.like, .seg button.on.take { background: var(--success-background); color: var(--success-text); }
+  .seg button.on.dislike, .seg button.on.avoid { background: var(--danger-background); color: var(--danger-text); }
+  .pop .actions { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; }
+  .pop .actions small { color: var(--text-subtlest); font-size: 0.75rem; }
+  .pop .actions span { display: flex; gap: 0.5rem; }
+  .pop textarea { min-height: 5.5rem; }
+
+  /* sections */
+  .section { margin-bottom: 3rem; border-radius: 1rem; transition: background .15s ease, outline-color .15s ease; outline: 2px solid transparent; outline-offset: 0.75rem; }
+  .section.over { background: var(--surface-selected); outline-color: var(--border-selected); }
+  .section.only-drag { display: none; }
+  body.dragging .section.only-drag { display: block; }
+  .sechead { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; min-height: 2.75rem; }
+  .sechead h2, .sechead .secname { margin: 0; font: 400 1.5rem/1.2 var(--font-body); letter-spacing: -0.005em; color: var(--text-default); }
+  .sechead .secname { border: 1px solid transparent; background: transparent; border-radius: 0.5rem; padding: 0.25rem 0.5rem; margin: 0 -0.25rem 0 -0.5rem; max-width: 100%; field-sizing: content; min-width: 3ch; }
+  .sechead .secname:hover { border-color: var(--border-subtle); }
+  .sechead .secname:focus { border-color: var(--border-default); background: var(--surface-default); outline: none; }
+  .sechead .count { color: var(--text-subtlest); font-size: 0.875rem; align-self: center; }
+  .sechead .icon { opacity: 0; transition: opacity .12s ease; }
+  .sechead:hover .icon, .sechead:focus-within .icon { opacity: 1; }
+  @media (hover: none) { .sechead .icon, .row .tools-r { opacity: 1; } }
+  .dropzone { grid-column: 1 / -1; display: grid; place-items: center; min-height: 8rem; border: 1px dashed var(--border-default); border-radius: 1rem; color: var(--text-subtlest); }
+  .slot { display: none; place-items: center; border: 1px dashed var(--border-default); border-radius: 1rem; color: var(--text-subtlest); min-height: 10rem; }
+  body.dragging .slot { display: grid; }
+  .card[draggable="true"] { cursor: grab; }
+  .card.dragging { opacity: .4; }
+  .addsection { margin-top: 1rem; padding-top: 2rem; border-top: 1px solid var(--border-subtle); display: grid; gap: 1rem; }
+  .addsection form { display: flex; gap: 0.5rem; max-width: 36rem; }
+  .addsection form input { flex: 1; }
+  .suggest { display: flex; gap: 0.5rem; flex-wrap: wrap; align-items: center; }
+  .suggest span { color: var(--text-subtlest); margin-right: 0.25rem; }
+  select.secpick { width: 100%; }
+
+  .drop { position: fixed; inset: 0; z-index: 50; background: color-mix(in srgb, var(--border-focus) 8%, transparent); border: 3px dashed var(--border-focus);
+    display: none; place-items: center; font: 500 1.75rem/1 var(--font-display); letter-spacing: -0.03em; color: var(--text-default); }
+  .drop.on { display: grid; }
+  .toast { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); z-index: 60; background: var(--surface-inverted);
+    color: var(--text-inverted); padding: 0.75rem 1.25rem; border-radius: 0.75rem; max-width: 90vw; display: none; }
+  .finish { position: fixed; inset: 0; z-index: 70; background: var(--surface-canvas); display: none; place-items: center; text-align: center; padding: 1.5rem; }
+  .finish.on { display: grid; }
+  .finish h2 { margin: 0 0 0.75rem; font: 500 2.75rem/1 var(--font-display); letter-spacing: -0.05em; }
+  .finish p { color: var(--text-subtle); margin: 0; font-size: 1.125rem; }
+
+  @media (prefers-color-scheme: dark) {
+    .btn.primary { background: var(--action-secondary-hovered); border-color: var(--border-default); color: var(--text-default); }
+  }
+  @media (max-width: 900px) {
+    .item { grid-template-columns: minmax(0, 1fr); }
+    aside { position: static; max-height: none; order: -1; }
+    .wrap { padding: 0 1rem; }
+    h1.title { font-size: 2.25rem; }
+    .titleline { margin-top: 1.25rem; }
+    .card .body { padding: 0.875rem 1rem 1rem; }
+  }
+  @media (max-width: 600px) {
+    .add { flex-wrap: wrap; }
+    .add input { flex-basis: 100%; }
+    .add .btn { flex: 1; }
+    .newtopic { flex-wrap: wrap; }
+    .newtopic input { flex-basis: 100%; }
+    .suggest { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+    .suggest .fchip { flex: none; }
+  }
+</style>
+</head>
+<body>
+<header class="wrap">
+  <div class="topline">
+    <nav class="crumbs" id="crumbs" aria-label="Breadcrumb"></nav>
+    <div class="actions">
+      <span class="status" id="status" aria-live="polite"></span>
+      <span class="chip-wait" id="waitChip" hidden></span>
+      <button class="btn primary" id="doneBtn" type="button" hidden>Done</button>
+    </div>
+  </div>
+  <div class="titleline">
+    <div><h1 class="title" id="title">Inspirations</h1><p class="subtitle" id="subtitle" hidden></p></div>
+  </div>
+  <div class="tools" id="tools" hidden>
+    <form class="add" id="addForm">
+      <input class="text" id="url" type="url" placeholder="Paste a link to a page or an image" aria-label="Link to an inspiration">
+      <button class="btn" id="addBtn" type="submit">Add link</button>
+      <button class="btn" id="fileBtn" type="button" title="Pick images from disk. You can also paste (Cmd/Ctrl+V) or drop files on the window.">Upload image</button>
+      <input id="fileInput" type="file" accept="image/*" multiple hidden>
+    </form>
+    <span class="hint" id="hint"></span>
+  </div>
+</header>
+<main class="wrap" id="main"></main>
+<div class="drop" id="drop">Drop to add an inspiration</div>
+<div class="toast" id="toast" role="status"></div>
+<div class="finish" id="finish"><div><h2>Saved</h2><p>You can close this tab. Your agent is looking at your pins now.</p></div></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const uid = p => p + Math.random().toString(36).slice(2, 9);
+const num = id => Number(String(id).replace(/^i/, '')) || 0;
+const framesOf = item => (item.frames && item.frames.length) ? item.frames : [item.image];
+const isPoint = p => !p.w && !p.h;
+const domain = src => /^https?:/.test(src) ? src.replace(/^https?:\/\/(www\.)?/, '').split('/')[0] : src;
+
+let meta = { mode: 'standalone', session: null, root: '' };
+let route = { view: 'home' };
+let topic = null;          // board of the open topic
+let topics = [];
+let ops = [];              // section edits waiting to be saved
+let saveTimer = null, saving = false, dirty = false, activePin = null, dragId = null, scrollToPin = null;
+
+function toast(msg, ms = 3200) { const t = $('#toast'); t.textContent = msg; t.style.display = 'block';
+  clearTimeout(toast.t); toast.t = setTimeout(() => t.style.display = 'none', ms); }
+const status = txt => $('#status').textContent = txt;
+
+async function api(path, body, opts = {}) {
+  const r = await fetch(path, { method: body === undefined ? 'GET' : 'POST',
+    headers: opts.headers || { 'Content-Type': 'application/json' },
+    body: body === undefined ? undefined : (opts.raw ? body : JSON.stringify(body)) });
+  return r.json();
+}
+const tapi = (tail, body, opts) => api(`/api/t/${encodeURIComponent(route.slug)}/${tail}`, body, opts);
+const img = src => `/t/${encodeURIComponent(route.slug)}/${src}`;
+const readOnly = () => !!(topic && topic.legacy);
+const liveItems = () => topic ? topic.items.filter(i => !i.removed) : [];
+const waitingFor = itemId => (topic?.waiting || []).filter(w => w.item === itemId);
+const featById = id => topic.features.find(f => f.id === id);
+
+/* ---------- routing ---------- */
+function parseHash() {
+  const h = location.hash.replace(/^#\/?/, '').split('/').map(decodeURIComponent);
+  if (h[0] !== 't' || !h[1]) return { view: 'home' };
+  if (h[2] === 'i' && h[3]) return { view: 'item', slug: h[1], item: h[3], pin: h[4] === 'p' ? h[5] : null };
+  return { view: 'grid', slug: h[1] };
+}
+const go = hash => { if (location.hash !== hash) location.hash = hash; else onRoute(); };
+const topicHash = (slug, rest = '') => `#/t/${encodeURIComponent(slug)}${rest}`;
+
+async function onRoute() {
+  closePop();
+  const next = parseHash();
+  const changedTopic = next.slug !== route.slug;
+  if (changedTopic && route.slug) await flush();
+  route = next;
+  if (route.view === 'home') { topic = null; topics = await api('/api/topics'); }
+  else if (changedTopic || !topic) {
+    topic = await tapi('state');
+    if (topic.error) { toast('This topic does not exist any more'); return go('#/'); }
+  }
+  if (route.pin) { activePin = route.pin; scrollToPin = route.pin; }
+  render();
+  if (route.view === 'item') scrollTo({ top: 0 });
+}
+addEventListener('hashchange', onRoute);
+
+/* ---------- saving ---------- */
+function queueOp(op) {
+  if (op.op === 'category.rename') ops = ops.filter(o => !(o.op === 'category.rename' && o.id === op.id));
+  ops.push(op);
+  scheduleSave();
+}
+function scheduleSave() {
+  if (readOnly()) return;
+  dirty = true;
+  status('Saving…');
+  clearTimeout(saveTimer);
+  saveTimer = setTimeout(flush, 600);
+}
+async function flush() {
+  clearTimeout(saveTimer);
+  if (!topic || readOnly() || saving || (!dirty && !ops.length)) return;
+  saving = true; dirty = false;
+  const sent = ops; ops = [];
+  try {
+    const res = await tapi('state', { items: topic.items, ops: sent });
+    if (res.ok) {
+      topic.waiting = res.state.waiting;
+      if (!ops.length) Object.assign(topic, { features: res.state.features, categories: res.state.categories, rounds: res.state.rounds });
+      status('Saved'); renderHeader();
+      return res.state;
+    }
+    ops = sent.concat(ops); dirty = true; status('Save failed');
+  } catch (e) { ops = sent.concat(ops); dirty = true; status('Offline'); }
+  finally { saving = false; }
+}
+
+/* ---------- header ---------- */
+function renderHeader() {
+  const rootLabel = meta.root ? 'Inspirations · ' + esc(meta.root) : 'Inspirations';
+  const home = route.view === 'home';
+  $('#crumbs').innerHTML = home ? `<span>${rootLabel}</span>`
+    : route.view === 'item' ? `<a href="#/">${rootLabel}</a><span aria-hidden="true">/</span><a class="topic" href="${topicHash(route.slug)}">${esc(topic?.topic || '')}</a>`
+    : `<a href="#/">← ${rootLabel}</a>`;
+  document.querySelector('.titleline').hidden = route.view === 'item';
+  $('#title').textContent = home ? 'Inspirations' : (topic?.topic || '');
+  const sub = $('#subtitle');
+  sub.hidden = !home;
+  sub.textContent = home ? 'One board per topic. Pin what you like, and your agent names it.' : '';
+  const w = topic && !readOnly() ? topic.waiting.length : 0;
+  $('#waitChip').hidden = !w;
+  $('#waitChip').textContent = `${w} waiting to be named`;
+  $('#doneBtn').hidden = !(meta.mode === 'session' && route.slug === meta.session && route.view !== 'home');
+  $('#tools').hidden = route.view !== 'grid' || readOnly();
+  $('#hint').textContent = topic?.categories?.length ? 'Drag inspirations between sections. Open one to pin what you like.' : 'Open an inspiration to pin what you like. Add sections below to sort them.';
+  $('header').style.paddingBottom = route.view === 'item' ? '1rem' : '';
+}
+
+function render() {
+  const y = scrollY;  // rebuilding the view must not move the page
+  renderHeader();
+  const m = $('#main');
+  m.innerHTML = '';
+  requestAnimationFrame(() => { if (Math.abs(scrollY - y) > 1) scrollTo(0, y); });
+  if (route.view === 'home') return renderHome(m);
+  if (readOnly()) m.appendChild(banner('Old-format board: read only. New rounds go to topic boards.'));
+  else if (meta.mode === 'standalone' && topic.waiting.length)
+    m.appendChild(banner(`${topic.waiting.length} note${topic.waiting.length === 1 ? '' : 's'} waiting to be named. Your agent names them: ask it to <code>analyze ${esc(route.slug)}</code>.`, true));
+  if (route.view === 'grid') renderGrid(m);
+  if (route.view === 'item') renderItemView(m);
+}
+
+function banner(html, copyable) {
+  const b = document.createElement('div');
+  b.className = 'banner';
+  b.innerHTML = `<span>${html}</span>` + (copyable ? '<button class="btn small" type="button">Copy request</button>' : '');
+  b.querySelector('button')?.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(`analyze inspiration topic ${route.slug}`); toast('Copied - paste it to your agent'); }
+    catch (e) { toast('Could not copy'); }
+  });
+  return b;
+}
+
+/* ---------- topics screen ---------- */
+function renderHome(m) {
+  const form = document.createElement('form');
+  form.className = 'newtopic';
+  form.innerHTML = `<input class="text" name="t" placeholder="New topic, e.g. Website, Logo, Packaging" aria-label="New topic name" required>
+    <button class="btn primary" type="submit">New topic</button>`;
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const name = form.t.value.trim();
+    if (!name) return;
+    const res = await api('/api/topics', { topic: name });
+    if (!res.ok) return toast(res.error || 'Could not create the topic');
+    if (!res.created) toast('This topic already exists - opening it');
+    go(topicHash(res.slug));
+  });
+  m.appendChild(form);
+  if (!topics.length) {
+    m.insertAdjacentHTML('beforeend', '<div class="empty"><h2>No topics yet</h2>Create one above - one topic per area of the project, for example Website, Logo or Packaging.</div>');
+    return;
+  }
+  const grid = document.createElement('div');
+  grid.className = 'cards';
+  for (const t of topics) {
+    const a = document.createElement('a');
+    a.className = 'card';
+    a.href = topicHash(t.slug);
+    const meta = [`${t.items} inspiration${t.items === 1 ? '' : 's'}`, t.last_round ? 'last round ' + t.last_round : (t.legacy ? t.created : 'not analyzed yet')];
+    a.innerHTML = `<div class="thumb">${t.thumb ? `<img src="/t/${encodeURIComponent(t.slug)}/${esc(t.thumb)}" alt="" loading="lazy">` : ''}
+      <div class="badges">${t.waiting ? `<span class="badge wait">${t.waiting} waiting</span>` : ''}${t.legacy ? '<span class="badge old">Old format</span>' : ''}</div></div>
+      <div class="body"><h3>${esc(t.topic)}</h3><span class="meta">${esc(meta.join(' · '))}</span></div>`;
+    grid.appendChild(a);
+  }
+  m.appendChild(grid);
+}
+
+/* ---------- topic board: sections ---------- */
+function moveItem(id, cat) {
+  const item = topic.items.find(i => i.id === id);
+  if (!item || (item.category || '') === cat) return;
+  item.category = cat;
+  scheduleSave();
+  render();
+}
+
+function itemCard(item) {
+  const a = document.createElement('a');
+  a.className = 'card';
+  a.href = topicHash(route.slug, '/i/' + item.id);
+  const w = waitingFor(item.id).length;
+  const isNew = !readOnly() && item.added_round >= topic.pending_round && topic.rounds.length > 0;
+  const title = /^https?:/.test(item.source) ? domain(item.source) : 'Uploaded image';
+  const badges = (isNew ? '<span class="badge new">New</span>' : '') + (w ? `<span class="badge wait">${w} waiting</span>` : '');
+  a.innerHTML = `<div class="thumb"><img src="${img(framesOf(item)[0])}" alt="" loading="lazy" draggable="false">
+    ${badges ? `<div class="badges">${badges}</div>` : ''}</div>
+    <div class="body"><h3>${esc(title)}</h3><span class="meta">#${num(item.id)} · ${item.pins.length} pin${item.pins.length === 1 ? '' : 's'}${item.note ? ' · ' + esc(item.note) : ''}</span></div>`;
+  if (!readOnly()) {
+    a.draggable = true;
+    a.addEventListener('dragstart', e => { dragId = item.id; document.body.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', item.id); a.classList.add('dragging'); });
+    a.addEventListener('dragend', () => { dragId = null; document.body.classList.remove('dragging'); a.classList.remove('dragging'); document.querySelectorAll('.section.over').forEach(x => x.classList.remove('over')); });
+  }
+  return a;
+}
+
+function sectionEl(sec, group) {
+  const el = document.createElement('section');
+  el.className = 'section';
+  const head = document.createElement('div');
+  head.className = 'sechead';
+  if (sec.id && !readOnly()) {
+    head.innerHTML = `<input class="secname" aria-label="Section name"><span class="count">${group.length}</span>
+      <button class="icon" type="button" title="Delete section - its inspirations go to Unsorted" aria-label="Delete section ${esc(sec.name)}">✕</button>`;
+    const inp = head.querySelector('input');
+    inp.value = sec.name;
+    inp.addEventListener('input', () => { if (inp.value.trim()) { sec.name = inp.value; queueOp({ op: 'category.rename', id: sec.id, name: inp.value }); } });
+    inp.addEventListener('keydown', e => { if (e.key === 'Enter') inp.blur(); });
+    head.querySelector('button').addEventListener('click', async () => {
+      group.forEach(i => { i.category = ''; });
+      topic.categories = topic.categories.filter(c => c.id !== sec.id);
+      queueOp({ op: 'category.delete', id: sec.id }); await flush(); render();
+      toast(group.length ? `Section deleted - ${group.length} moved to Unsorted` : 'Section deleted');
+    });
+  } else {
+    head.innerHTML = `<h2>${esc(sec.name)}</h2><span class="count">${group.length}</span>`;
+  }
+  el.appendChild(head);
+  const grid = document.createElement('div');
+  grid.className = 'cards grid-items';
+  group.forEach(item => grid.appendChild(itemCard(item)));
+  if (!group.length) grid.innerHTML = '<div class="dropzone">Drag inspirations here</div>';
+  else if (!readOnly()) grid.insertAdjacentHTML('beforeend', '<div class="slot">Drop here</div>');
+  el.appendChild(grid);
+  if (!readOnly()) {
+    el.addEventListener('dragover', e => { if (!dragId) return; e.preventDefault(); e.dataTransfer.dropEffect = 'move'; el.classList.add('over'); });
+    el.addEventListener('dragleave', e => { if (!el.contains(e.relatedTarget)) el.classList.remove('over'); });
+    el.addEventListener('drop', e => { if (!dragId) return; e.preventDefault(); e.stopPropagation(); el.classList.remove('over'); moveItem(dragId, sec.id); });
+  }
+  return el;
+}
+
+function addSectionEl() {
+  const wrap = document.createElement('div');
+  wrap.className = 'addsection';
+  const used = new Set(topic.categories.map(c => c.id));
+  const sugg = (topic.suggested || []).filter(c => !used.has(c.id));
+  wrap.innerHTML = `<form><input class="text" name="n" placeholder="New section, e.g. Typography, Hero, Patterns" aria-label="New section name">
+    <button class="btn" type="submit">Add section</button></form>
+    ${sugg.length ? `<div class="suggest"><span>Suggestions</span>${sugg.map(c => `<button type="button" class="fchip" data-id="${esc(c.id)}">+ ${esc(c.name)}</button>`).join('')}</div>` : ''}`;
+  const add = async op => { queueOp({ op: 'category.add', ...op }); await flush(); render(); };
+  wrap.querySelector('form').addEventListener('submit', e => { e.preventDefault(); const n = e.target.n.value.trim(); if (n) add({ name: n }); });
+  wrap.querySelectorAll('.suggest button').forEach(b => b.addEventListener('click', () => add({ id: b.dataset.id, name: b.textContent.slice(2) })));
+  return wrap;
+}
+
+function renderGrid(m) {
+  const items = liveItems();
+  if (!items.length && !topic.categories.length) {
+    m.insertAdjacentHTML('beforeend', '<div class="empty"><h2>No inspirations yet</h2>Paste a link above, upload an image, paste one with <kbd>Cmd/Ctrl+V</kbd> or drop a file on the window.</div>');
+    if (!readOnly()) m.appendChild(addSectionEl());
+    return;
+  }
+  const unsorted = items.filter(i => !topic.categories.some(c => c.id === i.category));
+  if (!topic.categories.length) {
+    const grid = document.createElement('div');
+    grid.className = 'cards grid-items';
+    items.forEach(item => grid.appendChild(itemCard(item)));
+    m.appendChild(grid);
+  } else {
+    topic.categories.forEach(c => m.appendChild(sectionEl(c, items.filter(i => i.category === c.id))));
+    const un = sectionEl({ id: '', name: 'Unsorted' }, unsorted);
+    if (!unsorted.length) un.classList.add('only-drag');
+    m.appendChild(un);
+  }
+  if (!readOnly()) m.appendChild(addSectionEl());
+}
+
+/* ---------- single inspiration ---------- */
+function renderItemView(m) {
+  const items = liveItems();
+  const idx = items.findIndex(i => i.id === route.item);
+  if (idx < 0) return go(topicHash(route.slug));
+  const nav = document.createElement('nav');
+  nav.className = 'nav';
+  nav.setAttribute('aria-label', 'Inspirations');
+  const chev = d => `<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${d}"/></svg>`;
+  nav.innerHTML = `<button class="btn arrow" type="button" data-d="-1" aria-label="Previous inspiration" ${idx === 0 ? 'disabled' : ''}>${chev('M12 5l-5 5 5 5')}</button>
+    <div class="strip"></div>
+    <button class="btn arrow" type="button" data-d="1" aria-label="Next inspiration" ${idx === items.length - 1 ? 'disabled' : ''}>${chev('M8 5l5 5-5 5')}</button>
+    <span class="counter">${idx + 1} / ${items.length}</span>`;
+  const strip = nav.querySelector('.strip');
+  items.forEach((item, i) => {
+    const b = document.createElement('a');
+    b.className = 'sthumb' + (i === idx ? ' on' : '');
+    b.href = topicHash(route.slug, '/i/' + item.id);
+    b.title = item.source;
+    b.setAttribute('aria-label', 'Inspiration ' + num(item.id));
+    if (i === idx) b.setAttribute('aria-current', 'true');
+    b.innerHTML = `<img src="${img(framesOf(item)[0])}" alt="" loading="lazy">`;
+    strip.appendChild(b);
+  });
+  nav.querySelectorAll('[data-d]').forEach(b => b.addEventListener('click', () => step(Number(b.dataset.d))));
+  m.appendChild(nav);
+  m.appendChild(renderItem(items[idx]));
+  requestAnimationFrame(() => {
+    const t = strip.children[idx];  // scroll only the strip; scrollIntoView would move the page too
+    if (t) strip.scrollLeft = t.offsetLeft - strip.offsetLeft - (strip.clientWidth - t.clientWidth) / 2;
+    if (scrollToPin) { document.querySelector(`.pin[data-pid="${scrollToPin}"]`)?.scrollIntoView({ block: 'center' }); scrollToPin = null; }
+  });
+}
+
+function step(dir) {
+  const items = liveItems();
+  const idx = items.findIndex(i => i.id === route.item);
+  const next = items[Math.min(Math.max(idx + dir, 0), items.length - 1)];
+  if (next && next.id !== route.item) { activePin = null; go(topicHash(route.slug, '/i/' + next.id)); }
+}
+addEventListener('keydown', e => {
+  if (route.view !== 'item' || e.target.closest('input, textarea, select') || e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
+  if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
+});
+
+function renderItem(item) {
+  const wrap = document.createElement('section');
+  wrap.className = 'item';
+  const col = document.createElement('div');
+  col.className = 'frames';
+  const frames = framesOf(item);
+  frames.forEach((src, f) => {
+    const box = document.createElement('div');
+    box.className = 'frame';
+    if (frames.length > 1) box.innerHTML = `<p class="frame-cap">${f + 1} / ${frames.length}</p>`;
+    const stage = document.createElement('div');
+    stage.className = 'stage' + (readOnly() ? ' ro' : '');
+    stage.innerHTML = `<img src="${img(src)}" alt="Inspiration ${num(item.id)}${frames.length > 1 ? ', screen ' + (f + 1) : ''}">`;
+    item.pins.forEach((p, i) => { if ((p.frame || 0) === f) stage.appendChild(pinEl(p, i + 1)); });
+    if (!readOnly()) attachDraw(stage, item, f);
+    box.appendChild(stage);
+    col.appendChild(box);
+  });
+
+  const side = document.createElement('aside');
+  const isUrl = /^https?:/.test(item.source);
+  side.innerHTML = `
+    <div class="src"><span class="idx">#${num(item.id)}</span>${isUrl
+      ? `<a class="from" href="${encodeURI(item.source)}" target="_blank" rel="noopener" title="${esc(item.source)}">${esc(domain(item.source))} ↗</a>`
+      : `<span class="from">Uploaded image</span>`}</div>
+    ${readOnly() ? '' : `<div><label class="cap" for="sec-${item.id}">Section</label><select id="sec-${item.id}" class="secpick"><option value="">Unsorted</option>${topic.categories.map(c => `<option value="${esc(c.id)}" ${c.id === item.category ? 'selected' : ''}>${esc(c.name)}</option>`).join('')}</select></div>`}
+    <div><label class="cap" for="note-${item.id}">Overall - what I like here</label>
+      <textarea id="note-${item.id}" placeholder="e.g. calm, lots of air, warm colors" ${readOnly() ? 'readonly' : ''}></textarea></div>
+    <div><span class="cap pins-cap">Pins</span><div class="pins"></div></div>
+    ${readOnly() ? '' : '<button class="remove" type="button">Remove this inspiration</button>'}`;
+  side.querySelector('.secpick')?.addEventListener('change', e => { item.category = e.target.value; scheduleSave(); toast('Moved to ' + (e.target.selectedOptions[0]?.text || 'Unsorted')); });
+  const note = side.querySelector('textarea');
+  note.value = item.note || '';
+  note.addEventListener('input', () => { item.note = note.value; scheduleSave(); });
+  side.querySelector('.remove')?.addEventListener('click', () => {
+    const items = liveItems();
+    const i = items.indexOf(item);
+    const neighbour = items[i + 1] || items[i - 1];
+    item.removed = true;
+    scheduleSave(); toast('Inspiration removed');
+    go(neighbour ? topicHash(route.slug, '/i/' + neighbour.id) : topicHash(route.slug));
+  });
+  const pins = side.querySelector('.pins');
+  if (!item.pins.length) pins.innerHTML = `<div class="empty-pins">${readOnly() ? 'No pins.' : 'Click the image to comment on a spot, or drag to mark an area. Hold <kbd>Alt</kbd> for “don’t like”. <kbd>←</kbd> <kbd>→</kbd> switch inspirations.'}</div>`;
+  side.querySelector('.cap.pins-cap').textContent = item.pins.length ? `Pins (${item.pins.length})` : 'Pins';
+  item.pins.forEach((p, i) => pins.appendChild(pinRow(item, p, i + 1, frames.length)));
+  wrap.append(col, side);
+  return wrap;
+}
+
+function pinEl(p, n) {
+  const el = document.createElement('div');
+  el.className = 'pin' + (isPoint(p) ? ' point' : '') + (p.kind === 'dislike' ? ' dislike' : '') + (activePin === p.id ? ' active' : '');
+  el.dataset.pid = p.id;
+  Object.assign(el.style, isPoint(p) ? { left: p.x * 100 + '%', top: p.y * 100 + '%' }
+    : { left: p.x * 100 + '%', top: p.y * 100 + '%', width: p.w * 100 + '%', height: p.h * 100 + '%' });
+  el.title = p.note || '';
+  el.innerHTML = `<span class="num">${n}</span>`;
+  el.style.zIndex = isPoint(p) ? '1001' : String(1000 - Math.round(p.w * p.h * 999));
+  return el;
+}
+
+function pinRow(item, p, n, nFrames) {
+  const row = document.createElement('div');
+  row.className = 'row' + (p.kind === 'dislike' ? ' dislike' : '') + (activePin === p.id ? ' active' : '');
+  row.dataset.pid = p.id;
+  const feats = (p.feature_ids || []).map(featById).filter(Boolean);
+  const isWaiting = !readOnly() && (topic.waiting || []).some(w => w.item === item.id && w.pin === p.id);
+  const title = feats.length ? esc(feats.map(f => f.name).join(', ')) : (isWaiting ? '<span class="tag wait">Waiting to be named</span>' : '');
+  row.innerHTML = `<span class="n" title="${p.kind === 'dislike' ? 'Don’t like' : 'Like'}">${n}</span>
+    <div class="body">${title ? `<div class="title">${title}${nFrames > 1 ? ` <span class="fr">· screen ${(p.frame || 0) + 1}</span>` : ''}</div>` : ''}
+      <textarea rows="1" placeholder="What exactly?" aria-label="Pin ${n} note" ${readOnly() ? 'readonly' : ''}></textarea></div>
+    <div class="tools-r">${readOnly() ? '' : '<button class="icon flip" type="button" title="Switch like / don’t like" aria-label="Switch like or don’t like">⇄</button><button class="icon del" type="button" title="Delete pin" aria-label="Delete pin">✕</button>'}</div>`;
+  const ta = row.querySelector('textarea');
+  ta.value = p.note || '';
+  ta.addEventListener('input', () => { p.note = ta.value; scheduleSave(); });
+  ta.addEventListener('focus', () => { highlight(p.id); document.querySelector(`.pin[data-pid="${p.id}"]`)?.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); });
+  row.querySelector('.flip')?.addEventListener('click', () => { p.kind = p.kind === 'dislike' ? 'like' : 'dislike'; scheduleSave(); render(); });
+  row.querySelector('.del')?.addEventListener('click', () => { item.pins = item.pins.filter(x => x !== p); scheduleSave(); render(); });
+  return row;
+}
+
+function highlight(id) {
+  activePin = id;
+  document.querySelectorAll('.pin.active, .row.active').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll(`[data-pid="${id}"]`).forEach(el => el.classList.add('active'));
+}
+
+function attachDraw(stage, item, frame) {
+  stage.addEventListener('mousedown', e => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    closePop();
+    const r = stage.getBoundingClientRect();
+    const sx = e.clientX - r.left, sy = e.clientY - r.top;
+    const draft = document.createElement('div');
+    draft.className = 'draft';
+    stage.appendChild(draft);
+    const clampXY = ev => [Math.max(0, Math.min(ev.clientX - r.left, r.width)), Math.max(0, Math.min(ev.clientY - r.top, r.height))];
+    const move = ev => {
+      const [x, y] = clampXY(ev);
+      Object.assign(draft.style, { left: Math.min(sx, x) + 'px', top: Math.min(sy, y) + 'px', width: Math.abs(x - sx) + 'px', height: Math.abs(y - sy) + 'px' });
+    };
+    const up = ev => {
+      removeEventListener('mousemove', move);
+      removeEventListener('mouseup', up);
+      const [x, y] = clampXY(ev);
+      draft.remove();
+      const alt = ev.altKey || e.altKey;
+      if (Math.abs(x - sx) < 8 || Math.abs(y - sy) < 8) {
+        const fx = x / r.width, fy = y / r.height;
+        const onFrame = item.pins.filter(p => (p.frame || 0) === frame);
+        const point = onFrame.filter(isPoint).map(p => [p, Math.hypot((p.x - fx) * r.width, (p.y - fy) * r.height)])
+          .filter(([, d]) => d <= 16).sort((a, b) => a[1] - b[1])[0]?.[0];
+        const area = onFrame.filter(p => !isPoint(p) && fx >= p.x && fx <= p.x + p.w && fy >= p.y && fy <= p.y + p.h)
+          .sort((a, b) => a.w * a.h - b.w * b.h)[0];
+        const hit = point || (area && !alt ? area : null);
+        if (hit) return openPop(item, hit, ev.clientX, ev.clientY, false);
+        const np = { id: uid('p'), kind: alt ? 'dislike' : 'like', note: '', frame, x: fx, y: fy, w: 0, h: 0 };
+        item.pins.push(np); render(); openPop(item, np, ev.clientX, ev.clientY, true);
+        return;
+      }
+      const p = { id: uid('p'), kind: alt ? 'dislike' : 'like', note: '', frame,
+        x: Math.min(sx, x) / r.width, y: Math.min(sy, y) / r.height, w: Math.abs(x - sx) / r.width, h: Math.abs(y - sy) / r.height };
+      item.pins.push(p); render(); openPop(item, p, ev.clientX, ev.clientY, true);
+    };
+    addEventListener('mousemove', move);
+    addEventListener('mouseup', up);
+  });
+}
+
+function closePop() { document.querySelector('.pop')?.remove(); }
+
+function openPop(item, p, cx, cy, isNew) {
+  closePop();
+  highlight(p.id);
+  const pop = document.createElement('div');
+  pop.className = 'pop';
+  pop.innerHTML = `
+    <div class="seg" role="group" aria-label="Rating"><button type="button" class="like">Like</button><button type="button" class="dislike">Don’t like</button></div>
+    <textarea rows="3" placeholder="What exactly? Can be vague - your agent will ask." aria-label="Pin note"></textarea>
+    <div class="actions"><small>Enter save · Esc ${isNew ? 'cancel' : 'close'}</small>
+      <span>${isNew ? '<button class="btn" type="button" data-a="cancel">Cancel</button>' : '<button class="btn danger" type="button" data-a="del">Delete</button>'}<button class="btn primary" type="button" data-a="ok">Save</button></span></div>`;
+  let kind = p.kind;
+  const ta = pop.querySelector('textarea');
+  const seg = () => pop.querySelectorAll('.seg button').forEach(b => b.classList.toggle('on', b.classList.contains(kind)));
+  pop.querySelectorAll('.seg button').forEach(b => b.addEventListener('click', () => { kind = b.classList.contains('like') ? 'like' : 'dislike'; seg(); ta.focus(); }));
+  ta.value = p.note || '';
+  const commit = () => { p.kind = kind; p.note = ta.value.trim(); closePop(); scheduleSave(); render(); highlight(p.id); };
+  const cancel = () => { if (isNew && !p.note) { item.pins = item.pins.filter(x => x !== p); render(); } closePop(); };
+  pop.querySelector('[data-a=ok]').addEventListener('click', commit);
+  pop.querySelector('[data-a=del]')?.addEventListener('click', () => { item.pins = item.pins.filter(x => x !== p); closePop(); scheduleSave(); render(); });
+  pop.querySelector('[data-a=cancel]')?.addEventListener('click', cancel);
+  ta.addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); commit(); }
+    if (e.key === 'Escape') { e.preventDefault(); cancel(); }
+  });
+  seg();
+  document.body.appendChild(pop);
+  // anchor to the pin itself (the page may have moved since the click)
+  const pinRect = document.querySelector(`.pin[data-pid="${p.id}"]`)?.getBoundingClientRect();
+  if (pinRect) { cx = pinRect.right; cy = isPoint(p) ? pinRect.top : pinRect.top; }
+  const left = cx + 12 + pop.offsetWidth > innerWidth - 12 ? Math.max(12, (pinRect ? pinRect.left : cx) - pop.offsetWidth - 12) : cx + 12;
+  pop.style.left = left + 'px';
+  pop.style.top = Math.max(12, Math.min(cy, innerHeight - pop.offsetHeight - 12)) + 'px';
+  ta.focus({ preventScroll: true });
+}
+document.addEventListener('mousedown', e => { if (!e.target.closest('.pop') && !e.target.closest('.stage')) closePop(); });
+
+/* ---------- adding ---------- */
+$('#addForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const url = $('#url').value.trim();
+  if (!url) return;
+  const btn = $('#addBtn');
+  btn.disabled = true; btn.textContent = 'Capturing…';
+  toast('Taking screenshots of the page - this takes up to ~30 s', 30000);
+  try {
+    await flush();
+    const res = await tapi('add-url', { url });
+    if (res.ok) { $('#url').value = ''; await reload(); toast(res.frames > 1 ? `Added - ${res.frames} screens` : 'Added'); }
+    else toast(res.blocked ? 'This site blocks automatic screenshots. Take a screenshot yourself and drop it here, or ask your agent.' : 'Could not add it: ' + res.error, 7000);
+  } catch (err) { toast('Could not fetch the link'); }
+  btn.disabled = false; btn.textContent = 'Add link';
+});
+
+async function uploadFiles(list) {
+  if (!route.slug || readOnly()) return;
+  const files = [...(list || [])].filter(f => f.type.startsWith('image/'));
+  if (!files.length) return toast('That is not an image - add PNG, JPG, WebP or GIF');
+  status('Adding…');
+  try {
+    await flush();
+    for (const f of files) {
+      const ext = (f.type.split('/')[1] || 'png').replace('jpeg', 'jpg');
+      const stamp = new Date().toISOString().slice(0, 16).replace('T', ' ').replace(':', '.');
+      const name = f.name && f.name !== 'image.png' ? f.name : `pasted ${stamp}.${ext}`;
+      const res = await tapi('upload', await f.arrayBuffer(), { raw: true, headers: { 'X-Filename': encodeURIComponent(name) } });
+      if (!res.ok) throw new Error(res.error || 'upload');
+    }
+    await reload();
+    toast(files.length === 1 ? 'Image added' : `${files.length} images added`);
+  } catch (err) { status(''); toast('Could not add the image: ' + err.message, 7000); }
+}
+
+let dragDepth = 0;
+const canDrop = () => route.slug && !readOnly();
+addEventListener('dragenter', e => { if (canDrop() && e.dataTransfer?.types.includes('Files')) { dragDepth++; $('#drop').classList.add('on'); } });
+addEventListener('dragleave', () => { if (--dragDepth <= 0) { dragDepth = 0; $('#drop').classList.remove('on'); } });
+addEventListener('dragover', e => e.preventDefault());
+addEventListener('drop', e => { e.preventDefault(); dragDepth = 0; $('#drop').classList.remove('on'); if (canDrop() && !dragId && e.dataTransfer?.files?.length) uploadFiles(e.dataTransfer.files); });
+$('#fileBtn').addEventListener('click', () => $('#fileInput').click());
+$('#fileInput').addEventListener('change', e => { uploadFiles(e.target.files); e.target.value = ''; });
+addEventListener('paste', e => {
+  if (!canDrop()) return;
+  const cd = e.clipboardData;
+  if (!cd) return;
+  const imgs = [...cd.items].filter(i => i.kind === 'file' && i.type.startsWith('image/')).map(i => i.getAsFile()).filter(Boolean);
+  const text = (cd.getData('text/plain') || '').trim();
+  if (imgs.length) { e.preventDefault(); return uploadFiles(imgs); }
+  if (e.target.closest?.('input, textarea')) return;
+  if (/^https?:\/\/\S+$/.test(text)) { e.preventDefault(); $('#url').value = text; $('#addForm').requestSubmit(); return; }
+  if (cd.types.includes('Files') || /\.(png|jpe?g|webp|gif|heic|tiff?)$/i.test(text))
+    return toast('A file copied in your file manager does not paste into a browser - only its name does. Use “Upload image” or drop the file.', 7000);
+  toast('No image on the clipboard. Copy an image (a screenshot or “Copy image” in a browser) and paste again.', 6000);
+});
+
+/* ---------- done / sync ---------- */
+$('#doneBtn').addEventListener('click', async () => {
+  const empty = liveItems().filter(i => !i.pins.length && !(i.note || '').trim()).length;
+  if (empty && !$('#doneBtn').dataset.confirm) {
+    $('#doneBtn').dataset.confirm = '1';
+    $('#doneBtn').textContent = 'Sure?';
+    toast(`${empty} inspiration${empty === 1 ? ' has' : 's have'} no pins and no note. Click again to finish.`, 5000);
+    return;
+  }
+  clearTimeout(saveTimer);
+  await tapi('done', { items: topic.items, ops });
+  ops = [];
+  $('#finish').classList.add('on');
+});
+
+async function reload() {
+  const remote = await tapi('state');
+  if (!remote.error) { topic = remote; render(); }
+}
+
+async function poll() {
+  if (route.view === 'home') { const t = await api('/api/topics'); if (JSON.stringify(t) !== JSON.stringify(topics)) { topics = t; render(); } return; }
+  if (!topic || saving || ops.length || document.querySelector('.pop') || document.activeElement?.matches('input, textarea, select')) return;
+  const remote = await tapi('state');
+  if (remote.error) return;
+  const known = new Set(topic.items.map(i => i.id));
+  const fresh = remote.items.filter(i => !known.has(i.id));
+  const reframed = remote.items.some(r => { const l = topic.items.find(i => i.id === r.id); return l && JSON.stringify(framesOf(l)) !== JSON.stringify(framesOf(r)); });
+  const newRound = (remote.rounds || []).length !== (topic.rounds || []).length;
+  if (fresh.length || reframed || newRound) {
+    topic = remote; render();
+    toast(newRound ? 'Your agent finished a round' : fresh.length ? 'New inspirations arrived from chat' : 'Screenshots updated');
+  }
+}
+
+async function boot() {
+  meta = await api('/api/meta');
+  if (!location.hash && meta.session) history.replaceState(null, '', topicHash(meta.session));
+  await onRoute();
+  setInterval(() => poll().catch(() => status('Offline')), 4000);
+  if (meta.mode === 'standalone') {
+    const beat = () => api('/api/heartbeat', {}).catch(() => status('Board stopped - reopen it'));
+    beat(); setInterval(beat, 15000);
+  }
+}
+addEventListener('pagehide', () => { if (ops.length || saveTimer) flush(); });
+boot();
+</script>
+</body>
+</html>

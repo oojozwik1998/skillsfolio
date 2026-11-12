@@ -3,7 +3,7 @@ import { expect, test } from '@playwright/test';
 import { site } from '../../src/config';
 import { installCommand } from '../../src/lib/skills';
 
-const routes = ['/', '/skills/example-skill/', '/skills/tailor-my-cv/'];
+const routes = ['/', '/skills/example-skill/', '/skills/inspiration-board/', '/skills/tailor-my-cv/'];
 const skillCommand = installCommand(site.repository, 'example-skill');
 
 test('the catalog links to a skill', async ({ page }) => {
