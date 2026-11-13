@@ -27,7 +27,7 @@ Turn `inspiration-board` from a one-off session tool into a permanent place for 
 | 8 | ~~Direction tab on the board~~ Revised 11.11 after the first test: no Direction tab. Features and direction live in the board data and are read in `inspirations.md`. | The owner found the tab hard to understand: an abstract form with text-only features. |
 | 9 | ~~Full editing of features on the board~~ Revised 11.11: features are not edited on the board. Corrections go through the agent. | Follows from 8. |
 | 10 | ~~User-owned fields and conflicts~~ Revised 11.11: dropped together with board editing; the agent updates features directly and lists the changes in the round summary. | Nothing left to protect once the board does not edit features. |
-| 11 | Pins made without the agent show as a "N pins waiting to be named" counter. The "Done" button is hidden in standalone mode. Analysis runs when the user asks the agent. | Nobody listens for "Done" without a session. |
+| 11 | Pins made without the agent show as a "N pins waiting to be named" counter. The "Send to agent" button is hidden in standalone mode. Analysis runs when the user asks the agent. | Nobody listens for "Send to agent" without a session. |
 | 12 | The existing dated session stays in the old format. No migration. | Owner choice; only one old session exists. |
 | 13 | Topics outside any project go to a library folder, default `~/Inspirations/`. The skill asks once and remembers the choice in a small settings file. | No hard-coded personal path, sensible default. |
 | 14 | Nothing from `inspirations/` goes into git. The skill asks once per repo to add it to `.gitignore`, recommending yes. | Screenshots are third-party material, heavy, and risky in client or public repos. |
@@ -37,6 +37,7 @@ Turn `inspiration-board` from a one-off session tool into a permanent place for 
 | 18 | Build everything in one pass, test once at the end against the scenarios below. | Owner choice. |
 | 19 | Board UI in English only. The agent still talks in the user's language and writes feature names and direction in that language. | Simplest public version. |
 | 20 | Source lives in `skills/inspiration-board/`. `~/.claude/skills/inspiration-board` becomes a symlink to it, after a backup of the current folder. | One version for the owner and everyone else. |
+| 21 | Revised 13.11 after the first real session: the old header "Done" button ended the session from any view, so the owner clicked it in the single-item view to close that inspiration and sent unfinished pins to the agent. Now **"Done" in the single-item view only closes it** (back to the topic board, also <kbd>Esc</kbd>). Ending a session is a separate **"Send to agent"** button, shown only on the topic board in session mode, which opens a confirmation with a summary (inspirations, pins, notes waiting, inspirations without pins) and "Keep pinning" as the default choice. | "Done" next to an open item reads as "close this"; sending work to the agent must be a deliberate, confirmed step. |
 
 ### Assumed defaults (owner can override)
 
@@ -73,7 +74,7 @@ All logic that reads or changes this model (waiting pins, merge of client edits,
 ## Server and board
 
 - `board.py open <inspirations_dir>`: topics screen, all topics in the folder, standalone mode.
-- `board.py serve <topic_dir>`: session mode started by the agent, with the "Done" button; exits on "Done" and prints `BOARD_DONE`.
+- `board.py serve <topic_dir>`: session mode started by the agent, with the "Send to agent" button (topic board only, with a confirmation); exits after sending and prints `BOARD_DONE`.
 - Standalone mode exits after about a minute without a heartbeat from any open tab.
 - Board views: topics screen → topic board with sections (drag between sections, add / rename / delete sections, badges, add by link / upload / paste / drop) → single-item pinning view with a section picker.
 - Every interactive element has hover and focus states; empty states for no topics, no items, empty sections; works at phone width for reading.
@@ -100,7 +101,8 @@ All logic that reads or changes this model (waiting pins, merge of client edits,
 2. New topic outside any project: library-folder question asked once, remembered next time.
 3. Quick add of a link to an existing topic: item appears, board not opened.
 4. Launcher double-click: topics screen lists topics plus the legacy Alpine folder (read-only).
-5. Standalone pinning: counter shows waiting pins, no "Done" button, server stops after closing the tab.
+5. Standalone pinning: counter shows waiting pins, no "Send to agent" button, server stops after closing the tab.
+10. Session: "Done" and <kbd>Esc</kbd> in the single-item view return to the topic board and the server keeps running; "Send to agent" opens a confirmation, "Keep pinning" closes it without sending, only the confirm button ends the session.
 6. Analysis round: only waiting pins are asked about; features get categories; markdown regenerates with round history.
 7. Add sections (suggested and custom), drag inspirations between them, rename a section, delete one (its inspirations go to Unsorted).
 8. Pick a section from the pinning view; the markdown groups inspirations by section.

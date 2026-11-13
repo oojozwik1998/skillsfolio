@@ -55,8 +55,9 @@ When the user only wants to drop links or files into a topic ("add this to Websi
    - click an inspiration to pin it; its section can also be picked there,
    - click the image to comment on a spot, drag to mark an area, hold Alt for "don't like",
    - each inspiration has an "Overall" note; notes can be vague because you will ask,
-   - click **Done** at the end. The board closes and you get a signal.
-4. Wait. The server exits on "Done" and prints `BOARD_DONE items=N pins=M waiting=W`, and you are notified then. Do not poll. If the user writes "done" in the chat instead, stop the server and continue (everything is saved as they go).
+   - **Done** (or Esc) in an opened inspiration only closes it and goes back to the board; nothing is sent,
+   - when everything is pinned, click **Send to agent** on the topic board and confirm. Only then the board closes and you get a signal.
+4. Wait. The server exits only after the user confirms "Send to agent" and prints `BOARD_DONE items=N pins=M waiting=W`, and you are notified then. Do not poll. If the user writes in the chat that they are finished pinning, stop the server and continue (everything is saved as they go). Never start the analysis on your own while the board is still open.
 5. Go to "Analysis round".
 
 ## Mode C - Analysis of what waits

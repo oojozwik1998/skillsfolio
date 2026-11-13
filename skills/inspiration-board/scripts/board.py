@@ -19,7 +19,7 @@ Commands (all print JSON unless noted):
   status    <topic_dir>                     items, rounds, waiting pins
   round     <topic_dir> <payload.json>      apply an analysis round, regenerate markdown
   render    <topic_dir>                     regenerate inspirations.md
-  serve     <topic_dir>                     board for an agent session; exits on "Done"
+  serve     <topic_dir>                     board for an agent session; exits on "Send to agent"
   open      <inspirations>                  board without the agent; exits when the tab closes
 """
 import argparse
