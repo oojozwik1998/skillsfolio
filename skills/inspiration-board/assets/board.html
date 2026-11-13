@@ -256,6 +256,15 @@
   .finish.on { display: grid; }
   .finish h2 { margin: 0 0 0.75rem; font: 500 2.75rem/1 var(--font-display); letter-spacing: -0.05em; }
   .finish p { color: var(--text-subtle); margin: 0; font-size: 1.125rem; }
+  .confirm { width: min(28rem, calc(100vw - 2rem)); padding: 1.5rem; border: 1px solid var(--border-subtle); border-radius: 1rem;
+    background: var(--surface-default); color: var(--text-default); box-shadow: var(--shadow-5); }
+  .confirm::backdrop { background: color-mix(in srgb, var(--surface-inverted) 30%, transparent); }
+  .confirm h2 { margin: 0 0 0.5rem; font: 500 1.75rem/1.1 var(--font-display); letter-spacing: -0.04em; }
+  .confirm p { margin: 0 0 1rem; color: var(--text-subtle); }
+  .confirm .sum { list-style: none; margin: 0 0 1rem; padding: 0.75rem 1rem; display: grid; gap: 0.25rem; background: var(--surface-subtle); border-radius: 0.75rem; }
+  .confirm .sum b { font-weight: 500; color: var(--text-default); }
+  .confirm .warn { color: var(--warning-text); background: var(--warning-background); border-radius: 0.75rem; padding: 0.5rem 0.75rem; }
+  .confirm-actions { display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem; }
 
   @media (prefers-color-scheme: dark) {
     .btn.primary { background: var(--action-secondary-hovered); border-color: var(--border-default); color: var(--text-default); }
@@ -286,7 +295,8 @@
     <div class="actions">
       <span class="status" id="status" aria-live="polite"></span>
       <span class="chip-wait" id="waitChip" hidden></span>
-      <button class="btn primary" id="doneBtn" type="button" hidden>Done</button>
+      <button class="btn" id="closeItemBtn" type="button" title="Back to the board (Esc)" hidden>Done</button>
+      <button class="btn primary" id="sendBtn" type="button" hidden>Send to agent</button>
     </div>
   </div>
   <div class="titleline">
@@ -305,7 +315,17 @@
 <main class="wrap" id="main"></main>
 <div class="drop" id="drop">Drop to add an inspiration</div>
 <div class="toast" id="toast" role="status"></div>
-<div class="finish" id="finish"><div><h2>Saved</h2><p>You can close this tab. Your agent is looking at your pins now.</p></div></div>
+<dialog class="confirm" id="sendDialog" aria-labelledby="sendTitle">
+  <h2 id="sendTitle">Send to your agent?</h2>
+  <p>Your agent starts naming what you pinned. The board closes - you can reopen it any time to add more.</p>
+  <ul class="sum" id="sendSummary"></ul>
+  <p class="warn" id="sendWarn" hidden></p>
+  <div class="confirm-actions">
+    <button class="btn" type="button" id="keepBtn" autofocus>Keep pinning</button>
+    <button class="btn primary" type="button" id="confirmSendBtn">Send to agent</button>
+  </div>
+</dialog>
+<div class="finish" id="finish"><div><h2>Sent</h2><p>Your agent is naming your pins now. You can close this tab.</p></div></div>
 
 <script>
 const $ = s => document.querySelector(s);
@@ -413,7 +433,8 @@ function renderHeader() {
   const w = topic && !readOnly() ? topic.waiting.length : 0;
   $('#waitChip').hidden = !w;
   $('#waitChip').textContent = `${w} waiting to be named`;
-  $('#doneBtn').hidden = !(meta.mode === 'session' && route.slug === meta.session && route.view !== 'home');
+  $('#closeItemBtn').hidden = route.view !== 'item';
+  $('#sendBtn').hidden = !(meta.mode === 'session' && route.slug === meta.session && route.view === 'grid');
   $('#tools').hidden = route.view !== 'grid' || readOnly();
   $('#hint').textContent = topic?.categories?.length ? 'Drag inspirations between sections. Open one to pin what you like.' : 'Open an inspiration to pin what you like. Add sections below to sort them.';
   $('header').style.paddingBottom = route.view === 'item' ? '1rem' : '';
@@ -623,7 +644,10 @@ addEventListener('keydown', e => {
   if (route.view !== 'item' || e.target.closest('input, textarea, select') || e.metaKey || e.ctrlKey || e.altKey) return;
   if (e.key === 'ArrowLeft') { e.preventDefault(); step(-1); }
   if (e.key === 'ArrowRight') { e.preventDefault(); step(1); }
+  if (e.key === 'Escape' && !document.querySelector('.pop')) { e.preventDefault(); closeItem(); }
 });
+function closeItem() { activePin = null; go(topicHash(route.slug)); }
+$('#closeItemBtn').addEventListener('click', closeItem);
 
 function renderItem(item) {
   const wrap = document.createElement('section');
@@ -852,19 +876,35 @@ addEventListener('paste', e => {
   toast('No image on the clipboard. Copy an image (a screenshot or “Copy image” in a browser) and paste again.', 6000);
 });
 
-/* ---------- done / sync ---------- */
-$('#doneBtn').addEventListener('click', async () => {
-  const empty = liveItems().filter(i => !i.pins.length && !(i.note || '').trim()).length;
-  if (empty && !$('#doneBtn').dataset.confirm) {
-    $('#doneBtn').dataset.confirm = '1';
-    $('#doneBtn').textContent = 'Sure?';
-    toast(`${empty} inspiration${empty === 1 ? ' has' : 's have'} no pins and no note. Click again to finish.`, 5000);
-    return;
-  }
+/* ---------- send to agent / sync ---------- */
+const plural = (n, word) => `<b>${n}</b> ${word}${n === 1 ? '' : 's'}`;
+$('#sendBtn').addEventListener('click', async () => {
+  await flush();  // the waiting count comes from the server, so save first
+  const items = liveItems();
+  const pins = items.reduce((n, i) => n + i.pins.length, 0);
+  const waiting = topic.waiting.length;
+  const empty = items.filter(i => !i.pins.length && !(i.note || '').trim()).length;
+  $('#sendSummary').innerHTML = `<li>${plural(items.length, 'inspiration')}</li><li>${plural(pins, 'pin')}</li>`
+    + `<li>${waiting ? plural(waiting, 'note') + ' waiting to be named' : 'Nothing new to name - your agent will just confirm the board is up to date'}</li>`;
+  const warn = $('#sendWarn');
+  warn.hidden = !empty;
+  warn.textContent = empty ? `${empty} inspiration${empty === 1 ? ' has' : 's have'} no pins and no note - your agent skips ${empty === 1 ? 'it' : 'them'}.` : '';
+  $('#sendDialog').showModal();
+});
+$('#keepBtn').addEventListener('click', () => $('#sendDialog').close());
+$('#confirmSendBtn').addEventListener('click', async () => {
+  const btn = $('#confirmSendBtn');
+  btn.disabled = true; btn.textContent = 'Sending…';
   clearTimeout(saveTimer);
-  await tapi('done', { items: topic.items, ops });
-  ops = [];
-  $('#finish').classList.add('on');
+  try {
+    await tapi('done', { items: topic.items, ops });
+    ops = [];
+    $('#sendDialog').close();
+    $('#finish').classList.add('on');
+  } catch (e) {
+    btn.disabled = false; btn.textContent = 'Send to agent';
+    toast('Could not reach your agent - the board may have stopped. Everything is saved.', 6000);
+  }
 });
 
 async function reload() {
